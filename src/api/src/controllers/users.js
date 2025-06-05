@@ -1,5 +1,28 @@
 const Users = require('../models/users');
 
+const NAME_RE = /^[A-Za-z\u0590-\u05FF](?:[A-Za-z\u0590-\u05FF \-]{0,58}[A-Za-z\u0590-\u05FF])$/u;
+const USERNAME_RE = /^(?!\.)(?!.*\.\.)([a-z0-9.]{6,30})(?<!\.)$/; 
+const PWD_RE = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]{8,100}$/;
+const GENDER_ENUM = ['male','female'];
+
+function isValidName(str)       { return NAME_RE.test(str); }
+function isValidUsername(str)   { return USERNAME_RE.test(str); }
+function isValidPassword(str)   { return PWD_RE.test(str); }
+const isValidGender    = g =>
+  typeof g === 'string' && GENDER_ENUM.includes(g.trim().toLowerCase());
+function parseBirthDate(str) {
+  const m = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!m) return null;
+  const [ , mm, dd, yyyy ] = m.map(Number);
+  const date = new Date(Date.UTC(yyyy, mm - 1, dd)); 
+  const valid = date.getUTCFullYear() === yyyy &&
+                date.getUTCMonth()   === mm - 1 &&
+                date.getUTCDate()    === dd &&
+                date <= new Date();            
+  return valid ? date.toISOString().slice(0,10) : null; 
+}
+
+
 exports.getAllUsers = (req, res) => {
     res.json(Users.getAllUsers());
 }
@@ -12,58 +35,39 @@ exports.getUserById = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-    const { first_name, last_name, gender, birth_date, email, password } = req.body;
+    const { first_name, last_name, gender, birthDate, userName, password } = req.body;
 
-    if (!first_name || !last_name || !email || !password)
-        return res.status(400).json({ error: 'first name, last name, email and password are required' });
+    if (!first_name) return res.status(400).json({ error: 'first name is required' });
+    if (!userName)   return res.status(400).json({ error: 'user name is required' });
+    if (!password)   return res.status(400).json({ error: 'password is required' });
+    if (!birthDate) return res.status(400).json({ error: 'birth date is required' });
+    if (!gender)     return res.status(400).json({ error: 'gender is required' });
 
-    if (!email.includes('@'))
-        return res.status(400).json({ error: 'Invalid email format' });
+    
+    if (!isValidName(first_name))
+        return res.status(400).json({ error: 'first name must contain only letters and be at least 2 characters long' });
 
-    if (password.length < 8)
-        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+    if (last_name && !isValidName(last_name))
+        return res.status(400).json({ error: 'last name must contain only letters and be at least 2 characters long' });
 
+    const isoBirth = parseBirthDate(birthDate);
+    if (!isoBirth)
+        return res.status(400).json({ error: 'birthDate must be a valid past date in mm/dd/yyyy format' });
+    
+    if (!isValidGender(gender))
+        return res.status(400).json({ error: 'Gender must be male or female' });
+
+    if (!isValidUsername(userName))
+        return res.status(400).json({ error: 'user name must be 6-30 characters long and contain only letters or digits or periods only, only, with no leading/trailing/double dot' });
+
+    if (!isValidPassword(password))
+        return res.status(400).json({ error: 'Password must be 8-100 chars, contain at least one letter and one digit, and may include common symbols !@#$%^&*()_-+=[]{};:\'"\\|,.<>/?' });
+
+    const email = `${userName}@gmail.com`;
     const exists = Users.getAllUsers().some(u => u.email.toLowerCase() === email.toLowerCase());
     if (exists)
         return res.status(400).json({ error: 'Email already exists' });
   
-    const newUser = Users.createUser(first_name, last_name, gender, birth_date, email, password);
+    const newUser = Users.createUser(first_name, last_name, gender, birthDate, email, password);
     res.status(201).location(`/api/users/${newUser.id}`).end();
-    // res.status(201).location(`/api/users/${newUser.id}`)..json({ id: newUser.id });  // or .end(), but returning id is often helpful
 };
-
-exports.updateUser = (req, res) => {
-    const user = Users.getUserById(req.params.id);
-    if (!user)
-        return res.status(404).json({ error: 'User not found' });
-
-    const { first_name, last_name, gender, birth_date, email, password } = req.body;
-    //TODO: check if first == undefined if include everything and ! include 0,null,"".
-    if (!first_name && !last_name && !gender && !birth_date && !email && !password)
-        return res.status(400).json({ error: 'At least one field must be provided to update' });
-
-    if (email && !email.includes('@'))
-        return res.status(400).json({ error: 'Invalid email format' });
-
-    if (email && Users.getAllUsers().some(u => u.email.toLowerCase() === email.toLowerCase() && u.id !== user.id))
-        return res.status(400).json({ error: 'Email already exists' });
-
-    if (password && password.length < 8)
-        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
-    //TODO: if req.body is valid or provid all fileds
-    try {
-        Users.updateUser(user, req.body);
-        res.status(204).location(`/api/users/${user.id}`).end();
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
-    }
-}
-
-exports.deleteUser = (req, res) => {
-    const user = Users.getUserById(req.params.id);
-    if (!user)
-        return res.status(404).json({ error: 'User not found' });
-    Users.deleteUser(user);
-    res.status(204).end();
-};
-

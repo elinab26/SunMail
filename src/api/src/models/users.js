@@ -33,37 +33,8 @@ const createUser = (first_name, last_name, gender, birth_date, email, password) 
     return user;
 }
 
-const deleteUser = (user) => {
-    const index = users.indexOf(user);
-    if (index > -1) {
-        users.splice(index, 1);
-    }
-};
-
-function updateUser(user, fields) {
-  const {
-    first_name,
-    last_name,
-    gender,
-    birth_date,
-    email,
-    password
-  } = fields;
-
-  if (first_name)  user.first_name  = first_name;
-  if (last_name)   user.last_name   = last_name;
-  if (gender)      user.gender      = gender;
-  if (birth_date)  user.birth_date  = birth_date;
-  if (email)       user.email       = email.toLowerCase();
-  if (password)    user.password    = password;
-
-  return user;
-}
-
 module.exports = {
     getAllUsers,
     getUserById,
     createUser,
-    deleteUser,
-    updateUser
 };
