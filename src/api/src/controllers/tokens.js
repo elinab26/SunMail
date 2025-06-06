@@ -8,9 +8,9 @@ exports.login = (req, res) => {
     if (!password) {
         return res.status(400).json({ error: 'Password is required' })
     }
-    const id = tokens.login(email, password);
-    if (id === -1) {
+    const jwt = tokens.login(email, password);
+    if (jwt === -1) {
         return res.status(400).json({ error: 'Email or Password incorrect' })
     }
-    res.json(id)
+    res.status(201).json(jwt)
 }
