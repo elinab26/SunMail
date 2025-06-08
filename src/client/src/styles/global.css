@@ -1,0 +1,35 @@
+/* src/client/src/styles/global.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  height: 60px;
+  background-color: #f1f3f4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+
+}
+
+.sidebar {
+  background-color: #fff;
+  border-right: 1px solid #eee;
+  background-color: #f1f3f4;
+  height:100%;
+}
+
+.inbox-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}

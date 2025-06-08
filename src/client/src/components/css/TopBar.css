@@ -1,0 +1,95 @@
+/* src/client/src/components/css/TopBar.css */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background-color: var(--bg-topbar);
+}
+/* Hamburger */
+.menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s, width 0.2s, height 0.2s;
+}
+.menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: 100%;
+    transition: background-color 0.2s;
+}
+/* Logo */
+.topbar-logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    margin-left: 8px
+}
+
+.logo-image {
+    height: 35px;
+    /* adjust to desired height */
+    width: auto;
+}
+
+/* Search bar */
+.topbar-search {
+    flex: 1;
+    display: flex;
+    align-items: left;
+    max-width: 1000px;
+    /* max size to avoid sticking to edges */
+    margin: 0 16px 0 84px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 12px 8px;
+
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.search-input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+/* Logout button */
+.logout-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
