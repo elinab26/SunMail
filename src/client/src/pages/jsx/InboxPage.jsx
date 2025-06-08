@@ -1,52 +1,54 @@
-// src/client/src/pages/jsx/InboxPage.jsx
 import React, { useState, useRef } from 'react';
 import TopBar from '../../components/jsx/TopBar';
 import Sidebar from '../../components/jsx/Sidebar';
-import EmailList from '../../components/jsx/EmailList';
 import '../css/InboxPage.css';
 
 export default function InboxPage() {
+  // State to control if the sidebar is open (toggled by button)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
+  // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
-  const toggleSidebar = () => setIsSidebarOpen(open => !open);
-  const sidebarShouldBeOpen = isSidebarOpen || isSidebarHovered;
+
+  // When mouse enters sidebar area, set a timeout to show sidebar if it's closed
+  const handleSidebarMouseEnter = () => {
+    if (!isSidebarOpen) {
+      hoverTimeout.current = setTimeout(() => setIsSidebarHovered(true), 300);
+    }
+  };
+
+  // When mouse leaves sidebar area, clear timeout and hide sidebar if it's closed
+  const handleSidebarMouseLeave = () => {
+    clearTimeout(hoverTimeout.current);
+    if (!isSidebarOpen) setIsSidebarHovered(false);
+  };
+
+  // Sidebar is visible if open or being hovered
+  const sidebarVisible = isSidebarOpen || isSidebarHovered;
+
   return (
     <div className="app-container">
-      <TopBar toggleSidebar={toggleSidebar}/>
+      {/* TopBar with button to toggle sidebar */}
+      <TopBar toggleSidebar={() => setIsSidebarOpen(open => !open)} />
       <div className="main-content">
+        {/* Sidebar area with mouse events for hover logic */}
         <div
-          onMouseEnter={() => {
-            if (!isSidebarOpen) {
-              hoverTimeout.current = setTimeout(() => {
-                setIsSidebarHovered(true);
-              }, 300);
-            }
-          }}
-          onMouseLeave={() => {
-            clearTimeout(hoverTimeout.current);
-            if (!isSidebarOpen) setIsSidebarHovered(false);
-          }}
+          onMouseEnter={handleSidebarMouseEnter}
+          onMouseLeave={handleSidebarMouseLeave}
           style={{ height: '100%' }}
         >
-          <Sidebar
-            isOpen={sidebarShouldBeOpen}
-            /* other props: currentFolder, onSelectFolder, counts... */
-          />
+          <Sidebar isOpen={sidebarVisible} />
         </div>
+        {/* Main inbox content */}
         <div className="inbox-content">
           <h2>Inbox</h2>
-          {/* Here we will put the email list */}
-          <p>Email list coming soon...</p>
-          {/* Placeholder for the email list */}
           <ul className="email-list">
             <li>Email 1</li>
             <li>Email 2</li>
             <li>Email 3</li>
-            {/* Add more emails here */}
           </ul>
           <p className="no-emails">No emails to display at the moment.</p>
-          {/* Placeholder for the "No emails to display" message */}
         </div>
       </div>
     </div>
