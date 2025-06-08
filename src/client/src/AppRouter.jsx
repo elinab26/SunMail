@@ -1,14 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import InboxPage from './pages/InboxPage';
-// … autres importations …
+import InboxPage from './pages/jsx/InboxPage';
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        { /* tu peux rediriger "/" vers "/inbox" en attendant, ou définir une route protégée */ }
+        { /* you can redirect "/" to "/inbox" for now, or define a protected route */ }
         <Route path="/inbox" element={<InboxPage />} />
-        { /* … autres routes */ }
+        { /* ... other routes */ }
       </Routes>
     </BrowserRouter>
   );

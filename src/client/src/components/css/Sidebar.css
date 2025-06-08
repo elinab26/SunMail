@@ -1,0 +1,124 @@
+/* src/client/src/components/Sidebar.css */
+
+/* --- Sidebar base --- */
+.sidebar {
+  width: 240px;
+  background-color: var(--bg-topbar);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: width 0.3s cubic-bezier()
+}
+.sidebar-compose-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  margin: 12px auto 8px auto;
+  background: #c1e7fe;
+  color: black;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+  gap: 8px;
+  justify-content: flex-start;
+}
+.sidebar.collapsed .sidebar-compose-btn {
+  width: 100%;
+  height: 44px;
+  padding: 0;
+  border-radius: 12px; /* rounded square */
+  justify-content: center;
+  align-items: center;
+}
+/* collapsed state */
+.sidebar.collapsed {
+  width: fit-content;
+  min-width: 0;
+  max-width: none;
+}
+
+/* When collapsed, hide label, counter, titles, etc. */
+.sidebar.collapsed .folder-label,
+.sidebar.collapsed .folder-count,
+.sidebar.collapsed .sidebar-section-title,
+.sidebar.collapsed .add-label-btn {
+  display: none;
+}
+
+/* Also center the icon when collapsed */
+.sidebar.collapsed .folder-icon {
+  margin-right: 0;
+  justify-content: center;
+}
+/* The "More"/"Less" button */
+.sidebar-more-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-top: 8px;
+  border-radius: 0 24px 24px 0;
+  transition: background-color 0.2s;
+
+}
+.sidebar-more-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* --- Folder list --- */
+.sidebar-folders {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Each folder --- */
+.sidebar-folder-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 0 24px 24px 0; /* right rounded corners like Gmail */
+  transition: background-color 0.2s;
+}
+
+.sidebar-folder-item:hover{
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-folder-item.active {
+  background-color: rgba(39, 48, 128, 0.1);
+  font-weight: 600;
+}
+
+/* --- Folder icon and text --- */
+.folder-icon {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folder-label {
+  flex: 1;
+  font-size: 14px;
+}
+
+.folder-count {
+  font-size: 12px;
+  color: #5f6368;
+  margin-left: auto;
+}
+
+.sidebar-section-title {
+  margin: 16px 16px 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5f6368;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

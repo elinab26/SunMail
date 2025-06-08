@@ -1,0 +1,16 @@
+/* src/client/src/pages/css/InboxPage.css */
+
+.main-content {
+  display: flex;
+  height: calc(100vh - 60px); /* 60px = hauteur de la topbar */
+}
+
+.sidebar.collapsed + .inbox-content {
+  margin-left: 48px; /* compense la largeur réduite */
+}
+
+.inbox-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
