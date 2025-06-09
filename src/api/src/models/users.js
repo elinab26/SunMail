@@ -14,14 +14,15 @@ const getAllUsers = () => users;
 
 const getUserById = (id) => users.find(user => user.id === id);
 
-const createUser = (first_name, last_name, gender, birth_date, email, password) => {
+const createUser = (first_name, last_name, gender, birth_date, email, password, image) => {
     const user = { id: IdGenerator(), 
     first_name,
     last_name,
     gender: gender ?? null,
     birth_date: birth_date ?? null,
     email: email.toLowerCase(),
-    password
+    password,
+    image: image ?? null
     };
 
     user.toJSON = function () {
