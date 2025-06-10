@@ -3,6 +3,9 @@
 const express = require('express')
 var app = express()
 
+const cors = require('cors');
+app.use(cors());
+
 const labelRoutes = require('./routes/labels');
 const mailRoutes = require('./routes/mails');
 const userRoutes = require('./routes/users');
