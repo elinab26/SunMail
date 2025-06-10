@@ -1,34 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 // Importing icons from various icon libraries
 import {
-  AiOutlinePlus, AiOutlineInbox, AiOutlineStar, AiOutlineClockCircle, AiOutlineFile
-} from 'react-icons/ai';
-import { BiTrash, BiEnvelope, BiLabel, BiSend } from 'react-icons/bi';
+  AiOutlinePlus,
+  AiOutlineInbox,
+  AiOutlineStar,
+  AiOutlineClockCircle,
+  AiOutlineFile,
+} from "react-icons/ai";
+import { BiTrash, BiEnvelope, BiLabel, BiSend } from "react-icons/bi";
 import { RiSpam2Line } from "react-icons/ri";
-import { MdExpandMore, MdOutlineSettings, MdScheduleSend } from "react-icons/md";
+import {
+  MdExpandMore,
+  MdOutlineSettings,
+  MdScheduleSend,
+} from "react-icons/md";
 import { BsChatLeftText } from "react-icons/bs";
 import { LuPencil } from "react-icons/lu";
-import '../css/Sidebar.css';
+import "../css/Sidebar.css";
+import AddLabel from "./AddLabel";
+import LabelMenu from "./LabelMenu";
 
 // List of primary folders shown by default in the sidebar
 const primaryFolders = [
-  { key: 'inbox', label: 'Inbox', icon: <AiOutlineInbox size={20} />, countKey: 'inbox' },
-  { key: 'starred', label: 'Starred', icon: <AiOutlineStar size={20} /> },
-  { key: 'snoozed', label: 'Snoozed', icon: <AiOutlineClockCircle size={20} /> },
-  { key: 'important', label: 'Important', icon: <BiLabel size={20} /> },
-  { key: 'sent', label: 'Sent', icon: <BiSend size={20} /> },
-  { key: 'drafts', label: 'Drafts', icon: <AiOutlineFile size={20} />, countKey: 'drafts' },
+  {
+    key: "inbox",
+    label: "Inbox",
+    icon: <AiOutlineInbox size={20} />,
+    countKey: "inbox",
+  },
+  { key: "starred", label: "Starred", icon: <AiOutlineStar size={20} /> },
+  {
+    key: "snoozed",
+    label: "Snoozed",
+    icon: <AiOutlineClockCircle size={20} />,
+  },
+  { key: "important", label: "Important", icon: <BiLabel size={20} /> },
+  { key: "sent", label: "Sent", icon: <BiSend size={20} /> },
+  {
+    key: "drafts",
+    label: "Drafts",
+    icon: <AiOutlineFile size={20} />,
+    countKey: "drafts",
+  },
 ];
 
 // List of secondary folders shown when "More" is expanded
 const secondaryFolders = [
-  { key: 'chats', label: 'All chats', icon: <BsChatLeftText size={20} /> },
-  { key: 'scheduled', label: 'Scheduled', icon: <MdScheduleSend size={20} /> },
-  { key: 'all', label: 'All mail', icon: <BiEnvelope size={20} /> },
-  { key: 'spam', label: 'Spam', icon: <RiSpam2Line size={20} /> },
-  { key: 'trash', label: 'Trash', icon: <BiTrash size={20} /> },
-  { key: 'manage', label: 'Manage labels', icon: <MdOutlineSettings size={20} /> },
-  { key: 'create', label: 'Create label', icon: <AiOutlinePlus size={20} /> },
+  { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
+  { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
+  { key: "all", label: "All mail", icon: <BiEnvelope size={20} /> },
+  { key: "spam", label: "Spam", icon: <RiSpam2Line size={20} /> },
+  { key: "trash", label: "Trash", icon: <BiTrash size={20} /> },
+  {
+    key: "manage",
+    label: "Manage labels",
+    icon: <MdOutlineSettings size={20} />,
+  },
+  // { key: 'create', label: 'Create label', icon: <AiOutlinePlus size={20} /> },
 ];
 
 // Component to render a list of folders (either primary or secondary)
@@ -38,7 +66,9 @@ function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
       {folders.map(({ key, label, icon, countKey }) => (
         <li
           key={key}
-          className={`sidebar-folder-item${currentFolder === key ? ' active' : ''}`}
+          className={`sidebar-folder-item${
+            currentFolder === key ? " active" : ""
+          }`}
           onClick={() => onSelectFolder(key)}
         >
           {/* Folder icon */}
@@ -56,15 +86,42 @@ function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
 }
 
 // Main Sidebar component
-export default function Sidebar({ isOpen, currentFolder, onSelectFolder, counts }) {
+export default function Sidebar({
+  isOpen,
+  currentFolder,
+  onSelectFolder,
+  counts,
+}) {
+
+const [labels, setLabels] = useState([]);
+
+    function addLabelToList(newLabel) {
+        setLabels(labels => [...labels, newLabel]);
+    }
+
+    useEffect(() => {
+        fetch("http://localhost:8080/api/labels", {
+            credentials: "include",
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error("Erreur réseau");
+                return response.json();
+            })
+            .then((json) => {
+                setLabels(json);
+            })
+    }, []);
+
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
-
+  const [createLabelClicked, setCreateLabelClicked] = useState(false);
   return (
-    <nav className={`sidebar${isOpen ? '' : ' collapsed'}`}>
+    <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
       {/* Compose new message button */}
       <button className="sidebar-compose-btn" title="New message">
-        <span className="folder-icon"><LuPencil size={22} /></span>
+        <span className="folder-icon">
+          <LuPencil size={22} />
+        </span>
         <span className="compose-label">New message</span>
       </button>
 
@@ -79,12 +136,12 @@ export default function Sidebar({ isOpen, currentFolder, onSelectFolder, counts 
       {/* Toggle to show/hide secondary folders */}
       <div
         className="sidebar-folder-item sidebar-more-toggle"
-        onClick={() => setShowMore(v => !v)}
+        onClick={() => setShowMore((v) => !v)}
       >
         <span className="folder-icon">
           {showMore ? <MdExpandMore size={20} /> : <AiOutlinePlus size={20} />}
         </span>
-        <span className="folder-label">{showMore ? 'Less' : 'More'}</span>
+        <span className="folder-label">{showMore ? "Less" : "More"}</span>
       </div>
 
       {/* Render secondary folders if showMore is true */}
@@ -95,6 +152,21 @@ export default function Sidebar({ isOpen, currentFolder, onSelectFolder, counts 
           onSelectFolder={onSelectFolder}
           counts={counts}
         />
+      )}
+
+      {showMore && (
+        <>
+          <button
+            className="sidebar-create-label"
+            onClick={() => setCreateLabelClicked(true)}
+          >
+            <span className="folder-icon">
+              <AiOutlinePlus size={20} />
+            </span>
+            Create label
+          </button>
+          {createLabelClicked && <LabelMenu />}
+        </>
       )}
     </nav>
   );

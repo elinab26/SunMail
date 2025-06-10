@@ -1,0 +1,9 @@
+.button {
+    background: none;
+    border:none;
+    transition: background-color 1s, color 1s, border 0.2s, border-radius 0.2s;
+}
+.button:hover {
+    border-radius: 50%;
+    background-color: grey;
+}

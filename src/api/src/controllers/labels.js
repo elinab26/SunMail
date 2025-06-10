@@ -23,7 +23,7 @@ exports.createLabel = (req, res) => {
         return res.status(400).json({ error: 'Label already exists' });
     }
     const label = labels.createLabel(name, user)
-    res.status(201).location(`/api/labels/${label.id}`).end()
+    res.status(201).location(`/api/labels/${label.id}`).json(label).end()
 }
 
 exports.getLabelById = (req, res) => {
