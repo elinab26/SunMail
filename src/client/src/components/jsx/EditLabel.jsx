@@ -17,10 +17,10 @@ function EditLabel({ label, onUpdated, close }) {
       const updatedLabel = { name: labelName.trim() };
 
       const res = await fetch(`http://localhost:8080/api/labels/${label.id}`, {
-        method: "PATCH", // ou "PUT" selon votre API
+        method: "PATCH",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "x-user-id": "6ef925b2-7e25-4364-97c6-1c80b387e939",
         },
         body: JSON.stringify(updatedLabel),
       });

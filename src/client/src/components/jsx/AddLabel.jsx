@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../css/AddLabel.css";
 
-function AddLabel({ userId, onLabelAdded }) {
+function AddLabel({ onLabelAdded }) {
   const [labelName, setLabelName] = useState("");
 
   async function addLabelHandler(event) {
@@ -9,9 +9,9 @@ function AddLabel({ userId, onLabelAdded }) {
     const label = { name: labelName };
     const res = await fetch("http://localhost:8080/api/labels", {
       method: "post",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "x-user-id": userId,  // <-- ici c'est dynamique
       },
       body: JSON.stringify(label),
     });
@@ -19,7 +19,7 @@ function AddLabel({ userId, onLabelAdded }) {
       alert("Label already exists");
     } else {
       setLabelName("");
-      await onLabelAdded();   // <--- Ici on recharge la liste complète
+      await onLabelAdded();  
     }
   }
 

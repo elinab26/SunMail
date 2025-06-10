@@ -5,8 +5,6 @@ import EditLabel from "./EditLabel";
 import DeleteLabel from "./DeleteLabel";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-localStorage.setItem("x-user-id", "6ef925b2-7e25-4364-97c6-1c80b387e939");
-const Token = localStorage.getItem("x-user-id");
 
 function LabelMenu() {
   const [labels, setLabels] = useState([]);
@@ -15,7 +13,7 @@ function LabelMenu() {
 
   async function fetchLabels() {
     const res = await fetch("http://localhost:8080/api/labels", {
-      headers: { "x-user-id": Token },
+      credentials: "include",
     });
     const json = await res.json();
     setLabels(json);

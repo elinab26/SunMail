@@ -101,9 +101,7 @@ const [labels, setLabels] = useState([]);
 
     useEffect(() => {
         fetch("http://localhost:8080/api/labels", {
-            headers: {
-                'x-user-id': 'b94a9230-a792-4fd5-add6-6b1b9977e11a'
-            }
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) throw new Error("Erreur réseau");

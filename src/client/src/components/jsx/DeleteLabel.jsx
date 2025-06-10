@@ -7,11 +7,9 @@ function DeleteLabel({ labelId, onDeleted, close }) {
   async function deleteLabelHandler() {
     const res = await fetch(`http://localhost:8080/api/labels/${labelId}`, {
       method: "DELETE",
-      headers: {
-        "x-user-id": "6ef925b2-7e25-4364-97c6-1c80b387e939",
-      },
+      credentials: "include",
     });
-    
+
     if (res.status !== 204) {
       alert("Error deleting label");
     } else {
