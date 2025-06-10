@@ -1,10 +1,15 @@
 // gmail.js
-
+require('dotenv').config()
 const express = require('express')
 var app = express()
-
 const cors = require('cors');
-app.use(cors());
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+}));
 
 const labelRoutes = require('./routes/labels');
 const mailRoutes = require('./routes/mails');
