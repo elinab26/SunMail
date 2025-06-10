@@ -3,17 +3,18 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/mails');
+const { getUserId } = require('../utils/userUtils')
 
 router.route('/')
-    .get(controller.getAllMails)
-    .post(controller.createMail);
+    .get(getUserId, controller.getAllMails)
+    .post(getUserId, controller.createMail);
 
 router.route('/search/:query')
-    .get(controller.searchMails);
+    .get(getUserId, controller.searchMails);
 
 router.route('/:id')
-    .get(controller.getMailById)
-    .patch(controller.updateMail)
-    .delete(controller.deleteMail);
+    .get(getUserId, controller.getMailById)
+    .patch(getUserId, controller.updateMail)
+    .delete(getUserId, controller.deleteMail);
 
 module.exports = router;
