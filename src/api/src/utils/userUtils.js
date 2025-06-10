@@ -1,11 +1,16 @@
-/**
- * Helper to retrieve and validate userId from headers
- */
-exports.getUserId = (req, res) => {
-    const userId = req.headers['x-user-id'];
-    if (!userId) {
-        res.status(400).json({ error: 'User ID header missing' });
-        return null;
+
+const jwt = require('jsonwebtoken')
+exports.getUserId = (req, res, next) => {
+    const token = req.cookies.token;
+    if (!token) {
+        res.status(404).json({ error: 'Token not found' })
     }
-    return userId;
-}
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+        req.id = decoded.id
+        next();
+    } catch (err) {
+        return res.status(404).json({ error: 'Invalid or expired token' });
+    }
+};
+
