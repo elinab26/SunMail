@@ -8,14 +8,14 @@ exports.login = (req, res) => {
     if (!password) {
         return res.status(400).json({ error: 'Password is required' })
     }
-    const jwt = tokens.login(email, password);
-    if (jwt === -1) {
+    const jwtRes = tokens.login(email, password);
+    if (jwtRes === -1) {
         return res.status(400).json({ error: 'Email or Password incorrect' })
     }
-    res.cookie('token', jwt, {
-        httpOnly: false,    // Makes cookie inaccessible to JavaScript (security)
+    res.cookie('token', jwtRes.token, {
+        httpOnly: true,    // Makes cookie inaccessible to JavaScript (security)
         secure: false, // HTTPS only in production
-        sameSite: 'strict', // CSRF protection
+        sameSite: 'lax', // CSRF protection
         maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     });
     res.status(201).end()

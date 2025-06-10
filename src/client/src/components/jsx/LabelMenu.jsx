@@ -5,7 +5,6 @@ import EditLabel from "./EditLabel";
 import DeleteLabel from "./DeleteLabel";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-
 function LabelMenu() {
   const [labels, setLabels] = useState([]);
   const [activePopup, setActivePopup] = useState(null);
@@ -41,7 +40,7 @@ function LabelMenu() {
 
   return (
     <div>
-      <AddLabel userId={Token} onLabelAdded={fetchLabels} />
+      <AddLabel onLabelAdded={fetchLabels} />
       <ul className="Labels">
         {labels.map((label) => (
           <li className="label" key={label.id}>

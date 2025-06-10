@@ -45,7 +45,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/users", {
+      const res = await fetch("http://localhost:8080/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -53,18 +53,14 @@ export default function RegisterPage() {
 
       if (res.status === 201) {
         const email = `${form.userName}@gmail.com`;
-        const loginRes = await fetch("/api/tokens", {
+        const loginRes = await fetch("http://localhost:8080/api/tokens", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password: form.password }),
         });
         if (loginRes.status == 201) {
-          const token = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("token="))
-            ?.split("=")[1];
-          login(token, form.userName);
+          login(true, form.userName);
           navigate("/inbox");
         } else {
           setError("Registration succeeded but login failed.");

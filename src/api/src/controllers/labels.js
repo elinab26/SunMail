@@ -2,18 +2,13 @@ const labels = require('../models/labels')
 const util = require('../utils/userUtils.js')
 
 exports.getLabels = (req, res) => {
-    const user = util.getUserId(req, res);
-    if (!user) {
-        return;
-    }
+    const user = req.id
+
     res.json(labels.getLabels(user))
 }
 
 exports.createLabel = (req, res) => {
-    const user = util.getUserId(req, res);
-    if (!user) {
-        return;
-    }
+    const user = req.id
     const { name } = req.body
     if (!name)
         return res.status(400).json({ error: 'Name is required' })
@@ -27,10 +22,8 @@ exports.createLabel = (req, res) => {
 }
 
 exports.getLabelById = (req, res) => {
-    const user = util.getUserId(req, res);
-    if (!user) {
-        return;
-    }
+    const user = req.id
+
     const label = labels.getLabelById(req.params.id, user)
     if (!label)
         return res.status(404).json({ error: 'Label not found' })
@@ -38,10 +31,8 @@ exports.getLabelById = (req, res) => {
 }
 
 exports.patchLabelById = (req, res) => {
-    const user = util.getUserId(req, res);
-    if (!user) {
-        return;
-    }
+    const user = req.id
+
     const label = labels.getLabelById(req.params.id, user)
     if (!label)
         return res.status(404).json({ error: 'Label not found' })
@@ -56,10 +47,8 @@ exports.patchLabelById = (req, res) => {
 }
 
 exports.deleteLabelById = (req, res) => {
-    const user = util.getUserId(req, res);
-    if (!user) {
-        return;
-    }
+    const user = req.id
+
     const label = labels.getLabelById(req.params.id, user)
     if (!label)
         return res.status(404).json({ error: 'Label not found' })

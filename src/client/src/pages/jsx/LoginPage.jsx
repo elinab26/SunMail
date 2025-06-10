@@ -20,7 +20,7 @@ export default function LoginPage() {
     const email = username.includes("@") ? username : `${username}@gmail.com`;
 
     try {
-      const loginRes = await fetch("/api/tokens", {
+      const loginRes = await fetch("http://localhost:8080/api/tokens", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -28,11 +28,7 @@ export default function LoginPage() {
       });
 
       if (loginRes.status == 201) {
-        const token = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("token="))
-          ?.split("=")[1];
-        login(token, username);
+        login(true, username);
         navigate("/inbox");
       } else {
         const err = await loginRes.json();
