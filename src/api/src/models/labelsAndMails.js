@@ -19,7 +19,6 @@ exports.deleteLabelFromMail = (mail, label, userId) => {
 
 exports.getLabelFromMailById = (mail, label, userId) => {
     Mails.ensureMailbox(inboxes, userId);
-
     return mail.label.find(l => l == label);
 }
 

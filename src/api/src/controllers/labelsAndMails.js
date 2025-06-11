@@ -13,6 +13,10 @@ exports.addLabelToMail = (req, res) => {
     const mail = Mail.getById(userId, req.params.mailId);
     if (!mail) return res.status(404).json({ erro: 'Mail not found' });
 
+    if (mail.label.find(l => l == labelToAdd)) {
+        return res.status(400).json({ error: 'Mail already belongs to this label.' })
+    }
+
     const returnedLabel = labelsAndMails.addLabelToMail(mail, labelToAdd, userId);
 
     if (returnedLabel == labelToAdd) {
@@ -32,6 +36,10 @@ exports.deleteLabelFromMail = (req, res) => {
 
     const mail = Mail.getById(userId, req.params.mailId);
     if (!mail) return res.status(404).json({ erro: 'Mail not found' });
+
+    if (!labelsAndMails.getLabelFromMailById(mail, label, userId)) {
+        return res.status(404).json({ error: 'The mail does not belongs to this label' });
+    }
 
     const ret = labelsAndMails.deleteLabelFromMail(mail, labelToRemove, userId);
 
