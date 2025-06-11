@@ -1,9 +1,12 @@
 // models/mails.js
 
+const { all } = require("../routes/mails");
+
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const drafts = {};    // { userId: [draftMail, ...] }
+const allMails = {};
 let nextId = 1;
 
 /**
@@ -44,7 +47,8 @@ exports.create = (toUserId, fromUserId, subject, body) => {
     to: toUserId,
     subject,
     body,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
+    labels: []
   };
 
   // Add to recipient’s inbox
@@ -54,6 +58,10 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   // Add to sender’s sent items
   ensureMailbox(sentItems, fromUserId);
   sentItems[fromUserId].push(mail);
+
+  // Add to the global array
+  ensureMailbox(allMails, fromUserId);
+  allMails[fromUserId].push(mail);
 
   return mail;
 };
@@ -76,6 +84,10 @@ exports.createDraft = (fromUserId, toUserId, subject, body) => {
 
   ensureMailbox(drafts, fromUserId);
   drafts[fromUserId].push(draftMail);
+
+  // Add to the global array
+  ensureMailbox(allMails, fromUserId);
+  allMails[fromUserId].push(mail);
   return draftMail;
 };
 
@@ -135,3 +147,8 @@ exports.search = (userId, query) => {
     mail.body.toLowerCase().includes(lowerQuery)
   );
 };
+
+exports.getAllMails = (userId) => {
+  ensureMailbox(allMails, userId);
+  return allMails[userId];
+}

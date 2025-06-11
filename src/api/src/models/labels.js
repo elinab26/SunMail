@@ -1,4 +1,6 @@
 const labels = []
+const Mails = require('./mails');
+const labelsAndMails = require('./labelsAndMails')
 
 //function that generates IDs
 function IdGenerator() {
@@ -54,6 +56,15 @@ const createLabel = (name, userId) => {
 
 const deleteLabelById = (label, userId) => {
   if (label.userId == userId) {
+
+    let mails = Mails.getAllMails(userId);
+    mails.map((mail) => {
+      const l = labelsAndMails.getLabelFromMailById(mail, label.id, userId);
+      if (l) {
+        labelsAndMails.deleteLabelFromMail(mail, l, userId);
+      }
+    });
+
     let i = labels.indexOf(label)
     if (i > -1)
       labels.splice(i, 1)

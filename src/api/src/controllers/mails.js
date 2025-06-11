@@ -3,7 +3,7 @@
 const Mail = require('../models/mails');
 const User = require('../models/users');
 const util = require('../utils/userUtils.js');
-const { extractUrls, validateUrls } = require('../utils/urlUtils');
+const { validateUrls } = require('../utils/urlUtils');
 
 /**
  * Helper: resolve an email address to a userId.
@@ -20,7 +20,7 @@ function resolveToUserId(email) {
  * Return the last 50 mails for this user (inbox).
  */
 exports.getAllMails = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
   const mails = Mail.getLast50(userId);
   res.json(mails);
@@ -31,7 +31,7 @@ exports.getAllMails = (req, res) => {
  * Return a single mail by ID for this user’s inbox.
  */
 exports.getMailById = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
 
   const mailId = parseInt(req.params.id, 10);
@@ -48,7 +48,7 @@ exports.getMailById = (req, res) => {
  * or store as a draft if req.body.draft === true.
  */
 exports.createMail = async (req, res) => {
-  const fromUserId = util.getUserId(req, res);
+  const fromUserId = req.id;
   if (!fromUserId) return;
 
   const { to, subject, body, draft } = req.body;
@@ -88,7 +88,7 @@ exports.createMail = async (req, res) => {
  * If the draft doesn’t exist, return 404.
  */
 exports.updateMail = async (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
 
   const draftId = parseInt(req.params.id, 10);
@@ -141,7 +141,7 @@ exports.updateMail = async (req, res) => {
  * Delete a mail from the user’s inbox.
  */
 exports.deleteMail = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
 
   const mailId = parseInt(req.params.id, 10);
@@ -157,7 +157,7 @@ exports.deleteMail = (req, res) => {
  * Search mails in the user’s inbox.
  */
 exports.searchMails = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
 
   const query = req.params.query;
@@ -170,7 +170,7 @@ exports.searchMails = (req, res) => {
  * Return all drafts for this user.
  */
 exports.getDrafts = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
   if (!userId) return;
   const allDrafts = Mail.getDrafts(userId);
   res.json(allDrafts);
@@ -181,7 +181,8 @@ exports.getDrafts = (req, res) => {
  * Delete a draft for this user.
  */
 exports.deleteDraft = (req, res) => {
-  const userId = util.getUserId(req, res);
+  const userId = req.id
+
   if (!userId) return;
   const draftId = parseInt(req.params.id, 10);
   const success = Mail.deleteDraft(userId, draftId);

@@ -16,6 +16,7 @@ const mailRoutes = require('./routes/mails');
 const userRoutes = require('./routes/users');
 const tokenRoutes = require('./routes/tokens');
 const blacklistRoutes = require('./routes/blacklist');
+const labelsAndMails = require('./routes/labelsAndMails');
 
 app.set('json spaces', 2);
 app.use(express.json())
@@ -25,6 +26,7 @@ app.use('/api/mails', mailRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/tokens', tokenRoutes);
 app.use('/api/blacklist', blacklistRoutes);
+app.use('/api/labelsAndMails', labelsAndMails);
 
 app.set('view engine', 'ejs');
 app.listen(8080)
