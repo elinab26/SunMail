@@ -17,4 +17,8 @@ router.route('/:id')
     .patch(getUserId, controller.updateMail)
     .delete(getUserId, controller.deleteMail);
 
+//route to add label to mail
+router.route('/:mailId/labels')
+    .post(getUserId, controller.addLabelToMail);
+
 module.exports = router;
