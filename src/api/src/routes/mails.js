@@ -21,4 +21,7 @@ router.route('/:id')
 router.route('/:mailId/labels')
     .post(getUserId, controller.addLabelToMail);
 
+router.route('/:mailId/labels/:labelId')
+    .delete(getUserId, controller.deleteLabelFromMail);
+
 module.exports = router;
