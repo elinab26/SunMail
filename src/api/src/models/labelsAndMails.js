@@ -22,7 +22,3 @@ exports.getLabelFromMailById = (mail, label, userId) => {
     return mail.label.find(l => l == label);
 }
 
-exports.getAllMails = (userId) => {
-    Mails.ensureMailbox(allMails, userId);
-    return allMails;
-}

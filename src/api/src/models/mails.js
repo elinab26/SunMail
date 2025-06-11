@@ -6,7 +6,7 @@ const { all } = require("../routes/mails");
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const drafts = {};    // { userId: [draftMail, ...] }
-const allMails = {}
+const allMails = {};
 let nextId = 1;
 
 /**
@@ -148,3 +148,7 @@ exports.search = (userId, query) => {
   );
 };
 
+exports.getAllMails = (userId) => {
+  ensureMailbox(allMails, userId);
+  return allMails[userId];
+}
