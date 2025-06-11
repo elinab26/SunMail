@@ -146,10 +146,22 @@ exports.addLabelToMail = (mail, label, userId) => {
 exports.deleteLabelFromMail = (mail, label, userId) => {
   ensureMailbox(inboxes, userId);
   let i = mail.label.indexOf(label)
-  if (i > -1){
+  if (i > -1) {
     mail.label.splice(i, 1)
-  }else{
+  } else {
     return -1
   }
   return 0;
+}
+
+exports.getLabelFromMailById = (mail, label, userId) => {
+  ensureMailbox(inboxes, userId);
+
+  mail.label.map((l) => {
+    if (label == l) {
+      return l;
+    }
+
+  });
+  return -1;
 }
