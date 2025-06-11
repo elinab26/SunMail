@@ -20,9 +20,9 @@
   justify-content: center;
 }
 
-.confirmButton {
+.confirmButtonDelete {
   background-color: #dc3545;
-  color: white;
+  color: #007bff;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -30,13 +30,13 @@
   font-size: 12px;
 }
 
-.confirmButton:hover {
+.confirmButtonDelete:hover {
   background-color: #c82333;
 }
 
-.cancelButton {
+.cancelButtonDelete {
   background-color: #6c757d;
-  color: white;
+  color: #007bff;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -44,6 +44,6 @@
   font-size: 12px;
 }
 
-.cancelButton:hover {
+.cancelButtonDelete:hover {
   background-color: #545b62;
 }
