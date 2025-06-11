@@ -44,7 +44,8 @@ exports.create = (toUserId, fromUserId, subject, body) => {
     to: toUserId,
     subject,
     body,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
+    labels: []
   };
 
   // Add to recipient’s inbox
