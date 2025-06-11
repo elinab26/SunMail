@@ -40,7 +40,6 @@ function LabelMenu() {
 
   return (
     <div>
-      <AddLabel onLabelAdded={fetchLabels} />
       <ul className="Labels">
         {labels.map((label) => (
           <li className="label" key={label.id}>

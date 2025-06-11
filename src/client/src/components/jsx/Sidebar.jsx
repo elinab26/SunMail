@@ -92,29 +92,36 @@ export default function Sidebar({
   onSelectFolder,
   counts,
 }) {
+  const [labels, setLabels] = useState([]);
 
-const [labels, setLabels] = useState([]);
+  function addLabelToList(newLabel) {
+    setLabels((labels) => [...labels, newLabel]);
+  }
 
-    function addLabelToList(newLabel) {
-        setLabels(labels => [...labels, newLabel]);
-    }
-
-    useEffect(() => {
-        fetch("http://localhost:8080/api/labels", {
-            credentials: "include",
-        })
-            .then((response) => {
-                if (!response.ok) throw new Error("Erreur réseau");
-                return response.json();
-            })
-            .then((json) => {
-                setLabels(json);
-            })
-    }, []);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/labels", {
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Erreur réseau");
+        return response.json();
+      })
+      .then((json) => {
+        setLabels(json);
+      });
+  }, []);
 
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
+
+  async function fetchLabels() {
+    const res = await fetch("http://localhost:8080/api/labels", {
+      credentials: "include",
+    });
+    const json = await res.json();
+    setLabels(json);
+  }
   return (
     <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
       {/* Compose new message button */}
@@ -158,14 +165,15 @@ const [labels, setLabels] = useState([]);
         <>
           <button
             className="sidebar-create-label"
-            onClick={() => setCreateLabelClicked(true)}
+            onClick={() => setCreateLabelClicked((v) => !v)}
           >
             <span className="folder-icon">
               <AiOutlinePlus size={20} />
             </span>
             Create label
           </button>
-          {createLabelClicked && <LabelMenu />}
+          {createLabelClicked && <AddLabel onLabelAdded={fetchLabels} />}
+          <LabelMenu />
         </>
       )}
     </nav>
