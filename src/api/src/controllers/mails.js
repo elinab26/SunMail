@@ -3,8 +3,7 @@
 const Mail = require('../models/mails');
 const User = require('../models/users');
 const util = require('../utils/userUtils.js');
-const { extractUrls, validateUrls } = require('../utils/urlUtils');
-const { getLabelById } = require('../models/labels')
+const { validateUrls } = require('../utils/urlUtils');
 
 /**
  * Helper: resolve an email address to a userId.
@@ -192,63 +191,3 @@ exports.deleteDraft = (req, res) => {
   }
   res.status(204).send();
 };
-
-
-//get the labelId in the body, the mailId in the params
-exports.addLabelToMail = (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-
-  const labelToAdd = getLabelById(req.labeId, userId);
-  if (!labelToAdd) return res.status(404).json({ error: 'Label not found' });
-
-  const mail = Mail.getById(userId, req.params.mailId);
-  if (!mail) return res.status(404).json({ erro: 'Mail not found' });
-
-  const returnedLabel = Mail.addLabelToMail(mail, labelToAdd, userId);
-
-  if (returnedLabel == labelToAdd) {
-    return res.status(201).end();
-  } else {
-    return res.status(404).json({ error: 'Label not added' }).end();
-  }
-}
-
-//get the mailId and the labelId in the params
-exports.deleteLabelFromMail = (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-
-  const labelToRemove = getLabelById(req.params.labelId, userId);
-  if (!labelToRemove) return res.status(404).json({ error: 'Label not found' });
-
-  const mail = Mail.getById(userId, req.params.mailId);
-  if (!mail) return res.status(404).json({ erro: 'Mail not found' });
-
-  const ret = Mail.deleteLabelFromMail(mail, labelToRemove, userId);
-
-  if (ret == -1) {
-    return res.status(404).json({ error: 'Label not removed' }).end();
-  } else {
-    return res.status(204).end();
-  }
-}
-
-
-exports.getLabelFromMailById = (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-
-  const labelToGet = getLabelById(req.params.labelId, userId);
-  if (!labelToGet) return res.status(404).json({ error: 'Label not found' });
-
-  const mail = Mail.getById(userId, req.params.mailId);
-  if (!mail) return res.status(404).json({ erro: 'Mail not found' });
-
-  const returnedLabel = Mail.getLabelFromMailById(mail, labelToGet, userId);
-  if (returnedLabel == labelToGet) {
-    return res.status(201).end();
-  } else {
-    return res.status(404).json({ error: 'Label not added' }).end();
-  }
-}

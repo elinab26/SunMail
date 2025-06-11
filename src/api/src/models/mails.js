@@ -1,9 +1,12 @@
 // models/mails.js
 
+const { all } = require("../routes/mails");
+
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const drafts = {};    // { userId: [draftMail, ...] }
+const allMails = {}
 let nextId = 1;
 
 /**
@@ -56,6 +59,10 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   ensureMailbox(sentItems, fromUserId);
   sentItems[fromUserId].push(mail);
 
+  // Add to the global array
+  ensureMailbox(allMails, fromUserId);
+  allMails[fromUserId].push(mail);
+
   return mail;
 };
 
@@ -77,6 +84,10 @@ exports.createDraft = (fromUserId, toUserId, subject, body) => {
 
   ensureMailbox(drafts, fromUserId);
   drafts[fromUserId].push(draftMail);
+
+  // Add to the global array
+  ensureMailbox(allMails, fromUserId);
+  allMails[fromUserId].push(mail);
   return draftMail;
 };
 
@@ -137,31 +148,3 @@ exports.search = (userId, query) => {
   );
 };
 
-exports.addLabelToMail = (mail, label, userId) => {
-  ensureMailbox(inboxes, userId);
-  mail.labels.push(label);
-  return mail.labels.at(mail.labels)
-}
-
-exports.deleteLabelFromMail = (mail, label, userId) => {
-  ensureMailbox(inboxes, userId);
-  let i = mail.label.indexOf(label)
-  if (i > -1) {
-    mail.label.splice(i, 1)
-  } else {
-    return -1
-  }
-  return 0;
-}
-
-exports.getLabelFromMailById = (mail, label, userId) => {
-  ensureMailbox(inboxes, userId);
-
-  mail.label.map((l) => {
-    if (label == l) {
-      return l;
-    }
-
-  });
-  return -1;
-}
