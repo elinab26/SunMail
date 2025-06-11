@@ -136,3 +136,9 @@ exports.search = (userId, query) => {
     mail.body.toLowerCase().includes(lowerQuery)
   );
 };
+
+exports.addLabelToMail = (mail, label, userId) => {
+  ensureMailbox(inboxes, userId);
+  mail.labels.push(label);
+  return mail.labels.at(mail.labels)
+}
