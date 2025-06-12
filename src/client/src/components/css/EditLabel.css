@@ -25,11 +25,10 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  
+
 }
 
 .saveButtonEdit {
-  background-color: #007bff;
   color: #007bff;
   border: none;
   padding: 6px 12px;
@@ -39,11 +38,10 @@
 }
 
 .saveButtonEdit:hover {
-  background-color: #0056b3;
+  background-color: #e0e0e0;
 }
 
 .cancelButtonEdit {
-  background-color: #6c757d;
   color: #007bff;
   border: none;
   padding: 6px 12px;
@@ -53,5 +51,5 @@
 }
 
 .cancelButtonEdit:hover {
-  background-color: #545b62;
+  background-color: #e0e0e0;
 }

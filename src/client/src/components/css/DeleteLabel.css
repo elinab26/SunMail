@@ -21,8 +21,7 @@
 }
 
 .confirmButtonDelete {
-  background-color: #dc3545;
-  color: #007bff;
+  color: #dc3545;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -31,11 +30,10 @@
 }
 
 .confirmButtonDelete:hover {
-  background-color: #c82333;
+  background-color: #e0e0e0;
 }
 
 .cancelButtonDelete {
-  background-color: #6c757d;
   color: #007bff;
   border: none;
   padding: 8px 12px;
@@ -45,5 +43,5 @@
 }
 
 .cancelButtonDelete:hover {
-  background-color: #545b62;
+  background-color: #e0e0e0;
 }

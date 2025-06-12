@@ -92,28 +92,10 @@ export default function Sidebar({
   onSelectFolder,
   counts,
 }) {
-  const [labels, setLabels] = useState([]);
-
-  function addLabelToList(newLabel) {
-    setLabels((labels) => [...labels, newLabel]);
-  }
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/labels", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Erreur réseau");
-        return response.json();
-      })
-      .then((json) => {
-        setLabels(json);
-      });
-  }, []);
-
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
+  const [labels, setLabels] = useState([]);
 
   async function fetchLabels() {
     const res = await fetch("http://localhost:8080/api/labels", {
@@ -122,6 +104,11 @@ export default function Sidebar({
     const json = await res.json();
     setLabels(json);
   }
+
+  useEffect(() => {
+    fetchLabels();
+  }, []);
+
   return (
     <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
       {/* Compose new message button */}
@@ -172,8 +159,8 @@ export default function Sidebar({
             </span>
             Create label
           </button>
-          {createLabelClicked && <AddLabel onLabelAdded={fetchLabels} />}
-          <LabelMenu />
+          {createLabelClicked && <AddLabel fetchLabels={fetchLabels} />}
+          <LabelMenu labels={labels} fetchLabels={fetchLabels} />
         </>
       )}
     </nav>
