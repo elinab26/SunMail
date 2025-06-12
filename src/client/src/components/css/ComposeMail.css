@@ -1,4 +1,4 @@
-.sidebar-compose-btn {
+.compose-mail-btn {
   display: flex;
   align-items: center;
   width: 90%;
@@ -13,9 +13,11 @@
   transition: background 0.2s;
   gap: 8px;
 }
-.sidebar.collapsed .sidebar-compose-btn span {
+
+.sidebar.collapsed .compose-mail-btn span {
   display: none;
 }
-.sidebar-compose-btn:hover {
+
+.compose-mail-btn:hover {
   background: #1565c0;
 }

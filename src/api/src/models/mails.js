@@ -1,13 +1,16 @@
 // models/mails.js
 
-const { all } = require("../routes/mails");
-
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
-const drafts = {};    // { userId: [draftMail, ...] }
 const allMails = {};
-let nextId = 1;
+
+/**
+ * Generate a unique ID using timestamp + random number
+ */
+function generateMailId() {
+  return `mail_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
 
 /**
  * Ensure a mailbox exists for a given user in the specified store.
@@ -27,7 +30,7 @@ exports.getLast50 = (userId) => {
 };
 
 /**
- * Return a single mail by ID for this user’s inbox.
+ * Return a single mail by ID for this user's inbox.
  * If not found, returns undefined.
  */
 exports.getById = (userId, mailId) => {
@@ -37,12 +40,14 @@ exports.getById = (userId, mailId) => {
 
 /**
  * Create a new mail object, assign a unique id,
- * and save it to the recipient’s inbox and the sender’s sent items.
- * Returns the new mail object.
+ * and save it to the recipient's inbox and the sender's sent items.
+ * Returns the new mail object with email addresses instead of user IDs.
  */
 exports.create = (toUserId, fromUserId, subject, body) => {
+  const User = require('./users'); // Import User model
+
   const mail = {
-    id: nextId++,
+    id: generateMailId(), // Utilise la nouvelle fonction au lieu de nextId++
     from: fromUserId,
     to: toUserId,
     subject,
@@ -51,81 +56,35 @@ exports.create = (toUserId, fromUserId, subject, body) => {
     labels: []
   };
 
-  // Add to recipient’s inbox
+  // Add to recipient's inbox
   ensureMailbox(inboxes, toUserId);
   inboxes[toUserId].push(mail);
 
-  // Add to sender’s sent items
+  // Add to sender's sent items
   ensureMailbox(sentItems, fromUserId);
   sentItems[fromUserId].push(mail);
 
-  // Add to the global array
+  // Add to the global array for both users
   ensureMailbox(allMails, fromUserId);
   allMails[fromUserId].push(mail);
 
-  return mail;
-};
+  ensureMailbox(allMails, toUserId);
+  allMails[toUserId].push(mail);
 
-/**
- * Create a draft object and store it in drafts[userId].
- * Does not perform URL checks or send to inbox/sent.
- * Returns the draft object (with a unique id and `draft: true` flag).
- */
-exports.createDraft = (fromUserId, toUserId, subject, body) => {
-  const draftMail = {
-    id: nextId++,
-    from: fromUserId,
-    to: toUserId,
-    subject,
-    body,
-    date: new Date().toISOString(),
-    draft: true
+  // Return mail with email addresses for frontend
+  const users = User.getAllUsers();
+  const fromUser = users.find(u => u.id === fromUserId);
+  const toUser = users.find(u => u.id === toUserId);
+
+  return {
+    ...mail,
+    fromEmail: fromUser ? fromUser.email : 'unknown',
+    toEmail: toUser ? toUser.email : 'unknown'
   };
-
-  ensureMailbox(drafts, fromUserId);
-  drafts[fromUserId].push(draftMail);
-
-  // Add to the global array
-  ensureMailbox(allMails, fromUserId);
-  allMails[fromUserId].push(mail);
-  return draftMail;
 };
 
 /**
- * Return all drafts for the given user in reverse chronological order.
- */
-exports.getDrafts = (userId) => {
-  ensureMailbox(drafts, userId);
-  return drafts[userId].slice().reverse();
-};
-
-/**
- * Update a draft by merging in provided data. Returns the updated draft or null if not found.
- * (All fields are allowed to be overwritten here.)
- */
-exports.updateDraft = (userId, draftId, data) => {
-  ensureMailbox(drafts, userId);
-  const draft = drafts[userId].find(d => d.id === draftId);
-  if (!draft) return null;
-
-  Object.assign(draft, data);
-  draft.date = new Date().toISOString();
-  return draft;
-};
-
-/**
- * Delete a draft with the specified id from the user’s drafts.
- * Returns true if a draft was removed, or false if none matched.
- */
-exports.deleteDraft = (userId, draftId) => {
-  ensureMailbox(drafts, userId);
-  const beforeCount = drafts[userId].length;
-  drafts[userId] = drafts[userId].filter(d => d.id !== draftId);
-  return drafts[userId].length < beforeCount;
-};
-
-/**
- * Delete a mail with the specified id from the user’s inbox.
+ * Delete a mail with the specified id from the user's inbox.
  * Returns true if a mail was removed, or false if none matched.
  */
 exports.delete = (userId, mailId) => {
@@ -136,7 +95,7 @@ exports.delete = (userId, mailId) => {
 };
 
 /**
- * Search mails in the user’s inbox by subject or body (case-insensitive).
+ * Search mails in the user's inbox by subject or body (case-insensitive).
  * Returns an array of matching mail objects.
  */
 exports.search = (userId, query) => {
@@ -148,7 +107,18 @@ exports.search = (userId, query) => {
   );
 };
 
+/**
+ * Get all mails for a user (inbox + sent)
+ */
 exports.getAllMails = (userId) => {
   ensureMailbox(allMails, userId);
   return allMails[userId];
-}
+};
+
+/**
+ * Get sent items for a user
+ */
+exports.getSentItems = (userId) => {
+  ensureMailbox(sentItems, userId);
+  return sentItems[userId].slice().reverse();
+};

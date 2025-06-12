@@ -1,0 +1,214 @@
+.compose-window {
+    position: fixed;
+    bottom: 0;
+    right: 40px;
+    width: 500px;
+    height: 600px;
+    background: white;
+    border: 1px solid #dadce0;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12), 0 5px 5px -3px rgba(0,0,0,.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Google Sans', Roboto, sans-serif;
+}
+
+.compose-window.minimized {
+    height: 40px;
+    width: 300px;
+}
+
+.compose-window.maximized {
+    position: fixed;
+    top: 5%;
+    left: 10%;
+    right: 10%;
+    bottom: 5%;
+    width: 80%;
+    height: 90%;
+    border-radius: 8px;
+    z-index: 1001;
+    max-width: none;
+}
+
+.compose-header {
+    background: #404040;
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+    cursor: move;
+}
+
+.compose-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.compose-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    padding: 0;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.compose-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.compose-window.maximized .compose-content {
+    height: calc(90vh - 120px);
+}
+
+.compose-fields {
+    padding: 16px;
+    border-bottom: 1px solid #dadce0;
+}
+
+.field-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.compose-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.compose-input:focus {
+    border-bottom-color: #1a73e8;
+}
+
+.cc-bcc-controls {
+    display: flex;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.cc-bcc-btn {
+    background: none;
+    border: none;
+    color: #1a73e8;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.cc-bcc-btn:hover {
+    background: rgba(26, 115, 232, 0.1);
+}
+
+.compose-body {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.compose-window.maximized .compose-body {
+    min-height: 500px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.compose-textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.compose-window.maximized .compose-textarea {
+    min-height: 500px;
+}
+
+.compose-footer {
+    padding: 16px;
+    border-top: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.compose-window.maximized .compose-footer {
+    padding: 20px;
+}
+
+.send-btn {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.send-btn:hover {
+    background: #1557b0;
+}
+
+.compose-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.action-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.action-btn:hover, .delete-btn:hover {
+    background: #f1f3f4;
+}
+
+.delete-btn {
+    color: #d93025;
+}
+
+@media (max-width: 600px) {
+    .compose-window {
+        right: 10px;
+        width: calc(100vw - 20px);
+        max-width: 500px;
+    }
+}
