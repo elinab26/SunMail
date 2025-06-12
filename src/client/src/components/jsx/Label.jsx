@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from "react";
 
 function Label({ label, fetchLabels }) {
   const [activePopup, setActivePopup] = useState(null);
+  const [activeOption, setActiveOption] = useState(null);
+
   const popupRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ function Label({ label, fetchLabels }) {
           onClick={(e) => {
             e.stopPropagation();
             setActivePopup(activePopup === label.id ? null : label.id);
+            setActiveOption("both");
           }}
         >
           <BsThreeDotsVertical />
@@ -40,13 +43,29 @@ function Label({ label, fetchLabels }) {
           <div className="popupMenu" ref={popupRef}>
             <EditLabel
               label={label}
-              onUpdated={fetchLabels}
-              close={() => setActivePopup(null)}
+              onUpdated={() => {
+                fetchLabels();
+                setActiveOption(null);
+              }}
+              close={() => {
+                setActivePopup(null);
+                setActiveOption(null);
+              }}
+              onActivate={() => setActiveOption("edit")}
+              active={activeOption === "edit" || activeOption === "both"}
             />
             <DeleteLabel
               labelId={label.id}
-              onDeleted={fetchLabels}
-              close={() => setActivePopup(null)}
+              onDeleted={() => {
+                fetchLabels();
+                setActiveOption(null);
+              }}
+              close={() => {
+                setActivePopup(null);
+                setActiveOption(null);
+              }}
+              onActivate={() => setActiveOption("delete")}
+              active={activeOption === "delete" || activeOption === "both"}
             />
           </div>
         )}

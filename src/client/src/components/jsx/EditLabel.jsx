@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../css/EditLabel.css";
 
-function EditLabel({ label, onUpdated, close }) {
+function EditLabel({ label, onUpdated, close, active, onActivate }) {
   const [labelName, setLabelName] = useState(label.name);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -40,6 +40,7 @@ function EditLabel({ label, onUpdated, close }) {
   }
 
   function handleEdit() {
+    onActivate();
     setIsEditing(true);
   }
 
@@ -75,6 +76,7 @@ function EditLabel({ label, onUpdated, close }) {
       </div>
     );
   }
+  if (!active) return null;
 
   return (
     <button className="popupOption editOption" onClick={handleEdit}>
