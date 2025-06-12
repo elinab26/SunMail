@@ -15,7 +15,7 @@ function generateMailId() {
 /**
  * Ensure a mailbox exists for a given user in the specified store.
  */
-function ensureMailbox(store, userId) {
+exports.ensureMailbox = (store, userId) => {
   if (!store[userId]) {
     store[userId] = [];
   }
@@ -25,7 +25,7 @@ function ensureMailbox(store, userId) {
  * Return the last 50 mails for a user in reverse chronological order.
  */
 exports.getLast50 = (userId) => {
-  ensureMailbox(inboxes, userId);
+  exports.ensureMailbox(inboxes, userId);
   return inboxes[userId].slice(-50).reverse();
 };
 
@@ -34,7 +34,7 @@ exports.getLast50 = (userId) => {
  * If not found, returns undefined.
  */
 exports.getById = (userId, mailId) => {
-  ensureMailbox(inboxes, userId);
+  exports.ensureMailbox(inboxes, userId);
   return inboxes[userId].find(mail => mail.id === mailId);
 };
 
@@ -57,18 +57,18 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   };
 
   // Add to recipient's inbox
-  ensureMailbox(inboxes, toUserId);
+  exports.ensureMailbox(inboxes, toUserId);
   inboxes[toUserId].push(mail);
 
   // Add to sender's sent items
-  ensureMailbox(sentItems, fromUserId);
+  exports.ensureMailbox(sentItems, fromUserId);
   sentItems[fromUserId].push(mail);
 
   // Add to the global array for both users
-  ensureMailbox(allMails, fromUserId);
+  exports.ensureMailbox(allMails, fromUserId);
   allMails[fromUserId].push(mail);
 
-  ensureMailbox(allMails, toUserId);
+  exports.ensureMailbox(allMails, toUserId);
   allMails[toUserId].push(mail);
 
   // Return mail with email addresses for frontend
@@ -88,7 +88,7 @@ exports.create = (toUserId, fromUserId, subject, body) => {
  * Returns true if a mail was removed, or false if none matched.
  */
 exports.delete = (userId, mailId) => {
-  ensureMailbox(inboxes, userId);
+  exports.ensureMailbox(inboxes, userId);
   const beforeCount = inboxes[userId].length;
   inboxes[userId] = inboxes[userId].filter(m => m.id !== mailId);
   return inboxes[userId].length < beforeCount;
@@ -99,7 +99,7 @@ exports.delete = (userId, mailId) => {
  * Returns an array of matching mail objects.
  */
 exports.search = (userId, query) => {
-  ensureMailbox(inboxes, userId);
+  exports.ensureMailbox(inboxes, userId);
   const lowerQuery = query.toLowerCase();
   return inboxes[userId].filter(mail =>
     mail.subject.toLowerCase().includes(lowerQuery) ||
@@ -111,7 +111,7 @@ exports.search = (userId, query) => {
  * Get all mails for a user (inbox + sent)
  */
 exports.getAllMails = (userId) => {
-  ensureMailbox(allMails, userId);
+  exports.ensureMailbox(allMails, userId);
   return allMails[userId];
 };
 
@@ -119,6 +119,12 @@ exports.getAllMails = (userId) => {
  * Get sent items for a user
  */
 exports.getSentItems = (userId) => {
-  ensureMailbox(sentItems, userId);
+  exports.ensureMailbox(sentItems, userId);
   return sentItems[userId].slice().reverse();
 };
+
+
+exports.getLabelsOfMail = (mail, userId) => {
+  exports.ensureMailbox(allMails, userId);
+  return mail.labels;
+}
