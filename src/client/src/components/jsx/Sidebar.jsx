@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 // Importing icons from various icon libraries
 import {
@@ -94,27 +93,21 @@ export default function Sidebar({
   onSelectFolder,
   counts,
 }) {
+  const [labels, setLabels] = useState([]);
+  const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
-const [labels, setLabels] = useState([]);
-const [isComposeOpen, setIsComposeOpen] = useState(false);
-const [isMinimized, setIsMinimized] = useState(false);
+  async function fetchLabels() {
+    const res = await fetch("http://localhost:8080/api/labels", {
+      credentials: "include",
+    });
+    const json = await res.json();
+    setLabels(json);
+  }
 
-    function addLabelToList(newLabel) {
-        setLabels(labels => [...labels, newLabel]);
-    }
-
-    useEffect(() => {
-        fetch("http://localhost:8080/api/labels", {
-            credentials: "include",
-        })
-            .then((response) => {
-                if (!response.ok) throw new Error("Erreur réseau");
-                return response.json();
-            })
-            .then((json) => {
-                setLabels(json);
-            })
-    }, []);
+  useEffect(() => {
+    fetchLabels();
+  }, []);
 
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
@@ -163,7 +156,11 @@ const [isMinimized, setIsMinimized] = useState(false);
           onClick={() => setShowMore((v) => !v)}
         >
           <span className="folder-icon">
-            {showMore ? <MdExpandMore size={20} /> : <AiOutlinePlus size={20} />}
+            {showMore ? (
+              <MdExpandMore size={20} />
+            ) : (
+              <AiOutlinePlus size={20} />
+            )}
           </span>
           <span className="folder-label">{showMore ? "Less" : "More"}</span>
         </div>
@@ -178,22 +175,22 @@ const [isMinimized, setIsMinimized] = useState(false);
           />
         )}
 
-      {showMore && (
-        <>
-          <button
-            className="sidebar-create-label"
-            onClick={() => setCreateLabelClicked((v) => !v)}
-          >
-            <span className="folder-icon">
-              <AiOutlinePlus size={20} />
-            </span>
-            Create label
-          </button>
-          {createLabelClicked && <AddLabel fetchLabels={fetchLabels} />}
-          <LabelMenu labels={labels} fetchLabels={fetchLabels} />
-        </>
-      )}
-    </nav>
+        {showMore && (
+          <>
+            <button
+              className="sidebar-create-label"
+              onClick={() => setCreateLabelClicked((v) => !v)}
+            >
+              <span className="folder-icon">
+                <AiOutlinePlus size={20} />
+              </span>
+              Create label
+            </button>
+            {createLabelClicked && <AddLabel fetchLabels={fetchLabels} />}
+            <LabelMenu labels={labels} fetchLabels={fetchLabels} />
+          </>
+        )}
+      </nav>
       <ComposeWindow
         isOpen={isComposeOpen}
         onClose={handleCloseCompose}
