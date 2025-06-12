@@ -36,10 +36,10 @@ function DeleteLabel({ labelId, onDeleted, close }) {
       <div className="deleteConfirmation">
         <p>Are you sure you want to delete this label?</p>
         <div className="confirmButtons">
-          <button onClick={handleConfirm} className="confirmButton">
+          <button onClick={handleConfirm} className="confirmButtonDelete">
             Yes, Delete
           </button>
-          <button onClick={handleCancel} className="cancelButton">
+          <button onClick={handleCancel} className="cancelButtonDelete">
             Cancel
           </button>
         </div>

@@ -20,9 +20,8 @@
   justify-content: center;
 }
 
-.confirmButton {
-  background-color: #dc3545;
-  color: white;
+.confirmButtonDelete {
+  color: #dc3545;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -30,13 +29,12 @@
   font-size: 12px;
 }
 
-.confirmButton:hover {
-  background-color: #c82333;
+.confirmButtonDelete:hover {
+  background-color: #e0e0e0;
 }
 
-.cancelButton {
-  background-color: #6c757d;
-  color: white;
+.cancelButtonDelete {
+  color: #007bff;
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -44,6 +42,6 @@
   font-size: 12px;
 }
 
-.cancelButton:hover {
-  background-color: #545b62;
+.cancelButtonDelete:hover {
+  background-color: #e0e0e0;
 }

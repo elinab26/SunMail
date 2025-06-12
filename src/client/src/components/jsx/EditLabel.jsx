@@ -60,13 +60,13 @@ function EditLabel({ label, onUpdated, close }) {
             autoFocus
           />
           <div className="editButtons">
-            <button type="submit" className="saveButton">
+            <button type="submit" className="saveButtonEdit">
               Save
             </button>
             <button
               type="button"
               onClick={handleCancel}
-              className="cancelButton"
+              className="cancelButtonEdit"
             >
               Cancel
             </button>

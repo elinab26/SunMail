@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 // Importing icons from various icon libraries
 import {
@@ -177,23 +178,22 @@ const [isMinimized, setIsMinimized] = useState(false);
           />
         )}
 
-        {showMore && (
-          <>
-            <button
-              className="sidebar-create-label"
-              onClick={() => setCreateLabelClicked(true)}
-            >
-              <span className="folder-icon">
-                <AiOutlinePlus size={20} />
-              </span>
-              Create label
-            </button>
-            {createLabelClicked && <LabelMenu />}
-          </>
-        )}
-      </nav>
-
-      {/* Fenêtre de composition */}
+      {showMore && (
+        <>
+          <button
+            className="sidebar-create-label"
+            onClick={() => setCreateLabelClicked((v) => !v)}
+          >
+            <span className="folder-icon">
+              <AiOutlinePlus size={20} />
+            </span>
+            Create label
+          </button>
+          {createLabelClicked && <AddLabel fetchLabels={fetchLabels} />}
+          <LabelMenu labels={labels} fetchLabels={fetchLabels} />
+        </>
+      )}
+    </nav>
       <ComposeWindow
         isOpen={isComposeOpen}
         onClose={handleCloseCompose}

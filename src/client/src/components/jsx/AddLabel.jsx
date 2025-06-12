@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../css/AddLabel.css";
 
-function AddLabel({ onLabelAdded }) {
+function AddLabel({ fetchLabels }) {
   const [labelName, setLabelName] = useState("");
 
   async function addLabelHandler(event) {
@@ -19,7 +19,7 @@ function AddLabel({ onLabelAdded }) {
       alert("Label already exists");
     } else {
       setLabelName("");
-      await onLabelAdded();  
+      await fetchLabels();
     }
   }
 

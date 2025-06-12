@@ -1,4 +1,3 @@
-/* Styles pour EditLabel */
 .editLabelForm {
   padding: 15px;
   background: white;
@@ -26,11 +25,11 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+
 }
 
-.saveButton {
-  background-color: #007bff;
-  color: white;
+.saveButtonEdit {
+  color: #007bff;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -38,13 +37,12 @@
   font-size: 12px;
 }
 
-.saveButton:hover {
-  background-color: #0056b3;
+.saveButtonEdit:hover {
+  background-color: #e0e0e0;
 }
 
-.cancelButton {
-  background-color: #6c757d;
-  color: white;
+.cancelButtonEdit {
+  color: #007bff;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -52,6 +50,6 @@
   font-size: 12px;
 }
 
-.cancelButton:hover {
-  background-color: #545b62;
+.cancelButtonEdit:hover {
+  background-color: #e0e0e0;
 }
