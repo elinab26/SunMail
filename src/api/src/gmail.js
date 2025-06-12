@@ -20,7 +20,8 @@ const labelsAndMails = require('./routes/labelsAndMails');
 
 app.set('json spaces', 2);
 app.use(express.json())
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files
+app.use(cors())
 app.use('/api/labels', labelRoutes);
 app.use('/api/mails', mailRoutes);
 app.use('/api/users', userRoutes);

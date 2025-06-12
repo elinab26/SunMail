@@ -14,28 +14,33 @@ const getAllUsers = () => users;
 
 const getUserById = (id) => users.find(user => user.id === id);
 
-const createUser = (first_name, last_name, gender, birth_date, email, password, image) => {
-    const user = { id: IdGenerator(), 
-    first_name,
-    last_name,
-    gender: gender ?? null,
-    birth_date: birth_date ?? null,
-    email: email.toLowerCase(),
-    password,
-    image: image ?? null
+const createUser = (first_name, last_name, gender, birth_date, userName, email, password, profilePicture) => {
+    const user = { 
+        id: IdGenerator(), 
+        first_name,
+        last_name,
+        gender: gender ?? null,
+        birth_date: birth_date ?? null,
+        userName,
+        email: email.toLowerCase(),
+        password,
+        profilePicture: profilePicture ?? null
     };
 
     user.toJSON = function () {
-    const { password, ...safe } = this;
-    return safe;
+        const { password, ...safe } = this;
+        return safe;
     };
 
     users.push(user);
     return user;
 }
 
+const getUserByUserName = (userName) => users.find(user => user.userName === userName);
+
 module.exports = {
     getAllUsers,
     getUserById,
     createUser,
+    getUserByUserName,
 };

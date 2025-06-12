@@ -1,3 +1,4 @@
+// src/contexts/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
 
 // Create the context
@@ -6,6 +7,20 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [username, setUsername] = useState(() => localStorage.getItem('username'));
+  const [userChecked, setUserChecked] = useState(false);
+
+  // Load from localStorage once on mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username');
+
+    if (storedToken) {
+      setToken(storedToken);
+      setUsername(storedUsername);
+    }
+
+    setUserChecked(true); // signal that user check is complete
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -30,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = !!token;
 
   return (
-    <AuthContext.Provider value={{ token, username, isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ token, username, isLoggedIn, login, logout, userChecked }}>
       {children}
     </AuthContext.Provider>
   );

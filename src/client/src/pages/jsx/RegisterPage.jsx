@@ -7,14 +7,14 @@ import "../../styles/auth.css";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
-    first_name: "",
-    last_name: "",
-    gender: "",
-    birthDate: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
-    image: "",
+    first_name: '',
+    last_name: '',
+    gender: '',
+    birthDate: '',
+    userName: '',
+    password: '',
+    confirmPassword: '',
+    profilePicture: ''
   });
   const [imagePreview, setImagePreview] = useState("");
   const [error, setError] = useState("");
@@ -29,11 +29,9 @@ export default function RegisterPage() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setForm({ ...form, profilePicture: file });
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm({ ...form, image: reader.result });
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -45,10 +43,25 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8080/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      const formData = new FormData();
+      formData.append('first_name', form.first_name);
+      formData.append('last_name', form.last_name);
+      formData.append('gender', form.gender);
+
+      // Format the date from YYYY-MM-DD to MM/DD/YYYY
+      const [year, month, day] = form.birthDate.split('-');
+      const formattedDate = `${month}/${day}/${year}`;
+      formData.append('birthDate', formattedDate);
+
+      formData.append('userName', form.userName);
+      formData.append('password', form.password);
+      formData.append('confirmPassword', form.confirmPassword);
+      if (form.profilePicture) {
+        formData.append('profilePicture', form.profilePicture);
+      }
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        body: formData,
       });
 
       if (res.status === 201) {
@@ -67,7 +80,9 @@ export default function RegisterPage() {
         }
       } else {
         const err = await res.json();
-        setError(err.error || "Registration failed");
+        // TODO:
+        console.error("Registration error:", err);
+        setError(err.error || 'Registration failed');
       }
     } catch (err) {
       setError("Network error");
@@ -107,51 +122,20 @@ export default function RegisterPage() {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          <input
-            type="text"
-            name="birthDate"
-            placeholder="Birth Date (mm/dd/yyyy)"
-            value={form.birthDate}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="userName"
-            placeholder="Username"
-            value={form.userName}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+<input
+  type="date"
+  name="birthDate"
+  value={form.birthDate}
+  onChange={handleChange}
+  required
+/>
+          <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
           <input type="file" accept="image/*" onChange={handleImageChange} />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-                margin: "0 auto",
-              }}
-            />
-          )}
+          {imagePreview && <div className="auth-profile-preview">
+            <img src ={imagePreview} alt="Preview" className="auth-profile-img" />
+          </div>}
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" type="submit" disabled={isLoading}>
             {isLoading ? "Loading..." : "Register"}
