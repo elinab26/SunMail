@@ -1,9 +1,10 @@
+// src/AppRouter.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import InboxPage from './pages/jsx/InboxPage';
-import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import LoginPage from './pages/jsx/LoginPage';
 import RegisterPage from './pages/jsx/RegisterPage';
-import { useContext } from 'react';
+import { AuthProvider, AuthContext } from './contexts/AuthContext';
+import { useContext, useState, useEffect } from 'react';
 
 // Protected Route component
 function ProtectedRoute({ children }) {
@@ -12,28 +13,64 @@ function ProtectedRoute({ children }) {
 }
 
 function HomeRedirect() {
-  const { isLoggedIn } = useContext(AuthContext);
-  return isLoggedIn ? <Navigate to="/inbox" replace /> : <Navigate to="/login" replace />;
+  const { isLoggedIn, username, logout } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [validUser, setValidUser] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn || !username) {
+      setLoading(false);
+      return;
+    }
+
+    fetch(`/api/users/by-username/${username}`)
+            .then(res => {
+        if (!res.ok) throw new Error('User not found');
+        return res.json();
+      })
+      .then(() => setValidUser(true))
+      .catch(() => {
+        logout();
+      })
+      .finally(() => setLoading(false));
+  }, [isLoggedIn, username, logout]);
+
+  if (loading) return null;
+
+  return validUser ? <Navigate to="/inbox" replace /> : <Navigate to="/login" replace />;
+}
+
+function AppRoutes() {
+  const { userChecked } = useContext(AuthContext);
+
+  // Don't render anything until user check is done
+  if (!userChecked) {
+    return null; // or <div>Loading...</div>
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<HomeRedirect />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/inbox"
+        element={
+          <ProtectedRoute>
+            <InboxPage />
+          </ProtectedRoute>
+        }
+      />
+      {/* Add other protected routes here */}
+    </Routes>
+  );
 }
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Navigate to="/inbox" />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route 
-            path="/inbox" 
-            element={
-              <ProtectedRoute>
-                <InboxPage />
-              </ProtectedRoute>
-            } 
-          />
-          {/* Add other protected routes here */}
-        </Routes>
+        <AppRoutes />
       </AuthProvider>
     </BrowserRouter>
   );

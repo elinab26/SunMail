@@ -35,7 +35,7 @@ exports.getUserById = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-    const { first_name, last_name, gender, birthDate, userName, password, confirmPassword, image } = req.body;
+    const { first_name, last_name, gender, birthDate, userName, password, confirmPassword } = req.body;
 
     if (!first_name) return res.status(400).json({ error: 'first name is required' });
     if (!userName)   return res.status(400).json({ error: 'user name is required' });
@@ -44,7 +44,7 @@ exports.createUser = (req, res) => {
     if (!password)   return res.status(400).json({ error: 'password is required' });
     if (password !== confirmPassword) {
         return res.status(400).json({ error: 'Passwords do not match' });
-      }
+    }
     if (!isValidName(first_name))
         return res.status(400).json({ error: 'first name must contain only letters and be at least 2 characters long' });
 
@@ -53,7 +53,7 @@ exports.createUser = (req, res) => {
 
     const isoBirth = parseBirthDate(birthDate);
     if (!isoBirth)
-        return res.status(400).json({ error: 'birthDate must be a valid past date in mm/dd/yyyy format' });
+        return res.status(400).json({ error: 'Birth Date must be a valid past date' });
     
     if (!isValidGender(gender))
         return res.status(400).json({ error: 'Gender must be male or female' });
@@ -68,9 +68,21 @@ exports.createUser = (req, res) => {
     const exists = Users.getAllUsers().some(u => u.email.toLowerCase() === email.toLowerCase());
     if (exists)
         return res.status(400).json({ error: 'Username already exists' });
-    if (image && !/^data:image/.test(image)) {
-        return res.status(400).json({ error: 'Invalid image format' });
-      }
-    const newUser = Users.createUser(first_name, last_name, gender, birthDate, email, password, image);
+
+    let profilePicture = null;
+    // Handle profile picture upload
+    if (req.file) {
+        profilePicture = `/uploads/${req.file.filename}`;
+    }
+
+    const newUser = Users.createUser(first_name, last_name, gender, birthDate, userName, email, password, profilePicture);
     res.status(201).location(`/api/users/${newUser.id}`).end();
 };
+
+exports.getUserByUserName = (req, res) => {
+    const user = Users.getUserByUserName(req.params.userName);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    // Remove password before sending
+    const { password, ...safe } = user;
+    res.json(safe);
+  };

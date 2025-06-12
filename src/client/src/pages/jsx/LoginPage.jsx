@@ -5,15 +5,17 @@ import { AuthContext } from '../../contexts/AuthContext';
 import gmailImg from '../../assets/gmailLogo.png';
 import '../../styles/auth.css';
 
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // TODO: Add validation for all fields\
-  
+  // TODO: Add validation for all fields
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -45,8 +47,12 @@ export default function LoginPage() {
         <img src={gmailImg} alt="Gmail" className="auth-logo" />
         <div className="auth-title">Sign in</div>
         <form className="auth-form" onSubmit={handleLogin}>
-        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required autoFocus />
-          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <input type="text" placeholder="Email or Username" value={username} onChange={e => setUsername(e.target.value)} required autoFocus />
+        <input type={showPassword ? 'text' : 'password'} placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} required />
+        <button type="button" className='auth-show-btn' tabIndex={-1} onClick={() => setShowPassword(v => !v)} style={{marginLeft: '-38px', background: 'none', border: 'none', cursor: 'pointer', color: '#1a73e8', fontSize: '14px'}}>
+           {showPassword ? "🙈" : "👁️"}
+        </button>
+          {/* <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required /> */}
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" type="submit">Login</button>
         </form>
