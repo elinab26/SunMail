@@ -6,7 +6,7 @@ var app = express()
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-// Configuration CORS unique et correcte
+// Unique and correct CORS configuration
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true,

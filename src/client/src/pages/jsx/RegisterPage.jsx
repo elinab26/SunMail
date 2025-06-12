@@ -60,10 +60,10 @@ export default function RegisterPage() {
         formData.append('profilePicture', form.profilePicture);
       }
 
-      // Changez cette ligne pour pointer vers le bon port
+      // Change this line to point to the correct port
       const res = await fetch('http://localhost:8080/api/users', {
         method: 'POST',
-        credentials: 'include', // Ajoutez ceci pour les cookies
+        credentials: 'include', // Add this for cookies
         body: formData,
       });
 
