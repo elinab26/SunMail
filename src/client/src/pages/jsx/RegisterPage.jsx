@@ -59,8 +59,11 @@ export default function RegisterPage() {
       if (form.profilePicture) {
         formData.append('profilePicture', form.profilePicture);
       }
-      const res = await fetch('/api/users', {
+
+      // Changez cette ligne pour pointer vers le bon port
+      const res = await fetch('http://localhost:8080/api/users', {
         method: 'POST',
+        credentials: 'include', // Ajoutez ceci pour les cookies
         body: formData,
       });
 
