@@ -44,19 +44,18 @@ exports.getMailById = (req, res) => {
 
 /**
  * POST /api/mails
- * Create a new mail (inbox + sent) after URL checks,
- * or store as a draft if req.body.draft === true.
+ * Create a new mail (inbox + sent) after URL checks.
  */
 exports.createMail = async (req, res) => {
   const fromUserId = req.id;
   if (!fromUserId) return;
 
-  const { to, subject, body, draft } = req.body;
+  const { to, subject, body } = req.body;
   if (!to || !subject || !body) {
-    return res.status(400).json({ error: 'Missing fields' });
+    return res.status(400).json({ error: 'Missing fields: to, subject, and body are required' });
   }
 
-  // Resolve recipient userId
+  // Resolve recipient userId from email address
   const toUserId = resolveToUserId(to);
   if (!toUserId) {
     return res.status(400).json({ error: 'Receiver user not found' });
@@ -70,15 +69,16 @@ exports.createMail = async (req, res) => {
     return res.status(err.status).json({ error: err.message, url: err.url });
   }
 
-  // If draft === true, store as draft and return
-  if (draft === true) {
-    const draftItem = Mail.createDraft(fromUserId, toUserId, subject, body);
-    return res.status(201).json(draftItem);
-  }
-
-  // Otherwise, create and send the mail immediately
+  // Create and send the mail
   const mail = Mail.create(toUserId, fromUserId, subject, body);
-  res.status(201).json(mail);
+
+  res.status(201).json({
+    id: mail.id,
+    message: 'Email sent successfully',
+    to: to,
+    subject: subject,
+    date: mail.date
+  });
 };
 
 /**

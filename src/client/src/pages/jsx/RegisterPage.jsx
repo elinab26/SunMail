@@ -75,7 +75,7 @@ export default function RegisterPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password: form.password }),
         });
-        if (loginRes.status == 201) {
+        if (loginRes.status === 201) {
           login(true, form.userName);
           navigate("/inbox");
         } else {

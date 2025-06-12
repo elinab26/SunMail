@@ -19,6 +19,7 @@ import { LuPencil } from "react-icons/lu";
 import "../css/Sidebar.css";
 import AddLabel from "./AddLabel";
 import LabelMenu from "./LabelMenu";
+import ComposeWindow from "./ComposeWindow"; // Ajout de l'import
 
 // List of primary folders shown by default in the sidebar
 const primaryFolders = [
@@ -94,6 +95,8 @@ export default function Sidebar({
 }) {
 
 const [labels, setLabels] = useState([]);
+const [isComposeOpen, setIsComposeOpen] = useState(false);
+const [isMinimized, setIsMinimized] = useState(false);
 
     function addLabelToList(newLabel) {
         setLabels(labels => [...labels, newLabel]);
@@ -115,59 +118,88 @@ const [labels, setLabels] = useState([]);
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
+
+  const handleOpenCompose = () => {
+    setIsComposeOpen(true);
+    setIsMinimized(false);
+  };
+
+  const handleCloseCompose = () => {
+    setIsComposeOpen(false);
+    setIsMinimized(false);
+  };
+
+  const handleMinimizeCompose = () => {
+    setIsMinimized(!isMinimized);
+  };
+
   return (
-    <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
-      {/* Compose new message button */}
-      <button className="sidebar-compose-btn" title="New message">
-        <span className="folder-icon">
-          <LuPencil size={22} />
-        </span>
-        <span className="compose-label">New message</span>
-      </button>
+    <>
+      <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
+        {/* Compose new message button */}
+        <button
+          className="sidebar-compose-btn"
+          title="New message"
+          onClick={handleOpenCompose}
+        >
+          <span className="folder-icon">
+            <LuPencil size={22} />
+          </span>
+          <span className="compose-label">New message</span>
+        </button>
 
-      {/* Render primary folders */}
-      <FolderList
-        folders={primaryFolders}
-        currentFolder={currentFolder}
-        onSelectFolder={onSelectFolder}
-        counts={counts}
-      />
-
-      {/* Toggle to show/hide secondary folders */}
-      <div
-        className="sidebar-folder-item sidebar-more-toggle"
-        onClick={() => setShowMore((v) => !v)}
-      >
-        <span className="folder-icon">
-          {showMore ? <MdExpandMore size={20} /> : <AiOutlinePlus size={20} />}
-        </span>
-        <span className="folder-label">{showMore ? "Less" : "More"}</span>
-      </div>
-
-      {/* Render secondary folders if showMore is true */}
-      {showMore && (
+        {/* Render primary folders */}
         <FolderList
-          folders={secondaryFolders}
+          folders={primaryFolders}
           currentFolder={currentFolder}
           onSelectFolder={onSelectFolder}
           counts={counts}
         />
-      )}
 
-      {showMore && (
-        <>
-          <button
-            className="sidebar-create-label"
-            onClick={() => setCreateLabelClicked(true)}
-          >
-            <span className="folder-icon">
-              <AiOutlinePlus size={20} />
-            </span>
-            Create label
-          </button>
-          {createLabelClicked && <LabelMenu />}
-        </>
-      )}
-    </nav>
+        {/* Toggle to show/hide secondary folders */}
+        <div
+          className="sidebar-folder-item sidebar-more-toggle"
+          onClick={() => setShowMore((v) => !v)}
+        >
+          <span className="folder-icon">
+            {showMore ? <MdExpandMore size={20} /> : <AiOutlinePlus size={20} />}
+          </span>
+          <span className="folder-label">{showMore ? "Less" : "More"}</span>
+        </div>
+
+        {/* Render secondary folders if showMore is true */}
+        {showMore && (
+          <FolderList
+            folders={secondaryFolders}
+            currentFolder={currentFolder}
+            onSelectFolder={onSelectFolder}
+            counts={counts}
+          />
+        )}
+
+        {showMore && (
+          <>
+            <button
+              className="sidebar-create-label"
+              onClick={() => setCreateLabelClicked(true)}
+            >
+              <span className="folder-icon">
+                <AiOutlinePlus size={20} />
+              </span>
+              Create label
+            </button>
+            {createLabelClicked && <LabelMenu />}
+          </>
+        )}
+      </nav>
+
+      {/* Fenêtre de composition */}
+      <ComposeWindow
+        isOpen={isComposeOpen}
+        onClose={handleCloseCompose}
+        onMinimize={handleMinimizeCompose}
+        isMinimized={isMinimized}
+      />
+    </>
   );
 }

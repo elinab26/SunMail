@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ComposeWindow from './ComposeWindow';
 import '../css/ComposeMail.css';
 
-export default function ComposeMailButton({ onClick }) {
+export default function ComposeMailButton() {
+  const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  const handleOpenCompose = () => {
+    console.log("Button clicked!");
+    setIsComposeOpen(true);
+    setIsMinimized(false);
+  };
+
+  const handleCloseCompose = () => {
+    setIsComposeOpen(false);
+    setIsMinimized(false);
+  };
+
+  const handleMinimizeCompose = () => {
+    setIsMinimized(!isMinimized);
+  };
+
   return (
-    <button className="compose-mail-btn" onClick={onClick}>
-      + New Message
-    </button>
+    <>
+      <button className="compose-mail-btn" onClick={handleOpenCompose}>
+        + New Message
+      </button>
+
+      <ComposeWindow
+        isOpen={isComposeOpen}
+        onClose={handleCloseCompose}
+        onMinimize={handleMinimizeCompose}
+        isMinimized={isMinimized}
+      />
+    </>
   );
 }
