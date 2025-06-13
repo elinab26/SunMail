@@ -1,10 +1,10 @@
 // src/AppRouter.jsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import InboxPage from './pages/jsx/InboxPage';
-import LoginPage from './pages/jsx/LoginPage';
-import RegisterPage from './pages/jsx/RegisterPage';
-import { AuthProvider, AuthContext } from './contexts/AuthContext';
-import { useContext, useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import InboxPage from "./pages/jsx/InboxPage";
+import LoginPage from "./pages/jsx/LoginPage";
+import RegisterPage from "./pages/jsx/RegisterPage";
+import { AuthProvider, AuthContext } from "./contexts/AuthContext";
+import { useContext, useState, useEffect } from "react";
 
 // Protected Route component
 function ProtectedRoute({ children }) {
@@ -23,9 +23,9 @@ function HomeRedirect() {
       return;
     }
 
-    fetch(`/api/users/by-username/${username}`)
-            .then(res => {
-        if (!res.ok) throw new Error('User not found');
+    fetch(`http://localhost:8080/api/users/by-username/${username}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("User not found");
         return res.json();
       })
       .then(() => setValidUser(true))
@@ -37,7 +37,11 @@ function HomeRedirect() {
 
   if (loading) return null;
 
-  return validUser ? <Navigate to="/inbox" replace /> : <Navigate to="/login" replace />;
+  return validUser ? (
+    <Navigate to="/inbox" replace />
+  ) : (
+    <Navigate to="/login" replace />
+  );
 }
 
 function AppRoutes() {
