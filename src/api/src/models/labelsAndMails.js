@@ -1,16 +1,18 @@
 const Mails = require('./mails')
 
 exports.addLabelToMail = (mail, label, userId) => {
-    Mails.ensureMailbox(Mails.getAllMails(userId), userId);
-    mail.labels.push(label);
-    return mail.labels.at(mail.labels)
+    const labels = Mails.getLabelsOfMail(mail, userId);
+    Mails.ensureMailbox(labels, userId);
+    labels.push(label);
+    return labels.at(labels.length - 1)
 }
 
 exports.deleteLabelFromMail = (mail, label, userId) => {
-    Mails.ensureMailbox(Mails.getAllMails(userId), userId);
-    let i = mail.label.indexOf(label)
+    const labels = Mails.getLabelsOfMail(mail, userId);
+    Mails.ensureMailbox(labels, userId);
+    let i = labels.indexOf(label)
     if (i > -1) {
-        mail.label.splice(i, 1)
+        labels.splice(i, 1)
     } else {
         return -1
     }
@@ -18,7 +20,8 @@ exports.deleteLabelFromMail = (mail, label, userId) => {
 }
 
 exports.getLabelFromMailById = (mail, label, userId) => {
-    Mails.ensureMailbox(Mails.getAllMails(userId), userId);
-    return mail.label.find(l => l == label);
+    const labels = Mails.getLabelsOfMail(mail, userId);
+    Mails.ensureMailbox(labels, userId);
+    return labels.find(l => l == label);
 }
 

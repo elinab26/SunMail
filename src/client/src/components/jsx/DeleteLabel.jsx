@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../css/DeleteLabel.css";
 
-function DeleteLabel({ labelId, onDeleted, close }) {
+function DeleteLabel({ labelId, onDeleted, close, active, onActivate }) {
   const [isConfirming, setIsConfirming] = useState(false);
 
   async function deleteLabelHandler() {
@@ -19,6 +19,7 @@ function DeleteLabel({ labelId, onDeleted, close }) {
   }
 
   function handleDelete() {
+    onActivate();
     setIsConfirming(true);
   }
 
@@ -46,6 +47,8 @@ function DeleteLabel({ labelId, onDeleted, close }) {
       </div>
     );
   }
+
+  if (!active) return null;
 
   return (
     <button className="popupOption deleteOption" onClick={handleDelete}>
