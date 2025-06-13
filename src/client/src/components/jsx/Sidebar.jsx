@@ -92,6 +92,7 @@ export default function Sidebar({
   currentFolder,
   onSelectFolder,
   counts,
+  fetchMails,
 }) {
   const [labels, setLabels] = useState([]);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
@@ -196,6 +197,7 @@ export default function Sidebar({
         onClose={handleCloseCompose}
         onMinimize={handleMinimizeCompose}
         isMinimized={isMinimized}
+        fetchMails={fetchMails}
       />
     </>
   );

@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import "../css/Inbox.css";
 import Mail from "./Mail";
+import MailInfo from "./MailInfo";
 
-function Inbox({ mails, fetchMails }) {
+function Inbox({ fetchMails, mails }) {
+  const [selectedMail, setSelectedMail] = useState(null);
+
   useEffect(() => {
     fetchMails();
   }, []);
@@ -12,10 +15,15 @@ function Inbox({ mails, fetchMails }) {
       <span className="Mails">
         {mails.map((mail) => (
           <span key={mail.id}>
-            <Mail mail={mail} fetchMails={fetchMails} />
+            <Mail
+              mail={mail}
+              onOpenMail={setSelectedMail}
+              fetchMails={fetchMails}
+            />
           </span>
         ))}
       </span>
+      {selectedMail && <MailInfo mail={selectedMail} />}
     </div>
   );
 }

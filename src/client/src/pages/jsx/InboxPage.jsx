@@ -9,9 +9,11 @@ export default function InboxPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
+
+  const [mails, setMails] = useState([]);
+
   // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
-  const [mails, setMails] = useState([]);
 
   // When mouse enters sidebar area, set a timeout to show sidebar if it's closed
   const handleSidebarMouseEnter = () => {
@@ -39,7 +41,7 @@ export default function InboxPage() {
 
   useEffect(() => {
     fetchMails();
-  });
+  }, []);
 
   return (
     <div className="app-container">
@@ -52,11 +54,11 @@ export default function InboxPage() {
           onMouseLeave={handleSidebarMouseLeave}
           style={{ height: "100%" }}
         >
-          <Sidebar isOpen={sidebarVisible} />
+          <Sidebar isOpen={sidebarVisible} fetchMails={fetchMails}/>
         </div>
         {/* Main inbox content */}
         <span className="inbox-content">
-          <Inbox mails={mails} fetchMails={fetchMails} />
+          <Inbox fetchMails={fetchMails} mails={mails} />
         </span>
       </div>
     </div>
