@@ -1,5 +1,7 @@
 // models/mails.js
 
+const Users = require('./users')
+
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
@@ -47,9 +49,9 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   const User = require('./users'); // Import User model
 
   const mail = {
-    id: generateMailId(), // Utilise la nouvelle fonction au lieu de nextId++
-    from: fromUserId,
-    to: toUserId,
+    id: generateMailId(),
+    from: Users.getUserById(fromUserId).name,
+    to: Users.getUserById(toUserId).name,
     subject,
     body,
     date: new Date().toISOString(),
