@@ -9,13 +9,13 @@ function Inbox({ mails, fetchMails }) {
 
   return (
     <div>
-      <ul className="Mails">
+      <span className="Mails">
         {mails.map((mail) => (
-          <li key={mail.id}>
+          <span key={mail.id}>
             <Mail mail={mail} fetchMails={fetchMails} />
-          </li>
+          </span>
         ))}
-      </ul>
+      </span>
     </div>
   );
 }

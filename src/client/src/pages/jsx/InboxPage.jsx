@@ -55,16 +55,9 @@ export default function InboxPage() {
           <Sidebar isOpen={sidebarVisible} />
         </div>
         {/* Main inbox content */}
-        {/* <div className="inbox-content">
-          <h2>Inbox</h2>
-          <ul className="email-list">
-            <li>Email 1</li>
-            <li>Email 2</li>
-            <li>Email 3</li>
-          </ul>
-          <p className="no-emails">No emails to display at the moment.</p>
-        </div> */}
-        <Inbox mails={mails} fetchMails={fetchMails} />
+        <span className="inbox-content">
+          <Inbox mails={mails} fetchMails={fetchMails} />
+        </span>
       </div>
     </div>
   );
