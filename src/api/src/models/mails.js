@@ -131,3 +131,11 @@ exports.getLabelsOfMail = (mail, userId) => {
   exports.ensureMailbox(allMails, userId);
   return mail.labels;
 }
+
+exports.setRead = (userId, mailId) => {
+  exports.ensureMailbox(inboxes, userId);
+
+  const mail = this.getById(userId, mailId);
+  mail.read = true;
+  return mail;
+}

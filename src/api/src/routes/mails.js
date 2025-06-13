@@ -17,4 +17,7 @@ router.route('/:id')
     .patch(getUserId, controller.updateMail)
     .delete(getUserId, controller.deleteMail);
 
+router.route('/:id/read')
+    .patch(getUserId, controller.setRead);
+
 module.exports = router;

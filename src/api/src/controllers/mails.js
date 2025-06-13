@@ -34,7 +34,7 @@ exports.getMailById = (req, res) => {
   const userId = req.id
   if (!userId) return;
 
-  const mailId = parseInt(req.params.id, 10);
+  const mailId = req.params.id;
   const mail = Mail.getById(userId, mailId);
   if (!mail) {
     return res.status(404).json({ error: 'Mail not found' });
@@ -91,7 +91,7 @@ exports.updateMail = async (req, res) => {
   const userId = req.id
   if (!userId) return;
 
-  const draftId = parseInt(req.params.id, 10);
+  const draftId = req.params.id;
   const updates = req.body;
 
   // 1) Check if draft exists for this user
@@ -144,7 +144,7 @@ exports.deleteMail = (req, res) => {
   const userId = req.id
   if (!userId) return;
 
-  const mailId = parseInt(req.params.id, 10);
+  const mailId = req.params.id;
   const success = Mail.delete(userId, mailId);
   if (!success) {
     return res.status(404).json({ error: 'Mail not found' });
@@ -190,4 +190,18 @@ exports.deleteDraft = (req, res) => {
     return res.status(404).json({ error: 'Draft not found' });
   }
   res.status(204).send();
+};
+
+exports.setRead = (req, res) => {
+  const userId = req.id;
+  if (!userId) return;
+
+  const mailId = req.params.id;
+
+  const mail = Mail.setRead(userId, mailId)
+
+  if (!mail) {
+    return res.status(404).json({ error: 'Error while reading' });
+  }
+  res.status(204).end();
 };
