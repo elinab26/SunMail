@@ -7,50 +7,89 @@ import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
 
-function Mail({ mail, fetchMMails }) {
+function Mail({ mail, onOpenMail, fetchMails }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
 
-  return (
-    <button className={`mailRow ${mail.read ? "read" : "unread"}`}>
-      <button className="selectIcon" onClick={() => setisSelected(!isSelected)}>
-        {isSelected ? (
-          <span id="selectOn">
-            <IoIosCheckboxOutline />
-          </span>
-        ) : (
-          <MdCheckBoxOutlineBlank />
-        )}
-      </button>
-      <button className="starIcon" onClick={() => setIsStarred(!isStarred)}>
-        {isStarred ? (
-          <span id="starOn">
-            <MdOutlineStar />
-          </span>
-        ) : (
-          <MdOutlineStarBorder />
-        )}
-      </button>
-      <button
-        className="importantIcon"
-        onClick={() => setisImportant(!isImportant)}
-      >
-        {isImportant ? (
-          <span id="importantOn">
-            <MdLabelImportant />
-          </span>
-        ) : (
-          <MdLabelImportantOutline />
-        )}
-      </button>
+  async function handleClicked(e) {
+    const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.status != 204) {
+      alert("Error");
+    }
+    if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
+    fetchMails();
+    onOpenMail(mail);
+  }
 
-      <span className="mailSender">{mail.from}</span>
-      <div className="mailContent">
-        <span className="mailSubject">{mail.subject}</span>
-        <span className="mailBody"> - {mail.body}</span>
+  return (
+    <>
+      <div
+        className={`mailRow ${mail.read ? "read" : "unread"}`}
+        onClick={handleClicked}
+        tabIndex={0}
+        role="button"
+      >
+        <button
+          className="selectIcon"
+          onClick={(e) => {
+            e.stopPropagation();
+            setisSelected(!isSelected);
+          }}
+        >
+          {isSelected ? (
+            <span id="selectOn">
+              <IoIosCheckboxOutline />
+            </span>
+          ) : (
+            <MdCheckBoxOutlineBlank />
+          )}
+        </button>
+        <button
+          className="starIcon"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsStarred(!isStarred);
+          }}
+        >
+          {isStarred ? (
+            <span id="starOn">
+              <MdOutlineStar />
+            </span>
+          ) : (
+            <MdOutlineStarBorder />
+          )}
+        </button>
+        <button
+          className="importantIcon"
+          onClick={(e) => {
+            e.stopPropagation();
+            setisImportant(!isImportant);
+          }}
+        >
+          {isImportant ? (
+            <span id="importantOn">
+              <MdLabelImportant />
+            </span>
+          ) : (
+            <MdLabelImportantOutline />
+          )}
+        </button>
+
+        <span className="mailSender">{mail.from}</span>
+        <div className="mailContent">
+          <span className="mailSubject">{mail.subject}</span>
+          <span className="mailBody"> - {mail.body}</span>
+        </div>
       </div>
-    </button>
+      {/* {selectedMail && <MailInfo mail={selectedMail} />} */}
+    </>
   );
 }
 
