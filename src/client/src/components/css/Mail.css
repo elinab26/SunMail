@@ -84,7 +84,6 @@
 }
 
 .mailSubject {
-    font-weight: bold;
     margin-right: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
