@@ -50,8 +50,8 @@ exports.create = (toUserId, fromUserId, subject, body) => {
 
   const mail = {
     id: generateMailId(),
-    from: Users.getUserById(fromUserId).name,
-    to: Users.getUserById(toUserId).name,
+    from: fromUserId,
+    to: toUserId,
     subject,
     body,
     date: new Date().toISOString(),

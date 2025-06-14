@@ -7,10 +7,11 @@ import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
 
-function Mail({ mail, onOpenMail, fetchMails }) {
+function Mail({ mail, fetchMails }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
+  const [user, setUser] = useState(null);
 
   async function handleClicked(e) {
     const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read`, {
@@ -22,11 +23,27 @@ function Mail({ mail, onOpenMail, fetchMails }) {
     });
     if (res.status != 204) {
       alert("Error");
+      return null;
     }
     if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
     fetchMails();
-    onOpenMail(mail);
   }
+
+  useEffect(() => {
+    async function fetchUser() {
+      const res = await fetch(`http://localhost:8080/api/users/${mail.from}`, {
+        credentials: "include",
+      });
+      if (res.status !== 200) {
+        alert("Error");
+        setUser(null);
+        return;
+      }
+      const json = await res.json();
+      setUser(json);
+    }
+    fetchUser();
+  }, [mail.from]);
 
   return (
     <>
@@ -81,14 +98,12 @@ function Mail({ mail, onOpenMail, fetchMails }) {
             <MdLabelImportantOutline />
           )}
         </button>
-
-        <span className="mailSender">{mail.from}</span>
+        <span className="mailSender">{user ? user.name : "Loading..."}</span>
         <div className="mailContent">
           <span className="mailSubject">{mail.subject}</span>
           <span className="mailBody"> - {mail.body}</span>
         </div>
       </div>
-      {/* {selectedMail && <MailInfo mail={selectedMail} />} */}
     </>
   );
 }
