@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import TopBar from "../../components/jsx/TopBar";
 import Sidebar from "../../components/jsx/Sidebar";
 import Inbox from "../../components/jsx/Inbox";
+import { MailContext } from "../../contexts/MailContext";
 import "../css/InboxPage.css";
 
 export default function InboxPage() {
@@ -11,6 +13,7 @@ export default function InboxPage() {
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 
   const [mails, setMails] = useState([]);
+  const [currentFolder, setCurrentFolder] = useState("inbox");
 
   // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
@@ -44,23 +47,33 @@ export default function InboxPage() {
   }, []);
 
   return (
-    <div className="app-container">
-      {/* TopBar with button to toggle sidebar */}
-      <TopBar toggleSidebar={() => setIsSidebarOpen((open) => !open)} />
-      <div className="main-content">
-        {/* Sidebar area with mouse events for hover logic */}
-        <div
-          onMouseEnter={handleSidebarMouseEnter}
-          onMouseLeave={handleSidebarMouseLeave}
-          style={{ height: "100%" }}
-        >
-          <Sidebar isOpen={sidebarVisible} fetchMails={fetchMails}/>
+    <MailContext.Provider
+      value={{
+        mails,
+        setMails,
+        fetchMails,
+        currentFolder,
+        setCurrentFolder,
+      }}
+    >
+      <div className="app-container">
+        {/* TopBar with button to toggle sidebar */}
+        <TopBar toggleSidebar={() => setIsSidebarOpen((open) => !open)} />
+        <div className="main-content">
+          {/* Sidebar area with mouse events for hover logic */}
+          <div
+            onMouseEnter={handleSidebarMouseEnter}
+            onMouseLeave={handleSidebarMouseLeave}
+            style={{ height: "100%" }}
+          >
+            <Sidebar isOpen={sidebarVisible} fetchMails={fetchMails} />
+          </div>
+          {/* Main inbox content */}
+          <span className="inbox-content">
+            <Outlet />
+          </span>
         </div>
-        {/* Main inbox content */}
-        <span className="inbox-content">
-          <Inbox fetchMails={fetchMails} mails={mails} />
-        </span>
       </div>
-    </div>
+    </MailContext.Provider>
   );
 }

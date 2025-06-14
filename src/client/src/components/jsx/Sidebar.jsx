@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { MailContext } from "../../contexts/MailContext";
 // Importing icons from various icon libraries
 import {
   AiOutlinePlus,
@@ -89,11 +90,11 @@ function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
 // Main Sidebar component
 export default function Sidebar({
   isOpen,
-  currentFolder,
   onSelectFolder,
   counts,
-  fetchMails,
 }) {
+    const { mails, currentFolder, setCurrentFolder, fetchMails } = useContext(MailContext);
+
   const [labels, setLabels] = useState([]);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);

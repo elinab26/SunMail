@@ -1,29 +1,26 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { MailContext } from "../../contexts/MailContext";
 import "../css/Inbox.css";
 import Mail from "./Mail";
-import MailInfo from "./MailInfo";
+import { useNavigate } from "react-router-dom";
 
-function Inbox({ fetchMails, mails }) {
-  const [selectedMail, setSelectedMail] = useState(null);
-
+function Inbox() {
+  const { mails, fetchMails } = useContext(MailContext);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchMails();
   }, []);
 
   return (
-    <div>
-      <span className="Mails">
-        {mails.map((mail) => (
-          <span key={mail.id}>
-            <Mail
-              mail={mail}
-              onOpenMail={setSelectedMail}
-              fetchMails={fetchMails}
-            />
-          </span>
-        ))}
-      </span>
-      {selectedMail && <MailInfo mail={selectedMail} />}
+    <div className="Mails">
+      {mails.map((mail) => (
+        <span key={mail.id} onClick={() => navigate(`/inbox/${mail.id}`)}>
+          <Mail
+            mail={mail}
+            fetchMails={fetchMails}
+          />
+        </span>
+      ))}
     </div>
   );
 }

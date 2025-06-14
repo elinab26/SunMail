@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import InboxPage from "./pages/jsx/InboxPage";
 import LoginPage from "./pages/jsx/LoginPage";
 import RegisterPage from "./pages/jsx/RegisterPage";
+import MailPage from "./pages/jsx/MailPage";
+import Inbox from "./components/jsx/Inbox";
 import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 
@@ -64,7 +66,10 @@ function AppRoutes() {
             <InboxPage />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<Inbox />} />
+        <Route path=":id" element={<MailPage />} />
+      </Route>
       {/* Add other protected routes here */}
     </Routes>
   );
