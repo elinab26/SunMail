@@ -1,0 +1,24 @@
+.back-button{
+    background:none;
+    border:none;
+}
+
+.from-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.from-fallback {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 4px;
+  }
