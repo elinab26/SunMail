@@ -1,0 +1,96 @@
+/* Container global */
+/* .mail-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+  /* display: flex; */
+  /* flex-direction: column; */
+/* } */ 
+
+/* Styling pour le bouton retour, placé en haut de la carte */
+.back-button {
+  /* align-self: flex-start; */
+  margin: 16px;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.2s ease;
+}
+.back-button:hover {
+  background: rgba(0,0,0,0.05);
+  border-radius: 50%;
+}
+
+/* En-tête avec sujet aligné à gauche */
+.header {
+  padding: 0 20px 16px 20px;
+}
+.subject {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0; /* pour supprimer les marges par défaut */
+}
+
+/* Séparateur fin en-tête */
+.divider {
+  height: 1px;
+  background: #eaeaea;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* Corps du message */
+.mail-view {
+  padding: 24px 20px;
+}
+
+/* Bandeau expéditeur */
+.from {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #eef5ff;
+  padding: 12px 16px;
+  border-left: 4px solid #4285f4;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Image ou fallback du profil */
+.from-img,
+.from-fallback {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 14px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #c8d8f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+/* Nom de l’expéditeur */
+.from-name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #222;
+  margin: 0; /* supprime la marge par défaut */
+}
+
+/* Texte du mail */
+.mail-body {
+  line-height: 1.7;
+  color: #444;
+  white-space: pre-wrap;
+  margin: 0; 
+  font-size:20px;
+}

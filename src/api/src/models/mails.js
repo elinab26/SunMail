@@ -1,5 +1,7 @@
 // models/mails.js
 
+const Users = require('./users')
+
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
@@ -47,13 +49,14 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   const User = require('./users'); // Import User model
 
   const mail = {
-    id: generateMailId(), // Utilise la nouvelle fonction au lieu de nextId++
+    id: generateMailId(),
     from: fromUserId,
     to: toUserId,
     subject,
     body,
     date: new Date().toISOString(),
-    labels: []
+    labels: [],
+    read: false
   };
 
   // Add to recipient's inbox
@@ -127,4 +130,12 @@ exports.getSentItems = (userId) => {
 exports.getLabelsOfMail = (mail, userId) => {
   exports.ensureMailbox(allMails, userId);
   return mail.labels;
+}
+
+exports.setRead = (userId, mailId) => {
+  exports.ensureMailbox(inboxes, userId);
+
+  const mail = this.getById(userId, mailId);
+  mail.read = true;
+  return mail;
 }

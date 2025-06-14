@@ -1,13 +1,20 @@
-import React, { useState, useRef } from 'react';
-import TopBar from '../../components/jsx/TopBar';
-import Sidebar from '../../components/jsx/Sidebar';
-import '../css/InboxPage.css';
+import React, { useState, useRef, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import TopBar from "../../components/jsx/TopBar";
+import Sidebar from "../../components/jsx/Sidebar";
+import Inbox from "../../components/jsx/Inbox";
+import { MailContext } from "../../contexts/MailContext";
+import "../css/InboxPage.css";
 
 export default function InboxPage() {
   // State to control if the sidebar is open (toggled by button)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
+
+  const [mails, setMails] = useState([]);
+  const [currentFolder, setCurrentFolder] = useState("inbox");
+
   // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
 
@@ -27,30 +34,46 @@ export default function InboxPage() {
   // Sidebar is visible if open or being hovered
   const sidebarVisible = isSidebarOpen || isSidebarHovered;
 
+  async function fetchMails() {
+    const res = await fetch("http://localhost:8080/api/mails", {
+      credentials: "include",
+    });
+    const json = await res.json();
+    setMails(json);
+  }
+
+  useEffect(() => {
+    fetchMails();
+  }, []);
+
   return (
-    <div className="app-container">
-      {/* TopBar with button to toggle sidebar */}
-      <TopBar toggleSidebar={() => setIsSidebarOpen(open => !open)} />
-      <div className="main-content">
-        {/* Sidebar area with mouse events for hover logic */}
-        <div
-          onMouseEnter={handleSidebarMouseEnter}
-          onMouseLeave={handleSidebarMouseLeave}
-          style={{ height: '100%' }}
-        >
-          <Sidebar isOpen={sidebarVisible} />
-        </div>
-        {/* Main inbox content */}
-        <div className="inbox-content">
-          <h2>Inbox</h2>
-          <ul className="email-list">
-            <li>Email 1</li>
-            <li>Email 2</li>
-            <li>Email 3</li>
-          </ul>
-          <p className="no-emails">No emails to display at the moment.</p>
+    <MailContext.Provider
+      value={{
+        mails,
+        setMails,
+        fetchMails,
+        currentFolder,
+        setCurrentFolder,
+      }}
+    >
+      <div className="app-container">
+        {/* TopBar with button to toggle sidebar */}
+        <TopBar toggleSidebar={() => setIsSidebarOpen((open) => !open)} />
+        <div className="main-content">
+          {/* Sidebar area with mouse events for hover logic */}
+          <div
+            onMouseEnter={handleSidebarMouseEnter}
+            onMouseLeave={handleSidebarMouseLeave}
+            style={{ height: "100%" }}
+          >
+            <Sidebar isOpen={sidebarVisible} fetchMails={fetchMails} />
+          </div>
+          {/* Main inbox content */}
+          <span className="inbox-content">
+            <Outlet />
+          </span>
         </div>
       </div>
-    </div>
+    </MailContext.Provider>
   );
 }
