@@ -13,7 +13,7 @@ function MailPage() {
   const mail1 = mails.find((m) => m.id === id);
 
   useEffect(() => {
-    if (!mail1) return <div>Mail not found</div>;
+    if (!mail1) return ;
     async function fetchUser() {
       const res = await fetch(`http://localhost:8080/api/users/${mail1.from}`, {
         credentials: "include",
@@ -39,8 +39,7 @@ function MailPage() {
       </button>
 
       <div className="header">
-        <div className="icon" />
-        <h2 className="subject">{mail.subject}</h2>
+        <p className="subject">{mail.subject}</p>
       </div>
 
       <div className="divider" />
@@ -63,7 +62,7 @@ function MailPage() {
             <div>Loading...</div>
           )}
           <p className="from-name">
-            <b>From:</b> {user ? user.name : mail.from}
+            {user ? user.name : mail.from}
           </p>
         </div>
         <p className="mail-body">{mail.body}</p>
