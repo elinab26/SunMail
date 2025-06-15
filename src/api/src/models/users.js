@@ -1,5 +1,5 @@
 const users = []
-const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "drafts", "spam", "trash", "archive"];
+const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "draft", "spam", "trash", "archive"];
 const Label = require('./labels')
 
 // Simple UUID v4-like generator

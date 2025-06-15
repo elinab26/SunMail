@@ -87,7 +87,6 @@ const patchLabelById = (label, name, userId) => {
 const getLabelByName = (name, userId) => {
   const label = labels.find(l => l.name === name);
   if (label.userId == userId) {
-
     return label;
   } else {
     return null;
