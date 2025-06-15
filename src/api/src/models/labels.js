@@ -1,6 +1,7 @@
 const labels = []
 const Mails = require('./mails');
 const labelsAndMails = require('./labelsAndMails')
+const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "draft", "spam", "trash", "archive"];
 
 //function that generates IDs
 function IdGenerator() {
@@ -17,7 +18,8 @@ const getLabels = (userId) => {
 
   //get the labels of the user
   for (let i = 0; i < labels.length; i++) {
-    if (labels[i].userId == userId) {
+    const label = DEFAULT_LABELS.find(l => l == labels[i].name);
+    if (labels[i].userId == userId && !label) {
       userLabels.push(labels[i])
     }
   }
