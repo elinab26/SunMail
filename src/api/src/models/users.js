@@ -48,6 +48,10 @@ const createUser = (first_name, last_name, gender, birth_date, userName, email, 
 
 const getUserByUserName = (userName) => users.find(user => user.userName === userName);
 
+exports.getLabelsOfUser = (user) => {
+    return user.labels;
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
