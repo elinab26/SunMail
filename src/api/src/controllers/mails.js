@@ -22,7 +22,8 @@ function resolveToUserId(email) {
 exports.getAllMails = (req, res) => {
   const userId = req.id
   if (!userId) return;
-  const label = Label.getLabelByName("inbox", userId)
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId)
   const mails = Mail.getLast50(userId, label);
   res.json(mails);
 };

@@ -35,7 +35,7 @@ export default function InboxPage() {
   const sidebarVisible = isSidebarOpen || isSidebarHovered;
 
   async function fetchMails() {
-    const res = await fetch("http://localhost:8080/api/mails", {
+    const res = await fetch("http://localhost:8080/api/mails/inbox", {
       credentials: "include",
     });
     const json = await res.json();
