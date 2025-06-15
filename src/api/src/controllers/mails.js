@@ -2,7 +2,7 @@
 
 const Mail = require('../models/mails');
 const User = require('../models/users');
-const util = require('../utils/userUtils.js');
+const Label = require('../models/labels')
 const { validateUrls } = require('../utils/urlUtils');
 
 /**
@@ -22,7 +22,8 @@ function resolveToUserId(email) {
 exports.getAllMails = (req, res) => {
   const userId = req.id
   if (!userId) return;
-  const mails = Mail.getLast50(userId);
+  const label = Label.getLabelByName("inbox", userId)
+  const mails = Mail.getLast50(userId, label);
   res.json(mails);
 };
 
@@ -77,7 +78,8 @@ exports.createMail = async (req, res) => {
     message: 'Email sent successfully',
     to: to,
     subject: subject,
-    date: mail.date
+    date: mail.date,
+    labels: mail.labels
   });
 };
 

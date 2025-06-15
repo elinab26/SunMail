@@ -84,4 +84,14 @@ const patchLabelById = (label, name, userId) => {
   return 0;
 }
 
-module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById }
+const getLabelByName = (name, userId) => {
+  const label = labels.find(l => l.name === name);
+  if (label.userId == userId) {
+
+    return label;
+  } else {
+    return null;
+  }
+}
+
+module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById, getLabelByName }

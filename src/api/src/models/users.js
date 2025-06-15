@@ -1,5 +1,6 @@
 const users = []
 const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "drafts", "spam", "trash", "archive"];
+const Label = require('./labels')
 
 // Simple UUID v4-like generator
 function IdGenerator() {
@@ -17,11 +18,7 @@ const getUserById = (id) => users.find(user => user.id === id);
 
 const createUser = (first_name, last_name, gender, birth_date, userName, email, password, profilePicture) => {
     const id = IdGenerator();
-    const labels = DEFAULT_LABELS.map(labelName => ({
-        id: IdGenerator(),
-        name: labelName,
-        userId: id
-    }));
+    const labels = DEFAULT_LABELS.map(labelName => (Label.createLabel(labelName, id)));
 
     const user = {
         id: id,
@@ -48,7 +45,7 @@ const createUser = (first_name, last_name, gender, birth_date, userName, email, 
 
 const getUserByUserName = (userName) => users.find(user => user.userName === userName);
 
-exports.getLabelsOfUser = (user) => {
+const getLabelsOfUser = (user) => {
     return user.labels;
 }
 
@@ -57,4 +54,5 @@ module.exports = {
     getUserById,
     createUser,
     getUserByUserName,
+    getLabelsOfUser
 };

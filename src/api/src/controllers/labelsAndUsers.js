@@ -37,7 +37,7 @@ exports.getLabelFromUserById = (req, res) => {
 
     const returnedLabel = labelsAndUsers.getLabelFromUserById(user, labelToGet);
     if (returnedLabel == labelToGet) {
-        return res.status(201).end();
+        return res.status(200).end();
     } else {
         return res.status(404).json({ error: 'Label not added' }).end();
     }
