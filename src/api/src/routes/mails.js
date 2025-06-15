@@ -14,12 +14,12 @@ router.route('/:labelName')
 router.route('/search/:query')
     .get(getUserId, controller.searchMails);
 
+router.route('/:id/read/:labelName')
+    .patch(getUserId, controller.setRead);
+
 router.route('/:id/:labelName')
     .get(getUserId, controller.getMailById)
     .patch(getUserId, controller.updateMail)
     .delete(getUserId, controller.deleteMail);
-
-router.route('/:id/read')
-    .patch(getUserId, controller.setRead);
 
 module.exports = router;

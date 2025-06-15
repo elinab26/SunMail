@@ -16,7 +16,7 @@ function resolveToUserId(email) {
 }
 
 /**
- * GET /api/mails
+ * GET /api/mails/:labelName
  * Return the last 50 mails for this user (inbox).
  */
 exports.getAllMails = (req, res) => {
@@ -29,7 +29,7 @@ exports.getAllMails = (req, res) => {
 };
 
 /**
- * GET /api/mails/:id
+ * GET /api/mails/:id/:labelName
  * Return a single mail by ID for this user’s inbox.
  */
 exports.getMailById = (req, res) => {
@@ -37,7 +37,9 @@ exports.getMailById = (req, res) => {
   if (!userId) return;
 
   const mailId = req.params.id;
-  const mail = Mail.getById(userId, mailId);
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId);
+  const mail = Mail.getById(userId, mailId, label);
   if (!mail) {
     return res.status(404).json({ error: 'Mail not found' });
   }
@@ -200,8 +202,9 @@ exports.setRead = (req, res) => {
   if (!userId) return;
 
   const mailId = req.params.id;
-
-  const mail = Mail.setRead(userId, mailId)
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId);
+  const mail = Mail.setRead(userId, mailId, label)
 
   if (!mail) {
     return res.status(404).json({ error: 'Error while reading' });

@@ -6,6 +6,7 @@ const labelsAndMails = require('./labelsAndMails')
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
+const drafts = {}
 
 /**
  * Generate a unique ID using timestamp + random number
@@ -29,7 +30,7 @@ exports.ensureMailbox = (store, userId) => {
 exports.getLast50 = (userId, label) => {
   const userMails = allMails[userId] || [];
   return userMails
-    .filter(mail => (mail.to === userId) && labelsAndMails.getLabelFromMailById(mail, label, userId))
+    .filter(mail => labelsAndMails.getLabelFromMailById(mail, label, userId))
     .slice(-50)
     .reverse();
 };
@@ -38,9 +39,10 @@ exports.getLast50 = (userId, label) => {
  * Return a single mail by ID for this user's inbox.
  * If not found, returns undefined.
 */
-exports.getById = (userId, mailId) => {
-  exports.ensureMailbox(inboxes, userId);
-  return inboxes[userId].find(mail => mail.id === mailId);
+exports.getById = (userId, mailId, label) => {
+  const retMail = allMails[userId].find(mail => labelsAndMails.getLabelFromMailById(mail, label, userId)
+    && mail.id === mailId);
+  return retMail;
 };
 
 /**
@@ -69,12 +71,14 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   // Add to recipient's inbox
   const labelsTo = Users.getLabelsOfUser(toUser)
   const labelTo = labelsTo.find(l => l.name === "inbox");
-  labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
+  mail.labels.push(labelTo)
+  // labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
 
   // Add to sender's sent items
   const labelsFrom = Users.getLabelsOfUser(fromUser)
   const labelFrom = labelsFrom.find(l => l.name === "inbox");
-  labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
+  mail.labels.push(labelFrom)
+  // labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
 
   // Add to the global array for both users
   exports.ensureMailbox(allMails, fromUserId);
@@ -138,10 +142,8 @@ exports.getLabelsOfMail = (mail, userId) => {
   return mail.labels;
 }
 
-exports.setRead = (userId, mailId) => {
-  exports.ensureMailbox(inboxes, userId);
-
-  const mail = this.getById(userId, mailId);
+exports.setRead = (userId, mailId, label) => {
+  const mail = this.getById(userId, mailId, label);
   mail.read = true;
   return mail;
 }
