@@ -7,10 +7,10 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
+  origin: "http://localhost:3000",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 };
 app.use(cors(corsOptions));
 
@@ -35,6 +35,7 @@ const tokenRoutes = require('./routes/tokens');
 const blacklistRoutes = require('./routes/blacklist');
 const labelsAndMails = require('./routes/labelsAndMails');
 const labelsAndUsers = require('./routes/labelsAndUsers')
+const draftsRoutes = require('./routes/drafts')
 
 app.use('/api/labels', labelRoutes);
 app.use('/api/mails', mailRoutes);
@@ -43,9 +44,11 @@ app.use('/api/tokens', tokenRoutes);
 app.use('/api/blacklist', blacklistRoutes);
 app.use('/api/labelsAndMails', labelsAndMails);
 app.use('/api/labelsAndUsers', labelsAndUsers);
+app.use('/api/drafts', draftsRoutes)
+
 
 app.all('/{*any}', (req, res) => {
-    res.status(404).json({ error: `Route ${req.originalUrl} introuvable` });
+  res.status(404).json({ error: `Route ${req.originalUrl} introuvable` });
 });
 
 app.set('view engine', 'ejs');
