@@ -1,7 +1,7 @@
 .editLabelForm {
   right: -100px;
   padding: 15px;
-  background: white;
+  background: var(--bg-surface);
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   min-width: 200px;
@@ -10,7 +10,7 @@
 .editLabelForm input {
   width: 100%;
   padding: 8px 12px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 10px;
@@ -19,7 +19,7 @@
 
 .editLabelForm input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--primary);
 }
 
 .editButtons {
@@ -30,7 +30,7 @@
 }
 
 .saveButtonEdit {
-  color: #007bff;
+  color: var(--primary);
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -39,11 +39,11 @@
 }
 
 .saveButtonEdit:hover {
-  background-color: #e0e0e0;
+  background-color: var(--bg-hover);
 }
 
 .cancelButtonEdit {
-  color: #007bff;
+  color: var(--primary);
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -52,5 +52,5 @@
 }
 
 .cancelButtonEdit:hover {
-  background-color: #e0e0e0;
+  background-color: var(--bg-hover);
 }

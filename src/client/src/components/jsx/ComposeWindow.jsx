@@ -176,3 +176,5 @@ export default function ComposeWindow({ isOpen, onClose, onMinimize, isMinimized
         </div>
     );
 }
+
+

@@ -3,19 +3,19 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-topbar);
     margin-bottom: 5px;
     border-radius: 5px;
 }
 
 .label:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--bg-hover);
 }
 
 .labelName {
     font-weight: 500;
-    color: #333;
+    color: var(--text-color);
 }
 
 .labelIcon {
@@ -35,7 +35,7 @@
 }
 
 .labelIcon:hover>.dots {
-    background-color: #e0e0e0;
+    background-color: var(--bg-hover);
 }
 
 .label:hover .labelIcon button {
@@ -46,10 +46,10 @@
     position: absolute;
     top: calc(100% + 5px);
     right: -10px;
-    background: white;
-    border: 1px solid #ddd;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px var(--shadow-color);
     z-index: 1000;
     min-width: 140px;
     overflow: hidden;
@@ -78,7 +78,7 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.2s;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .popupOption:last-child {
@@ -86,23 +86,24 @@
 }
 
 .popupOption:hover {
-    background-color: #f8f9fa;
+    background-color: var(--bg-card);
 }
 
 .editOption {
-    color: #007bff;
+    color: var(--primary);
     font-weight: 500;
 }
 
 .editOption:hover {
-    background-color: #e3f2fd;
+    background-color: var(--bg-edit-hover);
 }
 
 .deleteOption {
-    color: #dc3545;
+    color: var(--danger);
     font-weight: 500;
 }
 
 .deleteOption:hover {
-    background-color: #ffebee;
+    background-color: var(--bg-delete-hover);
 }
+

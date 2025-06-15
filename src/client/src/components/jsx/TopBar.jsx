@@ -1,11 +1,11 @@
-// src/client/src/components/jsx/TopBar.jsx
 import React, { useState, useContext, useEffect } from 'react';
 import { MdMenu } from 'react-icons/md';
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch, FiMoon, FiSun } from 'react-icons/fi'; // ←
 import '../css/TopBar.css';
 import { useNavigate } from 'react-router-dom';
 import gmailImg from '../../assets/gmailLogo.png';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function TopBar({ toggleSidebar }) {
   const navigate = useNavigate();
@@ -13,6 +13,10 @@ export default function TopBar({ toggleSidebar }) {
 
   const [query, setQuery] = useState('');
   const [userInfo, setUserInfo] = useState(null);
+
+  /* --- Dark-mode state persists in localStorage --- */
+  const { darkMode, toggleTheme } = useTheme();
+
 
   useEffect(() => {
     if (userChecked && isLoggedIn && username) {
@@ -41,7 +45,7 @@ export default function TopBar({ toggleSidebar }) {
 
   return (
     <header className="topbar">
-      {/* 1️⃣ Hamburger button */}
+      {/* 1️⃣ Hamburger */}
       <button className="menu-btn" onClick={toggleSidebar}>
         <MdMenu size={24} />
       </button>
@@ -51,7 +55,7 @@ export default function TopBar({ toggleSidebar }) {
         <img src={gmailImg} alt="Gmail" className="logo-image" />
       </div>
 
-      {/* 3️⃣ Search bar */}
+      {/* 3️⃣ Search */}
       <form className="topbar-search" onSubmit={handleSearchSubmit}>
         <button type="submit" className="search-btn">
           <FiSearch size={18} />
@@ -65,7 +69,16 @@ export default function TopBar({ toggleSidebar }) {
         />
       </form>
 
-      {/* 4️⃣ User info */}
+      {/* 4️⃣ Theme toggle  */}
+      <button
+        className="theme-btn"
+        onClick={toggleTheme}
+        title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+      </button>
+
+      {/* 5️⃣ User info */}
       {isLoggedIn && userInfo && (
         <div className="topbar-userinfo">
           {userInfo.profilePicture ? (
@@ -86,7 +99,7 @@ export default function TopBar({ toggleSidebar }) {
         </div>
       )}
 
-      {/* 5️⃣ Logout button */}
+      {/* 6️⃣ Logout */}
       {isLoggedIn && (
         <button className="logout-btn" onClick={logout}>Logout</button>
       )}

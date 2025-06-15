@@ -84,11 +84,14 @@ export default function RegisterPage() {
       } else {
         const err = await res.json();
         // TODO:
-        console.error("Registration error:", err);
         setError(err.error || 'Registration failed');
       }
     } catch (err) {
-      setError("Network error");
+      if (err.message && err.message.includes('Invalid file type')) {
+        setError(err.message);
+      } else {
+        setError("Network error. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +100,10 @@ export default function RegisterPage() {
   return (
     <div className="auth-bg">
       <div className="auth-card">
-        <img src={gmailImg} alt="Gmail" className="auth-logo" />
+        <div className="auth-logo-wrapper">
+  {/* תמונה עם הלוגו + המילה Gmail שכבר קיימת בקובץ */}
+  <img src={gmailImg} alt="Gmail logo" className="auth-logo" />
+        </div>
         <div className="auth-title">Create your account</div>
         <form className="auth-form" onSubmit={handleRegister}>
           <input

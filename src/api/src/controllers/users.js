@@ -75,8 +75,13 @@ exports.createUser = (req, res) => {
         profilePicture = `/uploads/${req.file.filename}`;
     }
 
-    const newUser = Users.createUser(first_name, last_name, gender, birthDate, userName, email, password, profilePicture);
-    res.status(201).location(`/api/users/${newUser.id}`).end();
+    try {
+        const newUser = Users.createUser(first_name, last_name, gender, birthDate, userName, email, password, profilePicture);
+        res.status(201).location(`/api/users/${newUser.id}`).end();
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 exports.getUserByUserName = (req, res) => {

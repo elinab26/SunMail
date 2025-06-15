@@ -1,4 +1,107 @@
 /* src/client/src/styles/global.css */
+/* === Theme variables === */
+:root {
+  /* Main surfaces */
+  --bg-topbar: #f1f3f4;
+  --bg-page:   #ffffff;
+  --bg-sidebar:#f1f3f4;
+
+  /* Text & borders */
+  --text-color:   #202124;
+  --border-color: #d4d5d7;
+
+
+  /* צבעי רקע */
+  --bg-surface: #ffffff;   /* כרטיסים, חלונות קופצים, טפסים */
+  --bg-card:    #f8f9fa;   /* hover נעים */
+  --bg-hover-light:  rgba(0,0,0,.07);   /* ריחוף */
+  --bg-hover-dark: rgba(200,200,200,.15);   /* ריחוף כהה */
+  --bg-hover:  var(--bg-hover-light);   /* ריחוף כללי */
+  /* צבעי טקסט */
+  --text-color-secondary: #5f6368;
+  
+  /* גבולות וצל */
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  
+  /* צבעי אקשן */
+  --primary:        #1a73e8;
+  --primary-hover:  #1557b0;
+  --accent:         #c1e7fe;   /* כפתור ״Compose״ ב-Sidebar */
+  --accent-hover:   #a0d4f9;
+  --danger:         #d93025;
+  --bg-edit-hover:       #e3f2fd;
+  --bg-delete-hover:     rgba(220,53,69,.1); /* צבע רקע למחיקת פריטים */
+ }
+
+/* Dark-mode overrides – מתחלפות ע״י .dark-mode על <html> */
+.dark-mode {
+  --bg-topbar: #202124;
+  --bg-page:   #181818;
+  --bg-sidebar:#202124;
+
+  --text-color:   #e8eaed;
+  --border-color: #5f6368;
+
+  --bg-surface: #202124;
+  --bg-card:    #303134;
+  --bg-hover: var(--bg-hover-dark);
+  
+  --text-color-secondary: #9aa0a6;
+  
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  
+  --primary:       #8ab4f8;
+  --primary-hover: #669df6;
+  --accent:        #8ab4f8;
+  --accent-hover:  #669df6;
+  --danger:        #ff6b6b;
+  --bg-edit-hover:       #303134;
+  --bg-delete-hover:     rgba(255,107,107,.1); /* צבע רקע למחיקת פריטים */
+}
+
+:root             { --active-bg-light: rgba(39,48,128,.12); }
+.dark-mode        { --active-bg-dark:  rgba(255,255,255,.08); }
+:root             { --active-bg: var(--active-bg-light); }
+.dark-mode        { --active-bg: var(--active-bg-dark); }
+
+.dark-mode,
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  color-scheme: dark;   /* רומז לדפדפן לעצב ווידג'טים מובנים כהים */
+}
+
+/* ===== צבע לשדות שמולאו ע"י הדפדפן ===== */
+.dark-mode input:-webkit-autofill,
+.dark-mode input:-webkit-autofill:hover,
+.dark-mode input:-webkit-autofill:focus,
+.dark-mode select:-webkit-autofill,
+.dark-mode textarea:-webkit-autofill {
+  /* מחליף את ה-background הפנימי של Chrome */
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset;
+  -webkit-text-fill-color: var(--text-color);
+  caret-color: var(--text-color);
+}
+
+
+
+/* ===== Built-in browser widgets in dark mode ===== */
+.dark-mode input[type="date"] {
+  /* Chrome/Edge/Safari – מבקש מהדפדפן גרסת "דארק" */
+  color-scheme: dark;
+  /* צבע טקסט של today / selected */
+  color: var(--text-color);
+}
+
+body, html {
+  color: var(--text-color);
+}
+
+
+
+
+
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -7,7 +110,7 @@
 
 .topbar {
   height: 60px;
-  background-color: #f1f3f4;
+  background-color: var(--bg-topbar);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,9 +125,8 @@
 }
 
 .sidebar {
-  background-color: #fff;
-  border-right: 1px solid #eee;
-  background-color: #f1f3f4;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   height:100%;
 }
 
@@ -32,4 +134,5 @@
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+  background-color: var(--bg-page);
 }
