@@ -36,6 +36,11 @@ export default function RegisterPage() {
     }
   };
 
+  const handleDeleteImage = () => {
+    setForm({ ...form, profilePicture: null });
+    setImagePreview("");
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
@@ -84,11 +89,14 @@ export default function RegisterPage() {
       } else {
         const err = await res.json();
         // TODO:
-        console.error("Registration error:", err);
         setError(err.error || 'Registration failed');
       }
     } catch (err) {
-      setError("Network error");
+      if (err.message && err.message.includes('Invalid file type')) {
+        setError(err.message);
+      } else {
+        setError("Network error. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +105,10 @@ export default function RegisterPage() {
   return (
     <div className="auth-bg">
       <div className="auth-card">
-        <img src={gmailImg} alt="Gmail" className="auth-logo" />
+        <div className="auth-logo-wrapper">
+  {/* תמונה עם הלוגו + המילה Gmail שכבר קיימת בקובץ */}
+  <img src={gmailImg} alt="Gmail logo" className="auth-logo" />
+        </div>
         <div className="auth-title">Create your account</div>
         <form className="auth-form" onSubmit={handleRegister}>
           <input
@@ -125,20 +136,28 @@ export default function RegisterPage() {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-<input
-  type="date"
-  name="birthDate"
-  value={form.birthDate}
-  onChange={handleChange}
-  required
-/>
+          <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required />
           <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
           <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {imagePreview && <div className="auth-profile-preview">
-            <img src ={imagePreview} alt="Preview" className="auth-profile-img" />
-          </div>}
+          <input type="file" id="profilePictureInput" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+          {imagePreview ? (
+            <div className="auth-profile-preview">
+              <img src={imagePreview} alt="Preview" className="auth-profile-img" />
+              <div className="image-upload-controls">
+                <button type="button" onClick={handleDeleteImage} className="delete-image-btn">
+                  Remove Image
+                </button>
+                <label htmlFor="profilePictureInput" className="change-image-btn">
+                  Change Image
+                </label>
+              </div>
+            </div>
+          ) : (
+            <label htmlFor="profilePictureInput" className="upload-image-btn">
+              Upload Profile Picture
+            </label>
+          )}
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" type="submit" disabled={isLoading}>
             {isLoading ? "Loading..." : "Register"}

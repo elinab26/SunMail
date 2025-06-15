@@ -1,13 +1,20 @@
 .button {
     background: none;
     border:none;
-    transition: background-color 1s, color 1s, border 0.2s, border-radius 0.2s;
+    transition: background-color 0.2s, color 0.2s, border 0.2s, border-radius 0.2s;
+    color: var(--text-color-secondary);
 }
 .button:hover {
     border-radius: 50%;
-    background-color: grey;
+    background-color: var(--bg-hover);
+    color: var(--primary);
 }
 
 #inputLabel{
     font-family: inherit;
+    background-color: var(--bg-card);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
 }

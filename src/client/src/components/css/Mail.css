@@ -9,26 +9,26 @@
     min-height: 48px;
     font-family: "Roboto", Arial, sans-serif;
     font-size: 15px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
     cursor: pointer;
-    transition: background 0.15s;
     border-top: none;
     border-right: none;
     border-left: none;
+    background: var(--bg-page);
 }
 
 .mailRow:hover {
-    background: #f5f7fa;
+    background: var(--bg-hover);
 }
 
 .mailRow.read {
-    background: #eef4fe;
+    background: var(--bg-card);
     font-weight: 400;
 
 }
 
 .mailRow.unread {
-    background: #fff;
+    background: var(--bg-surface);
     font-weight: 700;
 }
 
@@ -38,6 +38,7 @@
     cursor: pointer;
     padding: 2px 0px 0px 10px;
     font-size: 20px;
+    color: var(--text-color-secondary);
 }
 
 
@@ -47,6 +48,7 @@
     cursor: pointer;
     padding: 2px 0px 0px 10px;
     font-size: 20px;
+    color: var(--text-color-secondary);
 }
 
 #starOn {
@@ -59,6 +61,7 @@
     cursor: pointer;
     padding: 2px 10px 0px 10px;
     font-size: 20px;
+    color: var(--text-color-secondary);
 }
 
 #importantOn {
@@ -67,7 +70,7 @@
 
 .mailSender {
     flex-shrink: 0;
-    color: rgb(30, 30, 30);
+    color: var(--text-color);
     min-width: 170px;
     max-width: 230px;
     overflow: hidden;
@@ -92,7 +95,7 @@
 }
 
 .mailBody {
-    color: #555;
+    color: var(--text-color-secondary);
     overflow: hidden;
     font-weight: 400;
     text-overflow: ellipsis;

@@ -1,0 +1,82 @@
+.user-details-popup {
+  position: absolute;
+  top: 60px; /* Below the topbar */
+  right: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  z-index: 1000;
+  width: 300px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: var(--text-color);
+  font-family: 'Google Sans', Roboto, sans-serif;
+  animation: popupFadeIn 0.2s ease-out;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup-profile-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.popup-profile-fallback {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.popup-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-user-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.popup-user-email {
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+}
+
+.popup-body p {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.popup-body p strong {
+  color: var(--text-color-secondary);
+} 

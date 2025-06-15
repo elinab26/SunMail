@@ -1,14 +1,14 @@
 .deleteConfirmation {
   padding-top: 15px;
-  background: white;
+  background: var(--bg-surface);
   border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--shadow-color);
   min-width: 220px;
 }
 
 .deleteConfirmation p {
   margin: 0 0 15px 0;
-  color: #333;
+  color: var(--text-color);
   font-size: 14px;
   text-align: center;
 }
@@ -20,7 +20,7 @@
 }
 
 .confirmButtonDelete {
-  color: #dc3545;
+  color: var(--danger);
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -29,11 +29,11 @@
 }
 
 .confirmButtonDelete:hover {
-  background-color: #e0e0e0;
+  background-color: var(--bg-hover); ;
 }
 
 .cancelButtonDelete {
-  color: #007bff;
+  color: var(--primary);
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -42,5 +42,5 @@
 }
 
 .cancelButtonDelete:hover {
-  background-color: #e0e0e0;
+  background-color: var(--bg-hover);
 }

@@ -31,7 +31,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (loginRes.status == 201) {
+      if (loginRes.status === 201) {
         login(true, username);
         navigate("/inbox");
       } else {

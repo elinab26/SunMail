@@ -1,0 +1,90 @@
+/* Theme variables */
+:root {
+  /* Main surfaces */
+  --bg-topbar: #f1f3f4;
+  --bg-page: #ffffff;
+  --bg-sidebar: #f1f3f4;
+
+  /* Text & borders */
+  --text-color: #202124;
+  --border-color: #d4d5d7;
+
+  /* Background colors */
+  --bg-surface: #ffffff;
+  --bg-card: #f8f9fa;
+  --bg-hover-light: rgba(0, 0, 0, 0.07);
+  --bg-hover-dark: rgba(200, 200, 200, 0.15);
+  --bg-hover: var(--bg-hover-light);
+
+  /* Text colors */
+  --text-color-secondary: #5f6368;
+
+  /* Borders and shadows */
+  --shadow-color: rgba(0, 0, 0, 0.15);
+
+  /* Action colors */
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --accent: #c1e7fe;
+  --accent-hover: #a0d4f9;
+  --danger: #d93025;
+  --bg-edit-hover: #e3f2fd;
+  --bg-delete-hover: rgba(220, 53, 69, 0.1);
+}
+
+/* Dark mode overrides */
+.dark-mode {
+  --bg-topbar: #202124;
+  --bg-page: #181818;
+  --bg-sidebar: #202124;
+
+  --text-color: #e8eaed;
+  --border-color: #5f6368;
+
+  --bg-surface: #202124;
+  --bg-card: #303134;
+  --bg-hover: var(--bg-hover-dark);
+
+  --text-color-secondary: #9aa0a6;
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
+
+  --primary: #8ab4f8;
+  --primary-hover: #669df6;
+  --accent: #8ab4f8;
+  --accent-hover: #669df6;
+  --danger: #ff6b6b;
+  --bg-edit-hover: #252d46;
+  --bg-delete-hover: rgba(255, 107, 107, 0.1);
+}
+
+/* Active state backgrounds */
+:root { --active-bg-light: rgba(39, 48, 128, 0.12); }
+.dark-mode { --active-bg-dark: rgba(255, 255, 255, 0.08); }
+:root { --active-bg: var(--active-bg-light); }
+.dark-mode { --active-bg: var(--active-bg-dark); }
+
+/* Dark mode form elements */
+.dark-mode,
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  color-scheme: dark;
+}
+
+/* Autofill styles for dark mode */
+.dark-mode input:-webkit-autofill,
+.dark-mode input:-webkit-autofill:hover,
+.dark-mode input:-webkit-autofill:focus,
+.dark-mode select:-webkit-autofill,
+.dark-mode textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset;
+  -webkit-text-fill-color: var(--text-color);
+  caret-color: var(--text-color);
+}
+
+/* Date input dark mode */
+.dark-mode input[type="date"] {
+  color-scheme: dark;
+  color: var(--text-color);
+} 
