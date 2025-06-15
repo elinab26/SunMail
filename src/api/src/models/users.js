@@ -1,4 +1,5 @@
 const users = []
+const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "drafts", "spam", "trash", "archive"];
 
 // Simple UUID v4-like generator
 function IdGenerator() {
@@ -15,8 +16,15 @@ const getAllUsers = () => users;
 const getUserById = (id) => users.find(user => user.id === id);
 
 const createUser = (first_name, last_name, gender, birth_date, userName, email, password, profilePicture) => {
-    const user = {
+    const id = IdGenerator();
+    const labels = DEFAULT_LABELS.map(labelName => ({
         id: IdGenerator(),
+        name: labelName,
+        userId: id
+    }));
+
+    const user = {
+        id: id,
         first_name,
         last_name,
         name: first_name + " " + last_name,
@@ -25,7 +33,8 @@ const createUser = (first_name, last_name, gender, birth_date, userName, email, 
         userName,
         email: email.toLowerCase(),
         password,
-        profilePicture: profilePicture ?? null
+        profilePicture: profilePicture ?? null,
+        labels: labels,
     };
 
     user.toJSON = function () {
