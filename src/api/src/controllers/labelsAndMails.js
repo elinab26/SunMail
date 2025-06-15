@@ -38,7 +38,7 @@ exports.deleteLabelFromMail = (req, res) => {
     const mail = Mail.getById(userId, req.params.mailId);
     if (!mail) return res.status(404).json({ erro: 'Mail not found' });
 
-    if (!labelsAndMails.getLabelFromMailById(mail, label, userId)) {
+    if (!labelsAndMails.getLabelFromMailById(mail, labelToRemove, userId)) {
         return res.status(404).json({ error: 'The mail does not belongs to this label' });
     }
 
