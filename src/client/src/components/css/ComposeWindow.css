@@ -3,7 +3,8 @@
     bottom: 0;
     right: 40px;
     width: 500px;
-    height: 600px;
+    height: auto;
+    max-height: 95vh;
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
     border-radius: 8px 8px 0 0;
@@ -33,14 +34,15 @@
 }
 
 .compose-header {
-    background: #404040;
-    color: white;
+    background: var(--bg-topbar);
+    color: var(--text-color);
     padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 8px 8px 0 0;
     cursor: move;
+    flex-shrink: 0;
 }
 
 .compose-title {
@@ -56,7 +58,7 @@
 .control-btn {
     background: none;
     border: none;
-    color: #fff;
+    color: var(--text-color-secondary);
     cursor: pointer;
     font-size: 18px;
     width: 24px;
@@ -69,17 +71,28 @@
 }
 
 .control-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-hover);
 }
 
 .compose-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+}
+
+.compose-window.maximized {
+    top: 5%;
+    bottom: 5%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .compose-window.maximized .compose-content {
-    height: calc(90vh - 120px);
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
 }
 
 .compose-fields {
@@ -124,7 +137,7 @@
 }
 
 .cc-bcc-btn:hover {
-    background: rgba(26,115,232,.1);
+    background: var(--bg-hover);
 }
 
 .compose-body {
@@ -133,6 +146,8 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .compose-window.maximized .compose-body {
@@ -149,7 +164,10 @@
     font-size: 14px;
     font-family: inherit;
     line-height: 1.5;
-    color: var(--bg-hover);
+    color: var(--text-color);
+    overflow: auto;
+    background: var(--bg-card);
+    min-height: 0;
 }
 
 .compose-window.maximized .compose-textarea {
@@ -162,6 +180,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-shrink: 0;
+    background: var(--bg-surface);
 }
 
 .compose-window.maximized .compose-footer {
@@ -215,6 +235,23 @@
     }
 }
 
+.error-message {
+  height: 20px; /* או כל גובה קבוע שמתאים */
+  color: var(--danger);
+  background-color: var(--bg-card);
+  padding: 0 16px;
+  margin: 8px 16px 0;
+  font-size: 13px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s;
+}
+
+.error-message.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 /* ===== Better contrast for dark mode fields ===== */
 .compose-input,
 .compose-textarea {

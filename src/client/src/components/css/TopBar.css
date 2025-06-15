@@ -5,7 +5,17 @@
     align-items: center;
     height: 60px;
     background-color: var(--bg-topbar);
+    border-bottom: 1px solid var(--border-color);
+    justify-content: space-between; /* Distribute items */
+    padding: 0 16px;
 }
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
 /* Hamburger */
 .menu-btn {
     background: none;
@@ -18,18 +28,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background-color 0.2s, width 0.2s, height 0.2s;
 }
 .menu-btn:hover {
-    background-color:var(--bg-hover);
-    border-radius: 100%;
-    transition: background-color 0.2s;
+    background-color: var(--bg-hover);
 }
 /* Logo */
 .topbar-logo {
     display: flex;
     align-items: center;
-    margin-right: auto;
     margin-left: 8px
 }
 
@@ -41,28 +47,37 @@
 
 /* Search bar */
 .topbar-search {
-    flex: 1;
+    flex-grow: 1;
     display: flex;
-    align-items: left;
-    max-width: 1000px;
+    align-items: center;
+    max-width: 720px;
     /* max size to avoid sticking to edges */
-    margin: 0 16px 0 84px;
-    background-color: var(--bg-hover);
+    margin: 0 40px;
+    background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 24px;
     padding: 12px 8px;
 
 }
 
+.topbar-search:focus-within {
+    background-color: var(--bg-surface);
+    border-color: var(--primary);
+}
+
 .search-btn {
     background: none;
     border: none;
-    color: var(--text-color);
+    color: var(--text-color-secondary);
     cursor: pointer;
     margin-right: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.search-btn:hover {
+    color: var(--text-color);
 }
 
 .search-input {
@@ -75,8 +90,28 @@
 }
 
 .search-input::placeholder {
-    color: var(--text-color);
+    color: var(--text-color-secondary);
     opacity: 0.6;
+}
+
+/* Theme toggle button */
+.theme-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  margin-right: 16px; /* Added space to separate from profile picture */
+}
+
+.theme-btn:hover {
+  background-color: var(--bg-hover);
 }
 
 
@@ -93,6 +128,7 @@
 
 .logout-btn:hover {
     background-color: var(--bg-hover);
+    border-color: var(--text-color-secondary);
 }
 
 .topbar-userinfo {
@@ -100,11 +136,13 @@
     align-items: center;
     gap: 8px;
     margin-right: 16px;
+    color: var(--text-color);
 }
 .topbar-userinfo-img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .topbar-userinfo-name {
     font-weight: 500;
@@ -113,8 +151,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #e0e0e0;
-    color: #444;
+    background: var(--bg-card);
+    color: var(--text-color-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,26 +160,3 @@
     font-weight: bold;
     margin-right: 4px;
   }
-
-
-
-  /* Theme toggle button */
-.theme-btn {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.theme-btn:hover {
-  background-color: var(--bg-hover);
-}
-
-

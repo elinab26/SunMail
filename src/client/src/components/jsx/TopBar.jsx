@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import gmailImg from '../../assets/gmailLogo.png';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import UserDetailsPopup from './UserDetailsPopup';
+
 
 export default function TopBar({ toggleSidebar }) {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export default function TopBar({ toggleSidebar }) {
 
   const [query, setQuery] = useState('');
   const [userInfo, setUserInfo] = useState(null);
+  const [showUserDetails, setShowUserDetails] = useState(false);
 
   /* --- Dark-mode state persists in localStorage --- */
   const { darkMode, toggleTheme } = useTheme();
@@ -45,17 +48,19 @@ export default function TopBar({ toggleSidebar }) {
 
   return (
     <header className="topbar">
-      {/* 1️⃣ Hamburger */}
-      <button className="menu-btn" onClick={toggleSidebar}>
-        <MdMenu size={24} />
-      </button>
+      {/* 1️⃣ Menu button */}
+      <div className="topbar-left">
+        <button className="menu-btn" onClick={toggleSidebar}>
+          <MdMenu size={24} />
+        </button>
 
-      {/* 2️⃣ Logo */}
-      <div className="topbar-logo">
-        <img src={gmailImg} alt="Gmail" className="logo-image" />
+        {/* 2️⃣ Logo */}
+        <div className="topbar-logo">
+          <img src={gmailImg} alt="Gmail" className="logo-image" />
+        </div>
       </div>
 
-      {/* 3️⃣ Search */}
+      {/* 3️⃣ Search bar */}
       <form className="topbar-search" onSubmit={handleSearchSubmit}>
         <button type="submit" className="search-btn">
           <FiSearch size={18} />
@@ -70,39 +75,45 @@ export default function TopBar({ toggleSidebar }) {
       </form>
 
       {/* 4️⃣ Theme toggle  */}
-      <button
-        className="theme-btn"
-        onClick={toggleTheme}
-        title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
-      </button>
+      <div className="topbar-right">
+        <button
+          className="theme-btn"
+          onClick={toggleTheme}
+          title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+        </button>
 
-      {/* 5️⃣ User info */}
-      {isLoggedIn && userInfo && (
-        <div className="topbar-userinfo">
-          {userInfo.profilePicture ? (
-            <img
-              src={userInfo.profilePicture}
-              alt="profile"
-              className="topbar-userinfo-img"
-            />
-          ) : (
-            <div className="topbar-userinfo-fallback">
-              {userInfo.first_name ? userInfo.first_name[0].toUpperCase() : '?'}
+        {/* 5️⃣ User info */}
+        {isLoggedIn && userInfo && (
+          <div
+            className="topbar-userinfo-container"
+            onMouseEnter={() => setShowUserDetails(true)}
+            onMouseLeave={() => setShowUserDetails(false)}
+          >
+            <div className="topbar-userinfo">
+              {userInfo.profilePicture ? (
+                <img
+                  src={userInfo.profilePicture}
+                  alt="profile"
+                  className="topbar-userinfo-img"
+                />
+              ) : (
+                <div className="topbar-userinfo-fallback">
+                  {userInfo.first_name ? userInfo.first_name[0].toUpperCase() : '?'}
+                </div>
+              )}
+              
             </div>
-          )}
-          <span className="topbar-userinfo-name">
-            {userInfo.first_name}
-            {userInfo.last_name ? ' ' + userInfo.last_name : ''}
-          </span>
-        </div>
-      )}
+            {showUserDetails && <UserDetailsPopup user={userInfo} />}
+          </div>
+        )}
 
-      {/* 6️⃣ Logout */}
-      {isLoggedIn && (
-        <button className="logout-btn" onClick={logout}>Logout</button>
-      )}
+        {/* 6️⃣ Logout */}
+        {isLoggedIn && (
+          <button className="logout-btn" onClick={logout}>Logout</button>
+        )}
+      </div>
     </header>
   );
 }

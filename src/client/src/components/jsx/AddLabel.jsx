@@ -25,7 +25,7 @@ function AddLabel({ fetchLabels }) {
 
   return (
     <div>
-      <form onSubmit={addLabelHandler}>
+      <form onSubmit={addLabelHandler} style={{ paddingLeft: "10px" }}>
         <input
           id="inputLabel"
           name="name"
