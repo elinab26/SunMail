@@ -10,6 +10,7 @@ export default function ComposeWindow({
   onMinimize,
   isMinimized,
   fetchMails,
+  draftId
 }) {
   const [formData, setFormData] = useState({
     to: "",
@@ -52,7 +53,7 @@ export default function ComposeWindow({
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/api/mails", {
+      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,9 +107,8 @@ export default function ComposeWindow({
 
   return (
     <div
-      className={`compose-window ${isMinimized ? "minimized" : ""} ${
-        isMaximized && !isMinimized ? "maximized" : ""
-      }`}
+      className={`compose-window ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
+        }`}
     >
       <div className="compose-header">
         <span className="compose-title">New message</span>
@@ -179,7 +179,7 @@ export default function ComposeWindow({
                   className="action-btn"
                   title={
                     ["Attach a file", "Insert a link", "Emoji", "More options"][
-                      index
+                    index
                     ]
                   }
                   disabled={isLoading}

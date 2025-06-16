@@ -68,9 +68,8 @@ function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
       {folders.map(({ key, label, icon, countKey }) => (
         <li
           key={key}
-          className={`sidebar-folder-item${
-            currentFolder === key ? " active" : ""
-          }`}
+          className={`sidebar-folder-item${currentFolder === key ? " active" : ""
+            }`}
           onClick={() => onSelectFolder(key)}
         >
           {/* Folder icon */}
@@ -93,7 +92,7 @@ export default function Sidebar({
   onSelectFolder,
   counts,
 }) {
-    const { mails, currentFolder, setCurrentFolder, fetchMails } = useContext(MailContext);
+  const { mails, currentFolder, setCurrentFolder, fetchMails } = useContext(MailContext);
 
   const [labels, setLabels] = useState([]);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
@@ -114,10 +113,23 @@ export default function Sidebar({
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
+  const [draftId, setDraftId] = useState(null);
+
+  async function createDraft() {
+    const res = await fetch("http://localhost:8080/api/drafts", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ to: ' ', subject: ' ', body: ' ' })
+    })
+    const draft = await res.json();
+    setDraftId(draft.id);
+  }
 
   const handleOpenCompose = () => {
     setIsComposeOpen(true);
     setIsMinimized(false);
+    createDraft();
   };
 
   const handleCloseCompose = () => {
@@ -199,6 +211,7 @@ export default function Sidebar({
         onMinimize={handleMinimizeCompose}
         isMinimized={isMinimized}
         fetchMails={fetchMails}
+        draftId={draftId}
       />
     </>
   );
