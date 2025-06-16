@@ -3,6 +3,9 @@ const Drafts = require('../models/drafts')
 exports.createDraft = (req, res) => {
     const { to, subject, body } = req.body
     const mail = Drafts.createDraft(to, req.id, subject, body)
+    if (!mail) {
+        return res.status(400).json({ error: "Draft not created" });
+    }
     res.status(201).json(mail).end()
 }
 

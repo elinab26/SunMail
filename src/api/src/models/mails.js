@@ -68,15 +68,23 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   const fromUser = users.find(u => u.id === fromUserId);
   const toUser = users.find(u => u.id === toUserId);
 
+  if (!fromUser || !toUser) {
+    return;
+  }
+
   // Add to recipient's inbox
   const labelsTo = Users.getLabelsOfUser(toUser)
+  // if (!labelsTo) return;
   const labelTo = labelsTo.find(l => l.name === "inbox");
+  // if (!labelTo) return;
   mail.labels.push(labelTo)
   // labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
 
   // Add to sender's sent items
   const labelsFrom = Users.getLabelsOfUser(fromUser)
+  // if (!labelsFrom) return;
   const labelFrom = labelsFrom.find(l => l.name === "sent");
+  // if (!labelFrom) return;
   mail.labels.push(labelFrom)
   // labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
 

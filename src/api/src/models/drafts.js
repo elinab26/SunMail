@@ -28,6 +28,7 @@ exports.getDraftById = (userId, mailId) => {
 
 exports.editDraft = (userId, mailId, to, subject, body) => {
     const toUser = User.getUserByUserName(to.split("@")[0]);
+    if (!toUser) return;
     const toUserId = toUser.id
     const mail = exports.getDraftById(userId, mailId);
     if (!mail) return null;
@@ -52,6 +53,10 @@ exports.sendDraft = (userId, mailId) => {
     const draftLabel = Label.getLabelByName('draft', userId);
     labelsAndMails.deleteLabelFromMail(mail, draftLabel, userId);
 
+    const mailSend = Mail.create(mail.to, mail.from, mail.subject, mail.body);
+    if (!mailSend) {
+        return;
+    }
     exports.deleteDraft(userId, mailId);
-    return Mail.create(mail.to, mail.from, mail.subject, mail.body);
+    return mailSend;
 };
