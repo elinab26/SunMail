@@ -35,7 +35,6 @@ const tokenRoutes = require('./routes/tokens');
 const blacklistRoutes = require('./routes/blacklist');
 const labelsAndMails = require('./routes/labelsAndMails');
 const labelsAndUsers = require('./routes/labelsAndUsers')
-const draftsRoutes = require('./routes/drafts')
 
 app.use('/api/labels', labelRoutes);
 app.use('/api/mails', mailRoutes);
@@ -44,7 +43,6 @@ app.use('/api/tokens', tokenRoutes);
 app.use('/api/blacklist', blacklistRoutes);
 app.use('/api/labelsAndMails', labelsAndMails);
 app.use('/api/labelsAndUsers', labelsAndUsers);
-app.use('/api/drafts', draftsRoutes)
 
 
 app.all('/{*any}', (req, res) => {

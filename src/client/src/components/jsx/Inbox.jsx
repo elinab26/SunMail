@@ -5,19 +5,20 @@ import Mail from "./Mail";
 import { useNavigate } from "react-router-dom";
 
 function Inbox() {
-  const { mails, fetchMails } = useContext(MailContext);
+  const { mails, fetchMails, currentFolder } = useContext(MailContext);
   const navigate = useNavigate();
   useEffect(() => {
-    fetchMails();
+    fetchMails(currentFolder);
   }, []);
 
   return (
     <div className="Mails">
       {mails.map((mail) => (
-        <span key={mail.id} onClick={() => navigate(`/inbox/${mail.id}`)}>
+        <span key={mail.id} onClick={() => navigate(`/${currentFolder}/${mail.id}`)}>
           <Mail
             mail={mail}
             fetchMails={fetchMails}
+            currentFolder={currentFolder}
           />
         </span>
       ))}

@@ -57,3 +57,14 @@ exports.deleteLabelById = (req, res) => {
     }
     res.status(204).end()
 }
+
+exports.getLabelByName = (req, res) => {
+    const user = req.id;
+
+    const labelName = req.params.name;
+    const label = labels.getLabelByName(labelName, user);
+    if (!label) {
+        return res.status(404).json({ error: 'Label not found' });
+    }
+    return res.status(200).json(label).end()
+}

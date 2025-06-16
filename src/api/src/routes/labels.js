@@ -9,9 +9,13 @@ router.route('/')
     .get(getUserId, labels.getLabels)
     .post(getUserId, labels.createLabel);
 
+router.route('/name/:name')
+    .get(getUserId, labels.getLabelByName)
+
 router.route('/:id')
     .get(getUserId, labels.getLabelById)
     .patch(getUserId, labels.patchLabelById)
     .delete(getUserId, labels.deleteLabelById);
+
 
 module.exports = router

@@ -199,11 +199,16 @@ exports.deleteDraft = (req, res) => {
 
 exports.setRead = (req, res) => {
   const userId = req.id;
-  if (!userId) return;
+  if (!userId) return res.status(400).end();
+
+  const receiver = req.body.to
+  if (!receiver) return res.status(400).end();
 
   const mailId = req.params.id;
   const labelName = req.params.labelName;
   const label = Label.getLabelByName(labelName, userId);
+  const currentMail = Mail.getById(userId, mailId, label);
+  if (currentMail.to != receiver) return res.status(400).end();
   const mail = Mail.setRead(userId, mailId, label)
 
   if (!mail) {

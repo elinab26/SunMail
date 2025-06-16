@@ -6,7 +6,6 @@ const labelsAndMails = require('./labelsAndMails')
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
-const drafts = {}
 
 /**
  * Generate a unique ID using timestamp + random number
@@ -42,6 +41,11 @@ exports.getLast50 = (userId, label) => {
 exports.getById = (userId, mailId, label) => {
   const retMail = allMails[userId].find(mail => labelsAndMails.getLabelFromMailById(mail, label, userId)
     && mail.id === mailId);
+  return retMail;
+};
+
+exports.getMailById = (userId, mailId) => {
+  const retMail = allMails[userId].find(mail => mail.id === mailId);
   return retMail;
 };
 

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { MailContext } from "../../contexts/MailContext";
 // Importing icons from various icon libraries
 import {
@@ -61,6 +63,8 @@ const secondaryFolders = [
   // { key: 'create', label: 'Create label', icon: <AiOutlinePlus size={20} /> },
 ];
 
+
+
 // Component to render a list of folders (either primary or secondary)
 function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
   return (
@@ -89,7 +93,6 @@ function FolderList({ folders, currentFolder, onSelectFolder, counts }) {
 // Main Sidebar component
 export default function Sidebar({
   isOpen,
-  onSelectFolder,
   counts,
 }) {
   const { mails, currentFolder, setCurrentFolder, fetchMails } = useContext(MailContext);
@@ -97,6 +100,14 @@ export default function Sidebar({
   const [labels, setLabels] = useState([]);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const navigate = useNavigate();
+
+
+  function handleMenuClicked(name) {
+    console.log(name)
+    setCurrentFolder(name)
+    // navigate(`../${name}`)
+  }
 
   async function fetchLabels() {
     const res = await fetch("http://localhost:8080/api/labels", {
@@ -116,7 +127,7 @@ export default function Sidebar({
   const [draftId, setDraftId] = useState(null);
 
   async function createDraft() {
-    const res = await fetch("http://localhost:8080/api/drafts", {
+    const res = await fetch("http://localhost:8080/api/mails/drafts", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -160,7 +171,7 @@ export default function Sidebar({
         <FolderList
           folders={primaryFolders}
           currentFolder={currentFolder}
-          onSelectFolder={onSelectFolder}
+          onSelectFolder={handleMenuClicked}
           counts={counts}
         />
 
@@ -184,7 +195,7 @@ export default function Sidebar({
           <FolderList
             folders={secondaryFolders}
             currentFolder={currentFolder}
-            onSelectFolder={onSelectFolder}
+            onSelectFolder={handleMenuClicked}
             counts={counts}
           />
         )}
@@ -212,6 +223,7 @@ export default function Sidebar({
         isMinimized={isMinimized}
         fetchMails={fetchMails}
         draftId={draftId}
+        currentFolder={currentFolder}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "../css/Mail.css";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { MdOutlineStar } from "react-icons/md";
@@ -6,27 +6,64 @@ import { MdLabelImportantOutline } from "react-icons/md";
 import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
+import { AuthContext } from '../../contexts/AuthContext';
 
-function Mail({ mail, fetchMails }) {
+function Mail({ mail, fetchMails, currentFolder }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
   const [user, setUser] = useState(null);
+  const { username } = useContext(AuthContext);
+
+
+  async function handleStarClicked() {
+    setIsStarred(!isStarred);
+    if (!isStarred) {
+      const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
+        credentials: "include",
+      })
+      if (res1.status != 200) {
+        throw new Error('Label not found')
+      }
+      const label = await res1.json();
+      console.log(mail.id)
+      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ labelId: label.id })
+      })
+
+      if (res2.status != 201) {
+        throw new Error('Error while adding to star')
+      }
+    }
+
+  }
 
   async function handleClicked(e) {
-    const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/inbox`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status != 204) {
-      alert("Error");
-      return null;
+    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+
+    if (mail.to == currUser.id) {
+      const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ to: mail.to })
+      });
+      if (res.status != 204) {
+        return null;
+      }
     }
     if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
-    fetchMails();
+    fetchMails(currentFolder);
   }
 
   useEffect(() => {
@@ -72,7 +109,7 @@ function Mail({ mail, fetchMails }) {
           className="starIcon"
           onClick={(e) => {
             e.stopPropagation();
-            setIsStarred(!isStarred);
+            handleStarClicked();
           }}
         >
           {isStarred ? (

@@ -6,14 +6,13 @@ import Inbox from "../../components/jsx/Inbox";
 import { MailContext } from "../../contexts/MailContext";
 import "../css/InboxPage.css";
 
-export default function InboxPage() {
+export default function InboxPage({ currentFolder, setCurrentFolder }) {
   // State to control if the sidebar is open (toggled by button)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 
   const [mails, setMails] = useState([]);
-  const [currentFolder, setCurrentFolder] = useState("inbox");
 
   // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
@@ -34,8 +33,8 @@ export default function InboxPage() {
   // Sidebar is visible if open or being hovered
   const sidebarVisible = isSidebarOpen || isSidebarHovered;
 
-  async function fetchMails() {
-    const res = await fetch("http://localhost:8080/api/mails/inbox", {
+  async function fetchMails(currentFolder) {
+    const res = await fetch(`http://localhost:8080/api/mails/${currentFolder}`, {
       credentials: "include",
     });
     const json = await res.json();
@@ -43,8 +42,8 @@ export default function InboxPage() {
   }
 
   useEffect(() => {
-    fetchMails();
-  }, []);
+    fetchMails(currentFolder);
+  }, [currentFolder]);
 
   return (
     <MailContext.Provider

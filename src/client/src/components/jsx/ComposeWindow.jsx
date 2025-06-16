@@ -10,7 +10,8 @@ export default function ComposeWindow({
   onMinimize,
   isMinimized,
   fetchMails,
-  draftId
+  draftId,
+  currentFolder
 }) {
   const [formData, setFormData] = useState({
     to: "",
@@ -27,7 +28,7 @@ export default function ComposeWindow({
     setFormData(newForm);
     if (error) setError("");
     try {
-      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}`, {
+      const response = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +72,7 @@ export default function ComposeWindow({
     setError("");
     console.log(formData)
     try {
-      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}/send`, {
+      const response = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +87,7 @@ export default function ComposeWindow({
 
       // Success!
       console.log("Email sent successfully");
-      await fetchMails();
+      await fetchMails(currentFolder);
       resetAndClose(); // Close and reset
 
     } catch (err) {

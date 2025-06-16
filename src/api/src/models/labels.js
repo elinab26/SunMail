@@ -1,6 +1,7 @@
 const labels = {}
 const Mails = require('./mails');
 const labelsAndMails = require('./labelsAndMails')
+const labelsAndUsers = require('./labelsAndUsers')
 const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "draft", "spam", "trash", "archive"];
 
 //function that generates IDs
@@ -49,13 +50,23 @@ const createLabel = (name, userId) => {
     labels[userId] = []
   }
   const label = { id: IdGenerator(), name, userId }
+  labelsAndUsers.addLabelToUser(userId, label);
+  labels[userId].push(label)
+  return label
+}
+
+const createFirstLabel = (name, userId) => {
+  if (!labels[userId]) {
+    labels[userId] = []
+  }
+  const label = { id: IdGenerator(), name, userId }
   labels[userId].push(label)
   return label
 }
 
 const deleteLabelById = (label, userId) => {
   if (label.userId == userId) {
-
+    labelsAndUsers.deleteLabelFromUser(userId, label);
     let mails = Mails.getAllMails(userId);
     mails.map((mail) => {
       const l = labelsAndMails.getLabelFromMailById(mail, label.id, userId);
@@ -92,4 +103,4 @@ const getLabelByName = (name, userId) => {
   }
 }
 
-module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById, getLabelByName }
+module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById, getLabelByName, createFirstLabel }

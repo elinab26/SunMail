@@ -48,6 +48,7 @@ function HomeRedirect() {
 
 function AppRoutes() {
   const { userChecked } = useContext(AuthContext);
+  const [currentFolder, setCurrentFolder] = useState("inbox");
 
   // Don't render anything until user check is done
   if (!userChecked) {
@@ -60,10 +61,10 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route
-        path="/inbox"
+        path="/:label"
         element={
           <ProtectedRoute>
-            <InboxPage />
+            <InboxPage currentFolder={currentFolder} setCurrentFolder={setCurrentFolder}/>
           </ProtectedRoute>
         }
       >
