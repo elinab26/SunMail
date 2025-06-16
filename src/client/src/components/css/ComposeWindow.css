@@ -212,3 +212,8 @@
         max-width: 500px;
     }
 }
+
+.error-message {
+  color: red;
+  margin-top: 8px;
+}

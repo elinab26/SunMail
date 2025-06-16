@@ -26,15 +26,23 @@ export default function ComposeWindow({
     const newForm = { ...formData, [name]: value };
     setFormData(newForm);
     if (error) setError("");
-
-    const response = await fetch(`http://localhost:8080/api/drafts/${draftId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // Important for cookies/auth
-      body: JSON.stringify(newForm),
-    })
+    try {
+      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Important for cookies/auth
+        body: JSON.stringify(newForm),
+      })
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error: ${response.status}: ${errorText}`);
+      }
+      setError("");
+    } catch (error) {
+      setError("Error: Invalid email.");
+    }
   };
 
   const resetAndClose = () => {
