@@ -116,7 +116,7 @@ export default function Sidebar({
   const [draftId, setDraftId] = useState(null);
 
   async function createDraft() {
-    const res = await fetch("http://localhost:8080/api/drafts", {
+    const res = await fetch("http://localhost:8080/api/mails/drafts", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
