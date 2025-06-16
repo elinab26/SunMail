@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import "../css/Mail.css";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { MdOutlineStar } from "react-icons/md";
@@ -12,32 +12,23 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
+  const [isDraft, setIsDraft] = useState(null);
   const [user, setUser] = useState(null);
   const { username } = useContext(AuthContext);
 
 
   async function checkIfDraft() {
-    const res1 = await fetch(`http://localhost:8080/api/labels/name/draft`, {
+    const res1 = await fetch(`http://localhost:8080/api/mails/drafts/${mail.id}`, {
       credentials: "include",
     })
     if (res1.status != 200) {
-      throw new Error('Label not found')
-    }
-    const label = await res1.json();
-
-    const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
-      credentials: "include",
-    })
-
-    if (res2.status != 200) {
-      return 0;
-    }
-    return 1;
+      setIsDraft(false)
+    } else { setIsDraft(true) }
   }
 
 
-  async function handleStarClicked() {
-    if (checkIfDraft() == 0) return;
+  const handleStarClicked = useCallback(async () => {
+    if (isDraft) return;
     setIsStarred(!isStarred);
     const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
       credentials: "include",
@@ -71,14 +62,14 @@ function Mail({ mail, fetchMails, currentFolder }) {
       })
 
       if (res2.status != 204) {
-        throw new Error('Error while removing to star')
+        throw new Error('Error while removing from star')
       }
       fetchMails(currentFolder)
     }
-  }
+  }, [isDraft, isStarred, currentFolder]);
 
-  async function handleImportantClicked() {
-    if (checkIfDraft() == 0) return;
+  const handleImportantClicked = useCallback(async () => {
+    if (isDraft) return;
 
     setisImportant(!isImportant);
     const res1 = await fetch(`http://localhost:8080/api/labels/name/important`, {
@@ -99,7 +90,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
       })
 
       if (res2.status != 201) {
-        throw new Error('Error while adding to star')
+        throw new Error('Error while adding to important')
       }
       fetchMails(currentFolder)
     } else {
@@ -113,11 +104,11 @@ function Mail({ mail, fetchMails, currentFolder }) {
       })
 
       if (res2.status != 204) {
-        throw new Error('Error while removing to star')
+        throw new Error('Error while removing from important')
       }
       fetchMails(currentFolder)
     }
-  }
+  }, [isDraft, isImportant, currentFolder]);
 
 
   async function handleClicked(e) {
@@ -158,6 +149,11 @@ function Mail({ mail, fetchMails, currentFolder }) {
     }
     fetchUser();
   }, [mail.from]);
+
+
+  useEffect(() => {
+    checkIfDraft();
+  }, [currentFolder]);
 
   return (
     <>
