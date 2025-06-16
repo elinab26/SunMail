@@ -16,17 +16,37 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const { username } = useContext(AuthContext);
 
 
+  async function checkIfDraft() {
+    const res1 = await fetch(`http://localhost:8080/api/labels/name/draft`, {
+      credentials: "include",
+    })
+    if (res1.status != 200) {
+      throw new Error('Label not found')
+    }
+    const label = await res1.json();
+
+    const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
+      credentials: "include",
+    })
+
+    if (res2.status != 200) {
+      return 0;
+    }
+    return 1;
+  }
+
+
   async function handleStarClicked() {
+    if (checkIfDraft() == 0) return;
     setIsStarred(!isStarred);
+    const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
+      credentials: "include",
+    })
+    if (res1.status != 200) {
+      throw new Error('Label not found')
+    }
+    const label = await res1.json();
     if (!isStarred) {
-      const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
-        credentials: "include",
-      })
-      if (res1.status != 200) {
-        throw new Error('Label not found')
-      }
-      const label = await res1.json();
-      console.log(mail.id)
       const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
         method: "POST",
         headers: {
@@ -39,9 +59,66 @@ function Mail({ mail, fetchMails, currentFolder }) {
       if (res2.status != 201) {
         throw new Error('Error while adding to star')
       }
-    }
+      fetchMails(currentFolder)
+    } else {
+      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ labelId: label.id })
+      })
 
+      if (res2.status != 204) {
+        throw new Error('Error while removing to star')
+      }
+      fetchMails(currentFolder)
+    }
   }
+
+  async function handleImportantClicked() {
+    if (checkIfDraft() == 0) return;
+
+    setisImportant(!isImportant);
+    const res1 = await fetch(`http://localhost:8080/api/labels/name/important`, {
+      credentials: "include",
+    })
+    if (res1.status != 200) {
+      throw new Error('Label not found')
+    }
+    const label = await res1.json();
+    if (!isImportant) {
+      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ labelId: label.id })
+      })
+
+      if (res2.status != 201) {
+        throw new Error('Error while adding to star')
+      }
+      fetchMails(currentFolder)
+    } else {
+      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ labelId: label.id })
+      })
+
+      if (res2.status != 204) {
+        throw new Error('Error while removing to star')
+      }
+      fetchMails(currentFolder)
+    }
+  }
+
 
   async function handleClicked(e) {
     const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
@@ -124,7 +201,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
           className="importantIcon"
           onClick={(e) => {
             e.stopPropagation();
-            setisImportant(!isImportant);
+            handleImportantClicked();
           }}
         >
           {isImportant ? (
