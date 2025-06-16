@@ -17,24 +17,36 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const { username } = useContext(AuthContext);
 
 
-  function checkIfDraft() {
-    if (mail.labels?.some(label => label.name === "draft")) {
+  async function checkIfDraft() {
+    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "draft" && label.userId === currUser.id)) {
       setIsDraft(true);
     } else {
       setIsDraft(false)
     }
   }
 
-  function checkStarred() {
-    if (mail.labels?.some(label => label.name === "starred")) {
+  async function checkStarred() {
+    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "starred" && label.userId === currUser.id)) {
       setIsStarred(true);
     } else {
       setIsStarred(false)
     }
   }
 
-  function checkImportant() {
-    if (mail.labels?.some(label => label.name === "important")) {
+  async function checkImportant() {
+    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "important" && label.userId === currUser.id)) {
       setisImportant(true);
     } else {
       setisImportant(false)
