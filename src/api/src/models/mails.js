@@ -6,7 +6,6 @@ const labelsAndMails = require('./labelsAndMails')
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
-const drafts = {}
 
 /**
  * Generate a unique ID using timestamp + random number

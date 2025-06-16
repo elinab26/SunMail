@@ -10,13 +10,10 @@ exports.addLabelToUser = (req, res) => {
     const labelToAdd = getLabelById(labelId, userId);
     if (!labelToAdd) return res.status(404).json({ error: 'Label not found' });
 
-    const user = User.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    if (User.getLabelsOfUser(user).find(l => l == labelToAdd)) {
+    if (User.getLabelsOfUser(userId).find(l => l == labelToAdd)) {
         return res.status(400).json({ error: 'User already have this label.' })
     }
-    const returnedLabel = labelsAndUsers.addLabelToUser(user, labelToAdd);
+    const returnedLabel = labelsAndUsers.addLabelToUser(userId, labelToAdd);
 
     if (returnedLabel == labelToAdd) {
         return res.status(201).end();
@@ -32,10 +29,7 @@ exports.getLabelFromUserById = (req, res) => {
     const labelToGet = getLabelById(labelId, userId);
     if (!labelToGet) return res.status(404).json({ error: 'Label not found' });
 
-    const user = User.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    const returnedLabel = labelsAndUsers.getLabelFromUserById(user, labelToGet);
+    const returnedLabel = labelsAndUsers.getLabelFromUserById(userId, labelToGet);
     if (returnedLabel == labelToGet) {
         return res.status(200).end();
     } else {
@@ -50,14 +44,11 @@ exports.deleteLabelFromUser = (req, res) => {
     const labelToRemove = getLabelById(labelId, userId);
     if (!labelToRemove) return res.status(404).json({ error: 'Label not found' });
 
-    const user = User.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    if (!labelsAndUsers.getLabelFromUserById(user, labelToRemove)) {
+    if (!labelsAndUsers.getLabelFromUserById(userId, labelToRemove)) {
         return res.status(404).json({ error: 'The user does not have this label' });
     }
 
-    const ret = labelsAndUsers.deleteLabelFromUser(user, labelToRemove);
+    const ret = labelsAndUsers.deleteLabelFromUser(userId, labelToRemove);
 
     if (ret == -1) {
         return res.status(404).json({ error: 'Label not removed' }).end();
