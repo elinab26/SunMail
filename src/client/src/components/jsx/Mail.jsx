@@ -16,12 +16,38 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const { username } = useContext(AuthContext);
 
 
+  async function handleStarClicked() {
+    setIsStarred(!isStarred);
+    if (!isStarred) {
+      const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
+        credentials: "include",
+      })
+      if (res1.status != 200) {
+        throw new Error('Label not found')
+      }
+      const label = await res1.json();
+      console.log(mail.id)
+      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ labelId: label.id })
+      })
+
+      if (res2.status != 201) {
+        throw new Error('Error while adding to star')
+      }
+    }
+
+  }
+
   async function handleClicked(e) {
     const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
     if (!response.ok) throw new Error('User not found');
 
     const currUser = await response.json();
-    console.log(currUser)
 
     if (mail.to == currUser.id) {
       const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
@@ -83,7 +109,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
           className="starIcon"
           onClick={(e) => {
             e.stopPropagation();
-            setIsStarred(!isStarred);
+            handleStarClicked();
           }}
         >
           {isStarred ? (

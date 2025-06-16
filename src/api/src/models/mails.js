@@ -44,6 +44,11 @@ exports.getById = (userId, mailId, label) => {
   return retMail;
 };
 
+exports.getMailById = (userId, mailId) => {
+  const retMail = allMails[userId].find(mail => mail.id === mailId);
+  return retMail;
+};
+
 /**
  * Create a new mail object, assign a unique id,
  * and save it to the recipient's inbox and the sender's sent items.
