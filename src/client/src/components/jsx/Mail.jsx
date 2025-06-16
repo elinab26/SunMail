@@ -17,19 +17,35 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const { username } = useContext(AuthContext);
 
 
-  async function checkIfDraft() {
-    const res1 = await fetch(`http://localhost:8080/api/mails/drafts/${mail.id}`, {
-      credentials: "include",
-    })
-    if (res1.status != 200) {
+  function checkIfDraft() {
+    if (mail.labels?.some(label => label.name === "draft")) {
+      setIsDraft(true);
+    } else {
       setIsDraft(false)
-    } else { setIsDraft(true) }
+    }
+  }
+
+  function checkStarred() {
+    if (mail.labels?.some(label => label.name === "starred")) {
+      setIsStarred(true);
+    } else {
+      setIsStarred(false)
+    }
+  }
+
+  function checkImportant() {
+    if (mail.labels?.some(label => label.name === "important")) {
+      setisImportant(true);
+    } else {
+      setisImportant(false)
+    }
   }
 
 
   const handleStarClicked = useCallback(async () => {
     if (isDraft) return;
     setIsStarred(!isStarred);
+
     const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
       credentials: "include",
     })
@@ -72,6 +88,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
     if (isDraft) return;
 
     setisImportant(!isImportant);
+
     const res1 = await fetch(`http://localhost:8080/api/labels/name/important`, {
       credentials: "include",
     })
@@ -147,12 +164,16 @@ function Mail({ mail, fetchMails, currentFolder }) {
       const json = await res.json();
       setUser(json);
     }
+    fetchMails(currentFolder)
     fetchUser();
   }, [mail.from]);
 
 
+
   useEffect(() => {
     checkIfDraft();
+    checkStarred();
+    checkImportant();
   }, [currentFolder]);
 
   return (

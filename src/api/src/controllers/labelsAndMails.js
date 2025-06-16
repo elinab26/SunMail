@@ -31,7 +31,7 @@ exports.addLabelToMail = (req, res) => {
 exports.deleteLabelFromMail = (req, res) => {
     const userId = req.id
     if (!userId) return;
-    const { labelId } = req.body
+    const labelId = req.params.labelId
     const labelToRemove = getLabelById(labelId, userId);
     if (!labelToRemove) return res.status(404).json({ error: 'Label not found' });
 
@@ -55,7 +55,7 @@ exports.deleteLabelFromMail = (req, res) => {
 exports.getLabelFromMailById = (req, res) => {
     const userId = req.id
     if (!userId) return;
-    const { labelId } = req.body
+    const labelId = req.params.labelId
     const labelToGet = getLabelById(labelId, userId);
     if (!labelToGet) return res.status(404).json({ error: 'Label not found' });
 
