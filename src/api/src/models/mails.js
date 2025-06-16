@@ -76,7 +76,7 @@ exports.create = (toUserId, fromUserId, subject, body) => {
 
   // Add to sender's sent items
   const labelsFrom = Users.getLabelsOfUser(fromUser)
-  const labelFrom = labelsFrom.find(l => l.name === "inbox");
+  const labelFrom = labelsFrom.find(l => l.name === "sent");
   mail.labels.push(labelFrom)
   // labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
 

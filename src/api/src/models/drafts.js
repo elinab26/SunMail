@@ -10,9 +10,8 @@ function generateMailId() {
 
 exports.createDraft = (to, from, subject, body) => {
     const mail = { id: generateMailId(), from, to, subject, body, date: new Date().toISOString(), labels: [], read: false };
-
     const draftLabel = Label.getLabelByName('draft', from);
-    if (!draftLabel) throw new Error('Label draft non trouvé');
+    if (!draftLabel) throw new Error('Label draft not found');
     labelsAndMails.addLabelToMail(mail, draftLabel, from);
 
     drafts[from] = drafts[from] || [];
