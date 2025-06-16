@@ -21,7 +21,7 @@ exports.deleteLabelFromMail = (mail, label, userId) => {
 
 exports.getLabelFromMailById = (mail, label, userId) => {
     const labels = Mails.getLabelsOfMail(mail, userId);
-    Mails.ensureMailbox(labels, userId);
+    // Mails.ensureMailbox(labels, userId);
     return labels.find(l => l == label);
 }
 

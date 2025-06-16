@@ -2,7 +2,7 @@
 
 const Mail = require('../models/mails');
 const User = require('../models/users');
-const util = require('../utils/userUtils.js');
+const Label = require('../models/labels')
 const { validateUrls } = require('../utils/urlUtils');
 
 /**
@@ -16,18 +16,20 @@ function resolveToUserId(email) {
 }
 
 /**
- * GET /api/mails
+ * GET /api/mails/:labelName
  * Return the last 50 mails for this user (inbox).
  */
 exports.getAllMails = (req, res) => {
   const userId = req.id
   if (!userId) return;
-  const mails = Mail.getLast50(userId);
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId)
+  const mails = Mail.getLast50(userId, label);
   res.json(mails);
 };
 
 /**
- * GET /api/mails/:id
+ * GET /api/mails/:id/:labelName
  * Return a single mail by ID for this user’s inbox.
  */
 exports.getMailById = (req, res) => {
@@ -35,7 +37,9 @@ exports.getMailById = (req, res) => {
   if (!userId) return;
 
   const mailId = req.params.id;
-  const mail = Mail.getById(userId, mailId);
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId);
+  const mail = Mail.getById(userId, mailId, label);
   if (!mail) {
     return res.status(404).json({ error: 'Mail not found' });
   }
@@ -77,7 +81,8 @@ exports.createMail = async (req, res) => {
     message: 'Email sent successfully',
     to: to,
     subject: subject,
-    date: mail.date
+    date: mail.date,
+    labels: mail.labels
   });
 };
 
@@ -197,8 +202,9 @@ exports.setRead = (req, res) => {
   if (!userId) return;
 
   const mailId = req.params.id;
-
-  const mail = Mail.setRead(userId, mailId)
+  const labelName = req.params.labelName;
+  const label = Label.getLabelByName(labelName, userId);
+  const mail = Mail.setRead(userId, mailId, label)
 
   if (!mail) {
     return res.status(404).json({ error: 'Error while reading' });

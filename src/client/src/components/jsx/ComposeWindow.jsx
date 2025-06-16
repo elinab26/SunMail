@@ -10,6 +10,7 @@ export default function ComposeWindow({
   onMinimize,
   isMinimized,
   fetchMails,
+  draftId
 }) {
   const [formData, setFormData] = useState({
     to: "",
@@ -20,10 +21,28 @@ export default function ComposeWindow({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear error when user types
+  const handleInputChange = async (e) => {
+    const { name, value } = e.target;
+    const newForm = { ...formData, [name]: value };
+    setFormData(newForm);
     if (error) setError("");
+    try {
+      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Important for cookies/auth
+        body: JSON.stringify(newForm),
+      })
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error: ${response.status}: ${errorText}`);
+      }
+      setError("");
+    } catch (error) {
+      setError("Error: Invalid email.");
+    }
   };
 
   const resetAndClose = () => {
@@ -50,19 +69,14 @@ export default function ComposeWindow({
 
     setIsLoading(true);
     setError("");
-
+    console.log(formData)
     try {
-      const response = await fetch("http://localhost:8080/api/mails", {
+      const response = await fetch(`http://localhost:8080/api/drafts/${draftId}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include", // Important for cookies/auth
-        body: JSON.stringify({
-          to: formData.to,
-          subject: formData.subject,
-          body: formData.body,
-        }),
       });
 
       if (!response.ok) {
@@ -106,9 +120,8 @@ export default function ComposeWindow({
 
   return (
     <div
-      className={`compose-window ${isMinimized ? "minimized" : ""} ${
-        isMaximized && !isMinimized ? "maximized" : ""
-      }`}
+      className={`compose-window ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
+        }`}
     >
       <div className="compose-header">
         <span className="compose-title">New message</span>
@@ -179,7 +192,7 @@ export default function ComposeWindow({
                   className="action-btn"
                   title={
                     ["Attach a file", "Insert a link", "Emoji", "More options"][
-                      index
+                    index
                     ]
                   }
                   disabled={isLoading}

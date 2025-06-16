@@ -1,6 +1,7 @@
-const labels = []
+const labels = {}
 const Mails = require('./mails');
 const labelsAndMails = require('./labelsAndMails')
+const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "draft", "spam", "trash", "archive"];
 
 //function that generates IDs
 function IdGenerator() {
@@ -12,13 +13,16 @@ function IdGenerator() {
 }
 
 const getLabels = (userId) => {
+  if (!labels[userId]) return [];
+
   const userLabels = []
   const returnLabels = []
 
   //get the labels of the user
-  for (let i = 0; i < labels.length; i++) {
-    if (labels[i].userId == userId) {
-      userLabels.push(labels[i])
+  for (let i = 0; i < labels[userId].length; i++) {
+    const label = DEFAULT_LABELS.find(l => l == labels[userId][i].name);
+    if (labels[userId][i].userId == userId && !label) {
+      userLabels.push(labels[userId][i])
     }
   }
 
@@ -34,23 +38,18 @@ const getLabels = (userId) => {
 }
 
 const getLabelById = (id, userId) => {
-  const userLabels = []
-  //get the labels of the user
-  for (let i = 0; i < labels.length; i++) {
-    if (labels[i].userId == userId) {
-      userLabels.push(labels[i])
-    }
-  }
-  const label = userLabels.find(l => l.id == id)
-  if (!label) {
-    return null;
-  }
-  return label;
-}
+  if (!labels[userId]) return null;
+
+  return labels[userId].find(label => label.userId === userId && label.id === id) || null;
+};
+
 
 const createLabel = (name, userId) => {
+  if (!labels[userId]) {
+    labels[userId] = []
+  }
   const label = { id: IdGenerator(), name, userId }
-  labels.push(label)
+  labels[userId].push(label)
   return label
 }
 
@@ -65,9 +64,9 @@ const deleteLabelById = (label, userId) => {
       }
     });
 
-    let i = labels.indexOf(label)
+    let i = labels[userId].indexOf(label)
     if (i > -1)
-      labels.splice(i, 1)
+      labels[userId].splice(i, 1)
   } else {
     return -1;
   }
@@ -84,4 +83,13 @@ const patchLabelById = (label, name, userId) => {
   return 0;
 }
 
-module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById }
+const getLabelByName = (name, userId) => {
+  const label = labels[userId].find(l => l.name === name && l.userId === userId);
+  if (label.userId == userId) {
+    return label;
+  } else {
+    return null;
+  }
+}
+
+module.exports = { getLabels, getLabelById, createLabel, deleteLabelById, patchLabelById, getLabelByName }

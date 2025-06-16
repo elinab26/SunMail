@@ -12,7 +12,7 @@ exports.addLabelToMail = (req, res) => {
     if (!labelToAdd) return res.status(404).json({ error: 'Label not found' });
 
     const mail = Mail.getById(userId, req.params.mailId);
-    if (!mail) return res.status(404).json({ erro: 'Mail not found' });
+    if (!mail) return res.status(404).json({ error: 'Mail not found' });
 
     if (Mail.getLabelsOfMail(mail).find(l => l == labelToAdd)) {
         return res.status(400).json({ error: 'Mail already belongs to this label.' })
@@ -35,10 +35,10 @@ exports.deleteLabelFromMail = (req, res) => {
     const labelToRemove = getLabelById(labelId, userId);
     if (!labelToRemove) return res.status(404).json({ error: 'Label not found' });
 
-    const mail = Mail.getById(userId, req.params.mailId);
+    const mail = Mail.getById(userId, req.params.mailId, labelToRemove);
     if (!mail) return res.status(404).json({ erro: 'Mail not found' });
 
-    if (!labelsAndMails.getLabelFromMailById(mail, label, userId)) {
+    if (!labelsAndMails.getLabelFromMailById(mail, labelToRemove, userId)) {
         return res.status(404).json({ error: 'The mail does not belongs to this label' });
     }
 
@@ -59,7 +59,7 @@ exports.getLabelFromMailById = (req, res) => {
     const labelToGet = getLabelById(labelId, userId);
     if (!labelToGet) return res.status(404).json({ error: 'Label not found' });
 
-    const mail = Mail.getById(userId, req.params.mailId);
+    const mail = Mail.getById(userId, req.params.mailId, labelToGet);
     if (!mail) return res.status(404).json({ erro: 'Mail not found' });
 
     const returnedLabel = labelsAndMails.getLabelFromMailById(mail, labelToGet, userId);

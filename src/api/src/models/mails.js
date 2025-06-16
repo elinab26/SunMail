@@ -1,22 +1,23 @@
 // models/mails.js
 
-const Users = require('./users')
+const labelsAndMails = require('./labelsAndMails')
 
 // In-memory storage separated per user
 const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
+const drafts = {}
 
 /**
  * Generate a unique ID using timestamp + random number
- */
+*/
 function generateMailId() {
   return `mail_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**
  * Ensure a mailbox exists for a given user in the specified store.
- */
+*/
 exports.ensureMailbox = (store, userId) => {
   if (!store[userId]) {
     store[userId] = [];
@@ -25,29 +26,32 @@ exports.ensureMailbox = (store, userId) => {
 
 /**
  * Return the last 50 mails for a user in reverse chronological order.
- */
-exports.getLast50 = (userId) => {
-  exports.ensureMailbox(inboxes, userId);
-  return inboxes[userId].slice(-50).reverse();
+*/
+exports.getLast50 = (userId, label) => {
+  const userMails = allMails[userId] || [];
+  return userMails
+    .filter(mail => labelsAndMails.getLabelFromMailById(mail, label, userId))
+    .slice(-50)
+    .reverse();
 };
 
 /**
  * Return a single mail by ID for this user's inbox.
  * If not found, returns undefined.
- */
-exports.getById = (userId, mailId) => {
-  exports.ensureMailbox(inboxes, userId);
-  return inboxes[userId].find(mail => mail.id === mailId);
+*/
+exports.getById = (userId, mailId, label) => {
+  const retMail = allMails[userId].find(mail => labelsAndMails.getLabelFromMailById(mail, label, userId)
+    && mail.id === mailId);
+  return retMail;
 };
 
 /**
  * Create a new mail object, assign a unique id,
  * and save it to the recipient's inbox and the sender's sent items.
  * Returns the new mail object with email addresses instead of user IDs.
- */
+*/
 exports.create = (toUserId, fromUserId, subject, body) => {
-  const User = require('./users'); // Import User model
-
+  const Users = require('./users')
   const mail = {
     id: generateMailId(),
     from: fromUserId,
@@ -59,25 +63,39 @@ exports.create = (toUserId, fromUserId, subject, body) => {
     read: false
   };
 
+  // Return mail with email addresses for frontend
+  const users = Users.getAllUsers();
+  const fromUser = users.find(u => u.id === fromUserId);
+  const toUser = users.find(u => u.id === toUserId);
+
+  if (!fromUser || !toUser) {
+    return;
+  }
+
   // Add to recipient's inbox
-  exports.ensureMailbox(inboxes, toUserId);
-  inboxes[toUserId].push(mail);
+  const labelsTo = Users.getLabelsOfUser(toUser)
+  // if (!labelsTo) return;
+  const labelTo = labelsTo.find(l => l.name === "inbox");
+  // if (!labelTo) return;
+  mail.labels.push(labelTo)
+  // labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
 
   // Add to sender's sent items
-  exports.ensureMailbox(sentItems, fromUserId);
-  sentItems[fromUserId].push(mail);
+  const labelsFrom = Users.getLabelsOfUser(fromUser)
+  // if (!labelsFrom) return;
+  const labelFrom = labelsFrom.find(l => l.name === "sent");
+  // if (!labelFrom) return;
+  mail.labels.push(labelFrom)
+  // labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
 
   // Add to the global array for both users
   exports.ensureMailbox(allMails, fromUserId);
   allMails[fromUserId].push(mail);
 
-  exports.ensureMailbox(allMails, toUserId);
-  allMails[toUserId].push(mail);
-
-  // Return mail with email addresses for frontend
-  const users = User.getAllUsers();
-  const fromUser = users.find(u => u.id === fromUserId);
-  const toUser = users.find(u => u.id === toUserId);
+  if (fromUserId != toUserId) {
+    exports.ensureMailbox(allMails, toUserId);
+    allMails[toUserId].push(mail);
+  }
 
   return {
     ...mail,
@@ -132,10 +150,8 @@ exports.getLabelsOfMail = (mail, userId) => {
   return mail.labels;
 }
 
-exports.setRead = (userId, mailId) => {
-  exports.ensureMailbox(inboxes, userId);
-
-  const mail = this.getById(userId, mailId);
+exports.setRead = (userId, mailId, label) => {
+  const mail = this.getById(userId, mailId, label);
   mail.read = true;
   return mail;
 }

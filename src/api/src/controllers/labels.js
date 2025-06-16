@@ -1,5 +1,4 @@
 const labels = require('../models/labels')
-const util = require('../utils/userUtils.js')
 
 exports.getLabels = (req, res) => {
     const user = req.id

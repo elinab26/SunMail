@@ -14,7 +14,7 @@ function Mail({ mail, fetchMails }) {
   const [user, setUser] = useState(null);
 
   async function handleClicked(e) {
-    const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read`, {
+    const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/inbox`, {
       method: "PATCH",
       credentials: "include",
       headers: {
