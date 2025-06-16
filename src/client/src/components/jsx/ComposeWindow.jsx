@@ -10,7 +10,8 @@ export default function ComposeWindow({
   onMinimize,
   isMinimized,
   fetchMails,
-  draftId
+  draftId,
+  currentFolder
 }) {
   const [formData, setFormData] = useState({
     to: "",
@@ -86,7 +87,7 @@ export default function ComposeWindow({
 
       // Success!
       console.log("Email sent successfully");
-      await fetchMails();
+      await fetchMails(currentFolder);
       resetAndClose(); // Close and reset
 
     } catch (err) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "../css/Mail.css";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { MdOutlineStar } from "react-icons/md";
@@ -6,27 +6,38 @@ import { MdLabelImportantOutline } from "react-icons/md";
 import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
+import { AuthContext } from '../../contexts/AuthContext';
 
-function Mail({ mail, fetchMails }) {
+function Mail({ mail, fetchMails, currentFolder }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
   const [user, setUser] = useState(null);
+  const { username } = useContext(AuthContext);
+
 
   async function handleClicked(e) {
-    const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/inbox`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status != 204) {
-      alert("Error");
-      return null;
+    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    console.log(currUser)
+
+    if (mail.to == currUser.id) {
+      const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ to: mail.to })
+      });
+      if (res.status != 204) {
+        return null;
+      }
     }
     if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
-    fetchMails();
+    fetchMails(currentFolder);
   }
 
   useEffect(() => {
