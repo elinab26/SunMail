@@ -21,10 +21,20 @@ export default function ComposeWindow({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear error when user types
+  const handleInputChange = async (e) => {
+    const { name, value } = e.target;
+    const newForm = { ...formData, [name]: value };
+    setFormData(newForm);
     if (error) setError("");
+
+    const response = await fetch(`http://localhost:8080/api/drafts/${draftId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Important for cookies/auth
+      body: JSON.stringify(newForm),
+    })
   };
 
   const resetAndClose = () => {
@@ -51,7 +61,7 @@ export default function ComposeWindow({
 
     setIsLoading(true);
     setError("");
-
+    console.log(formData)
     try {
       const response = await fetch(`http://localhost:8080/api/drafts/${draftId}/send`, {
         method: "POST",
@@ -59,11 +69,6 @@ export default function ComposeWindow({
           "Content-Type": "application/json",
         },
         credentials: "include", // Important for cookies/auth
-        body: JSON.stringify({
-          to: formData.to,
-          subject: formData.subject,
-          body: formData.body,
-        }),
       });
 
       if (!response.ok) {

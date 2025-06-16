@@ -20,7 +20,7 @@ exports.sendDraft = (req, res) => {
 exports.editDraft = (req, res) => {
     const { to, subject, body } = req.body
     const mailId = req.params.id
-    const mail = Drafts.editDraft(to, req.id, subject, body, mailId);
+    const mail = Drafts.editDraft(req.id, mailId, to, subject, body);
     res.status(204).json(mail).end();
 }
 

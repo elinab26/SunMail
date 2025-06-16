@@ -1,5 +1,6 @@
 const Mail = require('./mails');
 const Label = require('./labels');
+const User = require('./users')
 const labelsAndMails = require('./labelsAndMails');
 const drafts = {};
 
@@ -27,9 +28,11 @@ exports.getDraftById = (userId, mailId) => {
 };
 
 exports.editDraft = (userId, mailId, to, subject, body) => {
+    const toUser = User.getUserByUserName(to.split("@")[0]);
+    const toUserId = toUser.id
     const mail = exports.getDraftById(userId, mailId);
     if (!mail) return null;
-    mail.to = to;
+    mail.to = toUserId;
     mail.subject = subject;
     mail.body = body;
     mail.date = new Date().toISOString();
