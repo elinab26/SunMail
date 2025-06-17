@@ -11,7 +11,6 @@ export default function InboxPage({ currentFolder, setCurrentFolder }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
-
   const [mails, setMails] = useState([]);
 
   // Ref to store the hover timeout ID

@@ -104,9 +104,8 @@ export default function Sidebar({
 
 
   function handleMenuClicked(name) {
-    console.log(name)
     setCurrentFolder(name)
-    // navigate(`../${name}`)
+    navigate(`../${name}`)
   }
 
   async function fetchLabels() {
