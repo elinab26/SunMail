@@ -15,7 +15,6 @@ function IdGenerator() {
 
 const getLabels = (userId) => {
   if (!labels[userId]) return [];
-
   const userLabels = []
   const returnLabels = []
 
@@ -87,11 +86,11 @@ const patchLabelById = (label, name, userId) => {
   userLabels = getLabels(userId)
   for (let i = 0; i < userLabels.length; i++) {
     if (userLabels[i].name == name) {
-      return -2;
+      return null;
     }
   }
   label.name = name
-  return 0;
+  return label;
 }
 
 const getLabelByName = (name, userId) => {
