@@ -28,13 +28,15 @@ exports.getDraftById = (userId, mailId) => {
 
 exports.editDraft = (userId, mailId, to, subject, body) => {
     const toUser = User.getUserByUserName(to.split("@")[0]);
-    if (!toUser) return;
-    const toUserId = toUser.id
     const mail = exports.getDraftById(userId, mailId);
-    if (!mail) return null;
-    mail.to = toUserId;
-    mail.subject = subject;
-    mail.body = body;
+    if (!mail) return;
+    if (toUser) {
+        mail.to = toUser.id;
+    }
+    if (subject) {
+        mail.subject = subject;
+    }
+    if (body) { mail.body = body; }
     mail.date = new Date().toISOString();
     return mail;
 };
