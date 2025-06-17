@@ -3,9 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import InboxPage from "./pages/jsx/InboxPage";
 import LoginPage from "./pages/jsx/LoginPage";
 import RegisterPage from "./pages/jsx/RegisterPage";
-import MailPage from "./pages/jsx/MailPage";
+import { MailProvider } from './contexts/MailContext';
 import Inbox from "./components/jsx/Inbox";
 import SearchResultsPage from "./pages/jsx/SearchResultsPage";
+import MailRenderer from "./components/jsx/MailRenderer";
 import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 
@@ -49,7 +50,6 @@ function HomeRedirect() {
 
 function AppRoutes() {
   const { userChecked } = useContext(AuthContext);
-  const [currentFolder, setCurrentFolder] = useState("inbox");
 
   // Don't render anything until user check is done
   if (!userChecked) {

@@ -7,6 +7,7 @@ import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
 import { AuthContext } from '../../contexts/AuthContext';
+import ComposeWindow from "./ComposeWindow";
 
 function Mail({ mail, fetchMails, currentFolder }) {
   const [isSelected, setisSelected] = useState(false);
@@ -14,6 +15,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const [isImportant, setisImportant] = useState(false);
   const [isDraft, setIsDraft] = useState(null);
   const [user, setUser] = useState(null);
+  const [showCompose, setShowCompose] = useState(false);
   const { username } = useContext(AuthContext);
 
 
@@ -146,7 +148,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
 
     const currUser = await response.json();
 
-    if (mail.to == currUser.id) {
+    if (mail.to == currUser.id && currentFolder !== "drafts") {
       const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
         method: "PATCH",
         credentials: "include",
@@ -158,8 +160,8 @@ function Mail({ mail, fetchMails, currentFolder }) {
       if (res.status != 204) {
         return null;
       }
+      if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
     }
-    if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
     fetchMails(currentFolder);
   }
 
@@ -188,11 +190,19 @@ function Mail({ mail, fetchMails, currentFolder }) {
     checkImportant();
   }, [currentFolder]);
 
+  const handleClick = (e) => {
+    if (currentFolder === "drafts") {
+      setShowCompose(true);
+    } else {
+      handleClicked(e);
+    }
+  };
+
   return (
     <>
       <div
         className={`mailRow ${mail.read ? "read" : "unread"}`}
-        onClick={handleClicked}
+        onClick={handleClick}
         tabIndex={0}
         role="button"
       >
@@ -247,6 +257,9 @@ function Mail({ mail, fetchMails, currentFolder }) {
           <span className="mailBody"> - {mail.body}</span>
         </div>
       </div>
+      {showCompose && (
+        <ComposeWindow />
+      )}
     </>
   );
 }

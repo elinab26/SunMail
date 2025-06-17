@@ -95,11 +95,10 @@ export default function Sidebar({
   isOpen,
   counts,
 }) {
-  const { mails, currentFolder, setCurrentFolder, fetchMails } = useContext(MailContext);
+  const { setIsNewDraft, setDraftId, currentFolder, setCurrentFolder, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   const [labels, setLabels] = useState([]);
-  const [isComposeOpen, setIsComposeOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+
   const navigate = useNavigate();
 
 
@@ -123,7 +122,6 @@ export default function Sidebar({
   // State to control whether secondary folders are shown
   const [showMore, setShowMore] = useState(false);
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
-  const [draftId, setDraftId] = useState(null);
 
   async function createDraft() {
     const res = await fetch("http://localhost:8080/api/mails/drafts", {
@@ -137,18 +135,10 @@ export default function Sidebar({
   }
 
   const handleOpenCompose = () => {
+    createDraft();
     setIsComposeOpen(true);
     setIsMinimized(false);
-    createDraft();
-  };
-
-  const handleCloseCompose = () => {
-    setIsComposeOpen(false);
-    setIsMinimized(false);
-  };
-
-  const handleMinimizeCompose = () => {
-    setIsMinimized(!isMinimized);
+    setIsNewDraft(true);
   };
 
   return (
@@ -215,15 +205,7 @@ export default function Sidebar({
           </>
         )}
       </nav>
-      <ComposeWindow
-        isOpen={isComposeOpen}
-        onClose={handleCloseCompose}
-        onMinimize={handleMinimizeCompose}
-        isMinimized={isMinimized}
-        fetchMails={fetchMails}
-        draftId={draftId}
-        currentFolder={currentFolder}
-      />
+      <ComposeWindow />
     </>
   );
 }

@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import "../css/ComposeWindow.css";
 import { IoClose } from "react-icons/io5";
 import { AiOutlineMinus } from "react-icons/ai";
 import { MdOpenInFull, MdCloseFullscreen } from "react-icons/md";
+import { MailContext } from "../../contexts/MailContext";
+import { useNavigate } from "react-router-dom";
 
-export default function ComposeWindow({
-  isOpen,
-  onClose,
-  onMinimize,
-  isMinimized,
-  fetchMails,
-  draftId,
-  currentFolder
-}) {
+
+export default function ComposeWindow() {
   const [formData, setFormData] = useState({
     to: "",
     subject: "",
@@ -21,12 +16,61 @@ export default function ComposeWindow({
   const [isMaximized, setIsMaximized] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+
+  useEffect(() => {
+    console.log(isNewDraft)
+    if (!isComposeOpen) return;
+    if (isNewDraft) {
+      setFormData({ to: "", subject: "", body: "" });
+    } else {
+      getDraft(draftId);
+    }
+  }, [isComposeOpen, draftId, isNewDraft]);
+
+  const onClose = () => {
+    setIsComposeOpen(false);
+    setIsMinimized(false);
+    setIsNewDraft(false);
+  };
+
+  const onMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
+  async function getDraft(draftId) {
+    const res = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}`, {
+      credentials: "include"
+    });
+    if (res.status !== 200) {
+      const errorText = await res.text();
+      throw new Error(`Error: ${res.status}: ${errorText}`);
+    }
+    const draft = await res.json();
+    console.log(draft)
+    const resp = await fetch(`http://localhost:8080/api/users/${draft.to}`, {
+      credentials: "include",
+    });
+    if (resp.status !== 200) {
+      alert("Error");
+      return;
+    }
+    const user = await resp.json();
+    console.log(draft.subject);
+    setFormData({
+      to: user.email,
+      subject: draft.subject,
+      body: draft.body,
+    });
+  }
 
   const handleInputChange = async (e) => {
     const { name, value } = e.target;
     const newForm = { ...formData, [name]: value };
     setFormData(newForm);
     if (error) setError("");
+    console.log(newForm)
     try {
       const response = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}`, {
         method: "PATCH",
@@ -47,10 +91,13 @@ export default function ComposeWindow({
   };
 
   const resetAndClose = () => {
-    setFormData({ to: "", subject: "", body: "" });
+    // setFormData({ to: "", subject: "", body: "" });
     setIsMaximized(true);
     setError("");
     onClose();
+    if (currentFolder == "drafts") {
+      navigate('..');
+    }
   };
 
   const handleSend = async () => {
@@ -89,6 +136,7 @@ export default function ComposeWindow({
       console.log("Email sent successfully");
       await fetchMails(currentFolder);
       resetAndClose(); // Close and reset
+      setFormData({ to: "", subject: "", body: "" });
 
     } catch (err) {
       console.error("Error sending email:", err);
@@ -117,7 +165,7 @@ export default function ComposeWindow({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isComposeOpen) return null;
 
   return (
     <div
@@ -158,7 +206,7 @@ export default function ComposeWindow({
                   type={field === "to" ? "email" : "text"}
                   name={field}
                   placeholder={field === "to" ? "To" : "Subject"}
-                  value={formData[field]}
+                  value={formData[field] ?? ""}
                   onChange={handleInputChange}
                   className="compose-input"
                   disabled={isLoading}
