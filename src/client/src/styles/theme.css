@@ -49,10 +49,10 @@
 
   --shadow-color: rgba(0, 0, 0, 0.5);
 
-  --primary: #8ab4f8;
-  --primary-hover: #669df6;
-  --accent: #8ab4f8;
-  --accent-hover: #669df6;
+  --primary: #77a8f8;
+  --primary-hover: #6296e9;
+  --accent: #77a8f8;
+  --accent-hover: #5e98f7;
   --danger: #ff6b6b;
   --bg-edit-hover: #252d46;
   --bg-delete-hover: rgba(255, 107, 107, 0.1);

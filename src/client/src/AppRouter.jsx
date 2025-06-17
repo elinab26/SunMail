@@ -5,6 +5,7 @@ import LoginPage from "./pages/jsx/LoginPage";
 import RegisterPage from "./pages/jsx/RegisterPage";
 import MailPage from "./pages/jsx/MailPage";
 import Inbox from "./components/jsx/Inbox";
+import SearchResultsPage from "./pages/jsx/SearchResultsPage";
 import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 
@@ -70,6 +71,9 @@ function AppRoutes() {
       >
         <Route index element={<Inbox />} />
         <Route path=":id" element={<MailPage />} />
+      </Route>
+      <Route path="/search" element={<ProtectedRoute><InboxPage /></ProtectedRoute>}>
+        <Route index element={<SearchResultsPage />} />
       </Route>
       {/* Add other protected routes here */}
     </Routes>

@@ -7,6 +7,7 @@ const inboxes = {};   // { userId: [mail, ...] }
 const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
 
+
 /**
  * Generate a unique ID using timestamp + random number
 */
