@@ -3,8 +3,6 @@
 const labelsAndMails = require('./labelsAndMails')
 
 // In-memory storage separated per user
-const inboxes = {};   // { userId: [mail, ...] }
-const sentItems = {}; // { userId: [mail, ...] }
 const allMails = {};
 
 
@@ -79,19 +77,13 @@ exports.create = (toUserId, fromUserId, subject, body) => {
 
   // Add to recipient's inbox
   const labelsTo = Users.getLabelsOfUser(toUser)
-  // if (!labelsTo) return;
   const labelTo = labelsTo.find(l => l.name === "inbox");
-  // if (!labelTo) return;
   mail.labels.push(labelTo)
-  // labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
 
   // Add to sender's sent items
   const labelsFrom = Users.getLabelsOfUser(fromUser)
-  // if (!labelsFrom) return;
   const labelFrom = labelsFrom.find(l => l.name === "sent");
-  // if (!labelFrom) return;
   mail.labels.push(labelFrom)
-  // labelsAndMails.addLabelToMail(mail, labelFrom, fromUserId)
 
   // Add to the global array for both users
   exports.ensureMailbox(allMails, fromUserId);
@@ -109,25 +101,15 @@ exports.create = (toUserId, fromUserId, subject, body) => {
   };
 };
 
-/**
- * Delete a mail with the specified id from the user's inbox.
- * Returns true if a mail was removed, or false if none matched.
- */
-exports.delete = (userId, mailId) => {
-  exports.ensureMailbox(inboxes, userId);
-  const beforeCount = inboxes[userId].length;
-  inboxes[userId] = inboxes[userId].filter(m => m.id !== mailId);
-  return inboxes[userId].length < beforeCount;
-};
 
 /**
  * Search mails in the user's inbox by subject or body (case-insensitive).
  * Returns an array of matching mail objects.
  */
 exports.search = (userId, query) => {
-  exports.ensureMailbox(inboxes, userId);
+  exports.ensureMailbox(allMails, userId);
   const lowerQuery = query.toLowerCase();
-  return inboxes[userId].filter(mail =>
+  return allMails[userId].filter(mail =>
     mail.subject.toLowerCase().includes(lowerQuery) ||
     mail.body.toLowerCase().includes(lowerQuery)
   );
@@ -141,14 +123,6 @@ exports.getAllMails = (userId) => {
   return allMails[userId];
 };
 
-/**
- * Get sent items for a user
- */
-exports.getSentItems = (userId) => {
-  exports.ensureMailbox(sentItems, userId);
-  return sentItems[userId].slice().reverse();
-};
-
 
 exports.getLabelsOfMail = (mail, userId) => {
   exports.ensureMailbox(allMails, userId);
@@ -157,6 +131,7 @@ exports.getLabelsOfMail = (mail, userId) => {
 
 exports.setRead = (userId, mailId, label) => {
   const mail = this.getById(userId, mailId, label);
+  if(!mail) return null;
   mail.read = true;
   return mail;
 }

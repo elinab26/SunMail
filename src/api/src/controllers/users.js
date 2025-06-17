@@ -2,37 +2,37 @@ const Users = require('../models/users');
 const fs = require('fs');
 
 const NAME_RE = /^[A-Za-z\u0590-\u05FF](?:[A-Za-z\u0590-\u05FF \-]{0,58}[A-Za-z\u0590-\u05FF])$/u;
-const USERNAME_RE = /^(?!\.)(?!.*\.\.)([a-z0-9.]{6,30})(?<!\.)$/; 
+const USERNAME_RE = /^(?!\.)(?!.*\.\.)([a-z0-9.]{6,30})(?<!\.)$/;
 const PWD_RE = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]{8,100}$/;
-const GENDER_ENUM = ['male','female'];
+const GENDER_ENUM = ['male', 'female'];
 
-function isValidName(str)       { return NAME_RE.test(str); }
-function isValidUsername(str)   { return USERNAME_RE.test(str); }
-function isValidPassword(str)   { return PWD_RE.test(str); }
-const isValidGender    = g =>
-  typeof g === 'string' && GENDER_ENUM.includes(g.trim().toLowerCase());
+function isValidName(str) { return NAME_RE.test(str); }
+function isValidUsername(str) { return USERNAME_RE.test(str); }
+function isValidPassword(str) { return PWD_RE.test(str); }
+const isValidGender = g =>
+    typeof g === 'string' && GENDER_ENUM.includes(g.trim().toLowerCase());
 function parseBirthDate(str) {
-  const m = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (!m) return null;
-  const [ , mm, dd, yyyy ] = m.map(Number);
-  const date = new Date(Date.UTC(yyyy, mm - 1, dd)); 
-  const valid = date.getUTCFullYear() === yyyy &&
-                date.getUTCMonth()   === mm - 1 &&
-                date.getUTCDate()    === dd &&
-                date <= new Date();            
-  return valid ? date.toISOString().slice(0,10) : null; 
+    const m = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m) return null;
+    const [, mm, dd, yyyy] = m.map(Number);
+    const date = new Date(Date.UTC(yyyy, mm - 1, dd));
+    const valid = date.getUTCFullYear() === yyyy &&
+        date.getUTCMonth() === mm - 1 &&
+        date.getUTCDate() === dd &&
+        date <= new Date();
+    return valid ? date.toISOString().slice(0, 10) : null;
 }
 
 
 exports.getAllUsers = (req, res) => {
-    res.json(Users.getAllUsers());
+    res.status(200).json(Users.getAllUsers());
 }
 
 exports.getUserById = (req, res) => {
     const user = Users.getUserById(req.params.id);
     if (!user)
         return res.status(404).json({ error: 'User not found' });
-    res.json(user);
+    res.status(200).json(user);
 };
 
 exports.createUser = (req, res) => {
@@ -45,10 +45,10 @@ exports.createUser = (req, res) => {
 
     try {
         if (!first_name) return res.status(400).json({ error: 'first name is required' });
-        if (!userName)   return res.status(400).json({ error: 'user name is required' });
+        if (!userName) return res.status(400).json({ error: 'user name is required' });
         if (!birthDate) return res.status(400).json({ error: 'birth date is required' });
-        if (!gender)     return res.status(400).json({ error: 'gender is required' });
-        if (!password)   return res.status(400).json({ error: 'password is required' });
+        if (!gender) return res.status(400).json({ error: 'gender is required' });
+        if (!password) return res.status(400).json({ error: 'password is required' });
         if (password !== confirmPassword) {
             return res.status(400).json({ error: 'Passwords do not match' });
         }
@@ -61,7 +61,7 @@ exports.createUser = (req, res) => {
         const isoBirth = parseBirthDate(birthDate);
         if (!isoBirth)
             return res.status(400).json({ error: 'Birth Date must be a valid past date' });
-        
+
         if (!isValidGender(gender))
             return res.status(400).json({ error: 'Gender must be male or female' });
 
@@ -94,5 +94,5 @@ exports.getUserByUserName = (req, res) => {
     if (!user) return res.status(404).json({ error: 'User not found' });
     // Remove password before sending
     const { password, ...safe } = user;
-    res.json(safe);
-  };
+    res.status(200).json(safe);
+};
