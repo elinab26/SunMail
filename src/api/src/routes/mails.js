@@ -20,7 +20,7 @@ router.route('/drafts/:id/send')
 router.route('/drafts/:id')
     .get(getUserId, draftsCtrl.getDraftById)
     .patch(getUserId, draftsCtrl.editDraft)
-    // .delete(getUserId, draftsCtrl.deleteDraft)
+    .delete(getUserId, draftsCtrl.deleteDraft)
 
 router.route('/search/:query')
     .get(getUserId, controller.searchMails);
