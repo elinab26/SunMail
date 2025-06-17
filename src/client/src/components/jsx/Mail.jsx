@@ -22,7 +22,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
     if (!response.ok) throw new Error('User not found');
 
     const currUser = await response.json();
-    if (mail.labels?.some(label => label.name === "draft" && label.userId === currUser.id)) {
+    if (mail.labels?.some(label => label.name === "drafts" && label.userId === currUser.id)) {
       setIsDraft(true);
     } else {
       setIsDraft(false)

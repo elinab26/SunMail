@@ -10,7 +10,7 @@ function generateMailId() {
 
 exports.createDraft = (to, from, subject, body) => {
     const mail = { id: generateMailId(), from, to, subject, body, date: new Date().toISOString(), labels: [], read: false };
-    const draftLabel = Label.getLabelByName('draft', from);
+    const draftLabel = Label.getLabelByName('drafts', from);
     if (!draftLabel) throw new Error('Label draft not found');
     labelsAndMails.addLabelToMail(mail, draftLabel, from);
 
@@ -50,7 +50,7 @@ exports.sendDraft = (userId, mailId) => {
     const mail = exports.getDraftById(userId, mailId);
     if (!mail) return null;
 
-    const draftLabel = Label.getLabelByName('draft', userId);
+    const draftLabel = Label.getLabelByName('drafts', userId);
     labelsAndMails.deleteLabelFromMail(mail, draftLabel, userId);
 
     const mailSend = Mail.create(mail.to, mail.from, mail.subject, mail.body);

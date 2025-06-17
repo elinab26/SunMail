@@ -44,9 +44,8 @@ app.use('/api/blacklist', blacklistRoutes);
 app.use('/api/labelsAndMails', labelsAndMails);
 app.use('/api/labelsAndUsers', labelsAndUsers);
 
-
 app.all('/{*any}', (req, res) => {
-  res.status(404).json({ error: `Route ${req.originalUrl} introuvable` });
+  res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });
 
 app.set('view engine', 'ejs');

@@ -33,9 +33,16 @@ export default function InboxPage({ currentFolder, setCurrentFolder }) {
   const sidebarVisible = isSidebarOpen || isSidebarHovered;
 
   async function fetchMails(currentFolder) {
-    const res = await fetch(`http://localhost:8080/api/mails/${currentFolder}`, {
-      credentials: "include",
-    });
+    var res;
+    if (currentFolder == "drafts") {
+      res = await fetch(`http://localhost:8080/api/mails/drafts`, {
+        credentials: "include",
+      });
+    } else {
+      res = await fetch(`http://localhost:8080/api/mails/label/${currentFolder}`, {
+        credentials: "include",
+      });
+    }
     const json = await res.json();
     setMails(json);
   }

@@ -16,34 +16,54 @@ function resolveToUserId(email) {
 }
 
 /**
- * GET /api/mails/:labelName
+ * GET /api/mails/label/:labelName
  * Return the last 50 mails for this user (inbox).
  */
-exports.getAllMails = (req, res) => {
+exports.getAllMailsOfLabel = (req, res) => {
   const userId = req.id
-  if (!userId) return;
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
+
   const labelName = req.params.labelName;
+  if (!labelName) return res.status(404).json({ error: 'Label name not found' }).end();
   const label = Label.getLabelByName(labelName, userId)
+  if (!label) return res.status(404).json({ error: 'Label not found' }).end();
+
   const mails = Mail.getLast50(userId, label);
-  res.json(mails);
+  if (!mails) return res.status(404).json({ error: 'Mail not found' }).end();
+
+  return res.status(200).json(mails);
 };
 
 /**
- * GET /api/mails/:id/:labelName
+ * GET /api/mails
+ * Return all the mails that are related to the user except for draft.
+ */
+
+exports.getAllMails = (req, res) => {
+  const userId = req.id;
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
+
+  const mails = Mail.getAllMails(userId);
+  if (!mails) return res.status(404).json({ error: 'Mails not found' }).end();
+
+  return res.status(200).json(mails).end();
+}
+
+/**
+ * GET /api/mails/:id
  * Return a single mail by ID for this user’s inbox.
  */
 exports.getMailById = (req, res) => {
   const userId = req.id
-  if (!userId) return;
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
 
   const mailId = req.params.id;
-  const labelName = req.params.labelName;
-  const label = Label.getLabelByName(labelName, userId);
-  const mail = Mail.getById(userId, mailId, label);
-  if (!mail) {
-    return res.status(404).json({ error: 'Mail not found' });
-  }
-  res.json(mail);
+  if (!mailId) return res.status(404).json({ error: 'Mail Id not found' });
+
+  const mail = Mail.getMailById(userId, mailId);
+  if (!mail) return res.status(404).json({ error: 'Mail not found' });
+
+  return res.status(200).json(mail).end();
 };
 
 /**
@@ -75,8 +95,9 @@ exports.createMail = async (req, res) => {
 
   // Create and send the mail
   const mail = Mail.create(toUserId, fromUserId, subject, body);
+  if (!mail) return res.status(400).json({ error: 'Mail not created' })
 
-  res.status(201).json({
+  return res.status(201).json({
     id: mail.id,
     message: 'Email sent successfully',
     to: to,
@@ -87,116 +108,27 @@ exports.createMail = async (req, res) => {
 };
 
 /**
- * PATCH /api/mails/:id
- * Update a draft. If req.body.draft === false, send the mail,
- * create it in inbox/sentItems, then delete the draft.
- * If the draft doesn’t exist, return 404.
- */
-exports.updateMail = async (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-
-  const draftId = req.params.id;
-  const updates = req.body;
-
-  // 1) Check if draft exists for this user
-  const existingDrafts = Mail.getDrafts(userId);
-  const draft = existingDrafts.find(d => d.id === draftId);
-  if (!draft) {
-    return res.status(404).json({ error: 'Draft not found' });
-  }
-
-  // 2) If user changed draft to false => send now
-  if (updates.hasOwnProperty('draft') && updates.draft === false) {
-    // Merge all updates (including subject, body, to, etc.)
-    Object.assign(draft, updates);
-
-    // If "to" changed, resolve new recipient userId
-    if (updates.to) {
-      const newRecipientId = resolveToUserId(updates.to);
-      if (!newRecipientId) {
-        return res.status(400).json({ error: 'Receiver user not found' });
-      }
-      draft.to = newRecipientId;
-    }
-
-    // 3) Re-validate URLs in finalized content
-    try {
-      await validateUrls(draft.subject, draft.body);
-    } catch (err) {
-      return res.status(err.status).json({ error: err.message, url: err.url });
-    }
-
-    // 4) Create the final mail in inbox and sentItems
-    const sentMail = Mail.create(draft.to, draft.from, draft.subject, draft.body);
-
-    // 5) Delete the draft
-    Mail.deleteDraft(userId, draftId);
-
-    return res.status(201).json(sentMail);
-  }
-
-  // 6) Otherwise, just update the draft itself
-  const updatedDraft = Mail.updateDraft(userId, draftId, updates);
-  res.json(updatedDraft);
-};
-
-/**
- * DELETE /api/mails/:id
- * Delete a mail from the user’s inbox.
- */
-exports.deleteMail = (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-
-  const mailId = req.params.id;
-  const success = Mail.delete(userId, mailId);
-  if (!success) {
-    return res.status(404).json({ error: 'Mail not found' });
-  }
-  res.status(204).send();
-};
-
-/**
  * GET /api/mails/search/:query
  * Search mails in the user’s inbox.
  */
 exports.searchMails = (req, res) => {
   const userId = req.id
-  if (!userId) return;
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
 
   const query = req.params.query;
+  if (!query) return res.status(404).json({ error: 'Query not found' });
+
   const results = Mail.search(userId, query);
-  res.json(results);
+  if (!results) return res.status(404).json({ error: "Results of search not found" })
+
+  res.status(200).json(results).end();
 };
+
 
 /**
- * GET /api/mails/drafts
- * Return all drafts for this user.
+ * GET /api/mails/:id/read/:labelName
+ * Change the read field of the mail in the label
  */
-exports.getDrafts = (req, res) => {
-  const userId = req.id
-  if (!userId) return;
-  const allDrafts = Mail.getDrafts(userId);
-  res.json(allDrafts);
-};
-
-/**
- * DELETE /api/mails/drafts/:id
- * Delete a draft for this user.
- */
-exports.deleteDraft = (req, res) => {
-  const userId = req.id
-
-  if (!userId) return;
-  const draftId = parseInt(req.params.id, 10);
-  const success = Mail.deleteDraft(userId, draftId);
-  if (!success) {
-    return res.status(404).json({ error: 'Draft not found' });
-  }
-  res.status(204).send();
-};
-
 exports.setRead = (req, res) => {
   const userId = req.id;
   if (!userId) return res.status(400).end();
@@ -205,12 +137,18 @@ exports.setRead = (req, res) => {
   if (!receiver) return res.status(400).end();
 
   const mailId = req.params.id;
+  if (!mailId) return res.status(404).json({ error: 'Mail Id not found' });
+
   const labelName = req.params.labelName;
+  if (!labelName) return res.status(404).json({ error: 'Label name not found' }).end();
   const label = Label.getLabelByName(labelName, userId);
+  if (!label) return res.status(404).json({ error: 'Label not found' }).end();
+
   const currentMail = Mail.getById(userId, mailId, label);
+  if (!currentMail) return res.status(404).json({ error: 'Mail not found' });
+
   if (currentMail.to != receiver) return res.status(400).end();
   const mail = Mail.setRead(userId, mailId, label)
-
   if (!mail) {
     return res.status(404).json({ error: 'Error while reading' });
   }
