@@ -7,7 +7,8 @@ const draftsCtrl = require('../controllers/drafts')
 const { getUserId } = require('../utils/userUtils')
 
 router.route('/')
-    .post(getUserId, controller.createMail);
+    .post(getUserId, controller.createMail)
+    .get(getUserId, controller.getAllMails)
 
 router.route('/drafts')
     .post(getUserId, draftsCtrl.createDraft)
@@ -19,19 +20,18 @@ router.route('/drafts/:id/send')
 router.route('/drafts/:id')
     .get(getUserId, draftsCtrl.getDraftById)
     .patch(getUserId, draftsCtrl.editDraft)
+    // .delete(getUserId, draftsCtrl.deleteDraft)
 
 router.route('/search/:query')
     .get(getUserId, controller.searchMails);
 
-
 router.route('/:id/read/:labelName')
     .patch(getUserId, controller.setRead);
 
-router.route('/:id/:labelName')
+router.route('/:id')
     .get(getUserId, controller.getMailById)
-    .patch(getUserId, controller.updateMail)
-    .delete(getUserId, controller.deleteMail);
 
-router.route('/:labelName')
-    .get(getUserId, controller.getAllMails)
+router.route('/label/:labelName')
+    .get(getUserId, controller.getAllMailsOfLabel)
+
 module.exports = router;
