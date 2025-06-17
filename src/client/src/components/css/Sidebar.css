@@ -31,9 +31,26 @@
   gap: 8px;
   padding: 24px 14px;
   margin: 8px 0 20px 0;
-}
+} 
 
 .sidebar-compose-btn:hover{background:var(--accent-hover);}
+/* .sidebar-compose-btn {
+
+  background: #A9D7E9;
+  color: #424242;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-compose-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(169, 215, 233, 0.5);
+}
+
+.sidebar-compose-btn:active {
+  transform: scale(0.95);
+  transition: transform 0.2s cubic-bezier(0.3, 1.5, 0.5, 1);
+} */
 
 .compose-label {
   white-space: nowrap;

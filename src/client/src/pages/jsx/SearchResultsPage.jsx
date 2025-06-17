@@ -10,12 +10,12 @@ function SearchResultsPage() {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search).get('q');
 
-  useEffect(() => {
-    // Fetch all mails if not already fetched or if context is empty
-    if (mails.length === 0) {
-      fetchMails();
-    }
-  }, [mails.length, fetchMails]);
+  // useEffect(() => {
+  //   // Fetch all mails if not already fetched or if context is empty
+  //   if (mails.length === 0) {
+  //     fetchMails();
+  //   }
+  // }, [mails.length, fetchMails]);
 
   useEffect(() => {
     if (searchQuery) {

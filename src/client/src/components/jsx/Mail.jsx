@@ -8,8 +8,9 @@ import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
+import { MailContext } from '../../contexts/MailContext';
 
-function Mail({ mail, fetchMails, currentFolder }) {
+function Mail({ mail }) {
   const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
@@ -17,7 +18,7 @@ function Mail({ mail, fetchMails, currentFolder }) {
   const [user, setUser] = useState(null);
   const [showCompose, setShowCompose] = useState(false);
   const { username } = useContext(AuthContext);
-
+  const { fetchMails, currentFolder } = useContext(MailContext);
 
   async function checkIfDraft() {
     const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
