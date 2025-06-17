@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import InboxPage from "./pages/jsx/InboxPage";
 import LoginPage from "./pages/jsx/LoginPage";
 import RegisterPage from "./pages/jsx/RegisterPage";
-import { MailProvider } from './contexts/MailContext';
+import MailPage from "./pages/jsx/MailPage";
 import Inbox from "./components/jsx/Inbox";
 import SearchResultsPage from "./pages/jsx/SearchResultsPage";
 import MailRenderer from "./components/jsx/MailRenderer";
@@ -17,7 +17,7 @@ function ProtectedRoute({ children }) {
 }
 
 function HomeRedirect() {
-  const { isLoggedIn, username, logout } = useContext(AuthContext);
+  const { isLoggedIn, username, logout} = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [validUser, setValidUser] = useState(false);
 
@@ -65,12 +65,12 @@ function AppRoutes() {
         path="/:label"
         element={
           <ProtectedRoute>
-            <InboxPage currentFolder={currentFolder} setCurrentFolder={setCurrentFolder}/>
+            <InboxPage />
           </ProtectedRoute>
         }
       >
         <Route index element={<Inbox />} />
-        <Route path=":id" element={<MailPage />} />
+         <Route path=":id" element={<MailRenderer />} />
       </Route>
       <Route path="/search" element={<ProtectedRoute><InboxPage /></ProtectedRoute>}>
         <Route index element={<SearchResultsPage />} />
