@@ -171,6 +171,11 @@
 
 .change-image-btn {
   color: var(--primary);
+  border-color: var(--primary);
+}
+
+.change-image-btn:hover {
+  background-color: var(--bg-edit-hover);
 }
 
 .upload-image-btn {
@@ -182,6 +187,7 @@
 .upload-image-btn:hover {
   background-color: var(--accent-hover);
   border-color: var(--accent-hover);
+  color: var(--text-color);
 }
 
 /* ===== Better contrast for inputs ===== */

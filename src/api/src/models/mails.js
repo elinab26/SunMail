@@ -5,6 +5,7 @@ const labelsAndMails = require('./labelsAndMails')
 // In-memory storage separated per user
 const allMails = {};
 
+
 /**
  * Generate a unique ID using timestamp + random number
 */

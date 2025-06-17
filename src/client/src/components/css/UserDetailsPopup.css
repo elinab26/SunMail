@@ -62,21 +62,23 @@
 }
 
 .popup-user-name {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
 }
 
 .popup-user-email {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--text-color-secondary);
+  margin-top: 2px;
 }
 
 .popup-body p {
-  margin: 0 0 8px 0;
-  font-size: 0.95rem;
+  margin: 0 0 10px 0;
+  font-size: 0.98rem;
   color: var(--text-color);
 }
 
 .popup-body p strong {
-  color: var(--text-color-secondary);
+  color: var(--text-color);
+  margin-right: 5px;
 } 

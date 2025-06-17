@@ -16,6 +16,12 @@
     align-items: center;
 }
 
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Added for consistent spacing */
+}
+
 /* Hamburger */
 .menu-btn {
     background: none;
@@ -107,7 +113,6 @@
   justify-content: center;
   border-radius: 50%;
   transition: background-color 0.2s;
-  margin-right: 16px; /* Added space to separate from profile picture */
 }
 
 .theme-btn:hover {
@@ -135,7 +140,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-right: 16px;
+    margin-right: 5px;
     color: var(--text-color);
 }
 .topbar-userinfo-img {
