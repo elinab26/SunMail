@@ -2,7 +2,7 @@ const labels = {}
 const Mails = require('./mails');
 const labelsAndMails = require('./labelsAndMails')
 const labelsAndUsers = require('./labelsAndUsers')
-const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "draft", "spam", "trash", "archive"];
+const DEFAULT_LABELS = ["inbox", "starred", "snoozed", "important", "sent", "drafts", "spam", "trash", "archive"];
 
 //function that generates IDs
 function IdGenerator() {
