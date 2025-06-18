@@ -8,6 +8,6 @@ const { getUserId } = require('../utils/userUtils')
 router.post('/', getUserId, controller.createBlacklistEntry);
 
 // DELETE /api/blacklist/:id
-router.delete('/:id', getUserId, controller.deleteBlacklistEntry);
+router.delete('/', getUserId, controller.deleteBlacklistEntry);
 
 module.exports = router;

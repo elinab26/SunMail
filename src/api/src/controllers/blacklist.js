@@ -1,6 +1,6 @@
 // src/api/src/controllers/blacklist.js
-const { create, getById, remove } = require('../models/blacklist');
-const {sendRawCommand} = require('../utils/clientUtils');
+const { create, remove } = require('../models/blacklist');
+const { sendRawCommand } = require('../utils/clientUtils');
 
 
 /**
@@ -11,6 +11,8 @@ const {sendRawCommand} = require('../utils/clientUtils');
  * - Otherwise return 400 Bad Request.
  */
 async function createBlacklistEntry(req, res) {
+  const userId = req.id
+  if (!userId) return;
   const { url } = req.body;
   if (!url) {
     return res.status(400).json({ error: 'URL is required' });
@@ -44,13 +46,11 @@ async function createBlacklistEntry(req, res) {
  *   * Otherwise 400 Bad Request.
  */
 async function deleteBlacklistEntry(req, res) {
-  const id = parseInt(req.params.id, 10);
-  // Validate ID
-  if (Number.isNaN(id)) {
-    return res.status(400).json({ error: 'Invalid ID' });
-  }
+  const userId = req.id
+  if (!userId) return;
+
   // Get the URL by ID
-  const url = getById(id);
+  const { url } = req.body;
   if (!url) {
     return res.status(404).json({ error: 'Blacklist entry not found' });
   }
@@ -60,7 +60,7 @@ async function deleteBlacklistEntry(req, res) {
     const response = await sendRawCommand(`DELETE ${url}`);
     // The filter returns “204 No Content”
     if (/^204\b/.test(response)) {
-      remove(id);
+      remove(url);
       return res.status(204).end();
     } else {
       return res.status(400).json({ error: 'Failed to remove URL from blacklist', detail: response });
