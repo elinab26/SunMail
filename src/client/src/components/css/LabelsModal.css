@@ -68,5 +68,5 @@
 }
 
 .close-btn:hover {
-    background: #e3e6ef;
+  background-color: var(--bg-hover);
 }
