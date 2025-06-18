@@ -68,7 +68,7 @@ const deleteLabelById = (label, userId) => {
     labelsAndUsers.deleteLabelFromUser(userId, label);
     let mails = Mails.getAllMails(userId);
     mails.map((mail) => {
-      const l = labelsAndMails.getLabelFromMailById(mail, label.id, userId);
+      const l = labelsAndMails.getLabelFromMailById(mail, label, userId);
       if (l) {
         labelsAndMails.deleteLabelFromMail(mail, l, userId);
       }

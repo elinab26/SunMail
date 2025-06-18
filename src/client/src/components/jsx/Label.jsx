@@ -2,13 +2,16 @@ import "../css/Label.css";
 import EditLabel from "./EditLabel";
 import DeleteLabel from "./DeleteLabel";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { MailContext } from "../../contexts/MailContext";
+import { useNavigate } from "react-router-dom";
 
 function Label({ label, fetchLabels }) {
   const [activePopup, setActivePopup] = useState(null);
   const [activeOption, setActiveOption] = useState(null);
-
+  const { setCurrentFolder } = useContext(MailContext);
   const popupRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -25,8 +28,13 @@ function Label({ label, fetchLabels }) {
     }
   }, [activePopup]);
 
+  function handleLabelClick(name) {
+    setCurrentFolder(name)
+    navigate(`../${name}`)
+  }
+
   return (
-    <div className="label">
+    <div className="label" onClick={() => handleLabelClick(label.name)} tabIndex={0} >
       <span className="labelName">{label.name}</span>
       <span className="labelIcon">
         <button

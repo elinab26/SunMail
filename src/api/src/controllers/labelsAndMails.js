@@ -10,7 +10,6 @@ exports.addLabelToMail = (req, res) => {
     const { labelId } = req.body
     const labelToAdd = getLabelById(labelId, userId);
     if (!labelToAdd) return res.status(404).json({ error: 'Label not found' });
-    console.log(labelToAdd)
     const mail = Mail.getMailById(userId, req.params.mailId);
     if (!mail) return res.status(404).json({ error: 'Mail not found' });
 

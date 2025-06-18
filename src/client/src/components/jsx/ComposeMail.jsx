@@ -7,7 +7,6 @@ export default function ComposeMailButton() {
   const [isMinimized, setIsMinimized] = useState(false);
 
   const handleOpenCompose = () => {
-    console.log("Button clicked!");
     setIsComposeOpen(true);
     setIsMinimized(false);
   };
