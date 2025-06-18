@@ -26,9 +26,9 @@ exports.addLabelToMail = (req, res) => {
             console.log(l);
             labelsAndMails.deleteLabelFromMail(mail, l, userId);
             const urls = extractUrls(`${mail.subject} ${mail.body}`)
-            urls.map(url => {
+            urls.map(async url => {
                 req.body = { url: url };
-                black.createBlacklistEntry(req, res);
+                await black.createBlacklistEntry(req, res);
             })
         })
     }
@@ -61,9 +61,9 @@ exports.deleteLabelFromMail = (req, res) => {
         const labels = Mail.getLabelsOfMail(mail, userId);
         labels.map(l => {
             const urls = extractUrls(`${mail.subject} ${mail.body}`)
-            urls.map(url => {
+            urls.map(async url => {
                 req.body = { url: url };
-                black.deleteBlacklistEntry(req, res);
+                await black.deleteBlacklistEntry(req, res);
             })
         })
     }

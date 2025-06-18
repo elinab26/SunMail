@@ -62,9 +62,10 @@ async function deleteBlacklistEntry(req, res) {
     if (/^204\b/.test(response)) {
       remove(url);
       return res.status(204).end();
-    } else {
-      return res.status(400).json({ error: 'Failed to remove URL from blacklist', detail: response });
-    }
+    } 
+    // else {
+    //   return res.status(400).json({ error: 'Failed to remove URL from blacklist', detail: response });
+    // }
   } catch (err) {
     console.error('Error in deleteBlacklistEntry:', err);
     return res.status(500).json({ error: 'Blacklist service unavailable' });

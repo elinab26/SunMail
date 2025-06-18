@@ -124,7 +124,7 @@ export default function ComposeWindow() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Error while sending");
+        throw new Error("Error while sending");
       }
 
       // Success!

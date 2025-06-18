@@ -26,10 +26,10 @@ exports.sendDraft = (req, res) => {
     if (!userId) return res.status(404).json({ error: 'User not found' }).end();
 
     const draftId = req.params.id
-    if (!draftId) return res.status(404).json({ message: 'Draft not found' }).end();
+    if (!draftId) return res.status(404).json({ error: 'Draft not found' }).end();
 
     const sent = Drafts.sendDraft(userId, draftId)
-    if (!sent) return res.status(404).send('Draft not found').end();
+    if (!sent) return res.status(400).json({ error: 'Invalid mail' }).end();
 
     return res.status(201).json(sent).end()
 }
