@@ -31,10 +31,6 @@
 
 }
 
-.editButtons:hover {
-  background-color: var(--bg-hover);
-}
-
 .saveButtonEdit {
   color: var(--primary);
   border: none;
