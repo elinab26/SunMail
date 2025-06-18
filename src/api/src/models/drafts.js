@@ -55,6 +55,10 @@ exports.sendDraft = (userId, mailId) => {
     const draftLabel = Label.getLabelByName('drafts', userId);
     labelsAndMails.deleteLabelFromMail(mail, draftLabel, userId);
 
+    if (!mail.to || mail.to === " ") {
+        return;
+    }
+
     const mailSend = Mail.create(mail.to, mail.from, mail.subject, mail.body);
     if (!mailSend) {
         return;

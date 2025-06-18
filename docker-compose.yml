@@ -28,6 +28,8 @@ services:
       - net
     ports:
       - "8080:8080"
+    env_file:
+    - ./src/api/src/.env
     environment:
       - URL_CHECK_HOST=server
       - URL_CHECK_PORT=${PORT}

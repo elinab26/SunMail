@@ -1,6 +1,9 @@
 const Mail = require('../models/mails');
 const { getLabelById } = require('../models/labels')
 const labelsAndMails = require('../models/labelsAndMails')
+const black = require('./blacklist')
+const { validateUrls, extractUrls } = require('../utils/urlUtils');
+
 
 //get the labelId in the body, the mailId in the params
 exports.addLabelToMail = (req, res) => {
@@ -17,6 +20,18 @@ exports.addLabelToMail = (req, res) => {
         return res.status(400).json({ error: 'Mail already belongs to this label.' })
     }
 
+    if (labelToAdd.name == "spam") {
+        const labels = Mail.getLabelsOfMail(mail, userId);
+        labels.map(l => {
+            console.log(l);
+            labelsAndMails.deleteLabelFromMail(mail, l, userId);
+            const urls = extractUrls(`${mail.subject} ${mail.body}`)
+            urls.map(async url => {
+                req.body = { url: url };
+                await black.createBlacklistEntry(req, res);
+            })
+        })
+    }
     const returnedLabel = labelsAndMails.addLabelToMail(mail, labelToAdd, userId);
 
     if (returnedLabel == labelToAdd) {
@@ -42,6 +57,16 @@ exports.deleteLabelFromMail = (req, res) => {
     }
 
     const ret = labelsAndMails.deleteLabelFromMail(mail, labelToRemove, userId);
+    if (labelToRemove.name == "spam") {
+        const labels = Mail.getLabelsOfMail(mail, userId);
+        labels.map(l => {
+            const urls = extractUrls(`${mail.subject} ${mail.body}`)
+            urls.map(async url => {
+                req.body = { url: url };
+                await black.deleteBlacklistEntry(req, res);
+            })
+        })
+    }
 
     if (ret == -1) {
         return res.status(404).json({ error: 'Label not removed' }).end();

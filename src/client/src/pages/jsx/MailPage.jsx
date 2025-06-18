@@ -4,24 +4,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import "../css/MailPage.css";
 import LabelsModal from "../../components/jsx/LabelsModal";
-const DEFAULT_LABELS = ["starred", "snoozed", "important", "sent", "drafts", "spam", "trash", "archive"];
+import LabelsMailList from "./LabelsMailList";
+const DEFAULT_LABELS = ["starred", "snoozed", "important", "sent", "drafts", "trash", "archive"];
 
 function MailPage() {
-  const { mails } = useContext(MailContext);
+  const { mails, fetchMails, currentFolder } = useContext(MailContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isLabelsModalOpen, setIsLabelsModalOpen] = useState(false);
   const [labelsUser, setLabelsUser] = useState([]);
 
+  async function fetchLabels() {
+    const res = await fetch("http://localhost:8080/api/labels", {
+      credentials: "include",
+    });
+    const json = await res.json();
+    setLabelsUser(json);
+  }
 
   useEffect(() => {
-    async function fetchLabels() {
-      const res = await fetch("http://localhost:8080/api/labels", { credentials: "include" });
-      if (res.ok) {
-        setLabelsUser(await res.json());
-      }
-    }
     fetchLabels();
   }, [])
 
@@ -72,6 +74,10 @@ function MailPage() {
     }
     setIsLabelsModalOpen(false);
     setLabelsUser([...labelsUser]);
+    fetchMails(currentFolder)
+    if (label.name === "spam") {
+      navigate("..")
+    }
 
   }
 
@@ -89,8 +95,10 @@ function MailPage() {
       typeof lab === "object" ? lab.id !== labelId : lab !== labelId
     );
 
-    // force le rerender des chips
     setLabelsUser(prev => prev)
+    fetchMails(currentFolder)
+    navigate("..");
+
   }
 
   const mailLabelObjects = labelsUser
@@ -108,34 +116,13 @@ function MailPage() {
 
       <div className="header">
         <p className="subject">{mail.subject}</p>
-        <div className="mail-labels">
-          {mailLabelObjects.length
-            ? mailLabelObjects.map(lab => {
-              console.log(user)
-              const labelObj = typeof lab === "object" ? lab : labelsUser.find(x => x.id === lab);
-              if (!labelObj) return null;
-              if (DEFAULT_LABELS.includes(labelObj.name)) return null;
+        <LabelsMailList
+          mailLabelObjects={mailLabelObjects}
+          user={user}
+          labelsUser={labelsUser}
+          handleRemoveLabel={handleRemoveLabel}
+          setLabelsUser={setLabelsUser} />
 
-              return (
-                <span className="mail-label-chip" key={labelObj.id}>
-                  <span className="chip-label-text">{labelObj.name}</span>
-                  <button
-                    className="chip-remove-btn"
-                    onClick={async (e) => {
-                      e.stopPropagation();
-                      await handleRemoveLabel(labelObj.id);
-                    }}
-                    title="Remove this label"
-                    tabIndex={0}
-                  >
-                    &times;
-                  </button>
-                </span>
-              );
-            })
-            : <span className="mail-label-chip no-label">No Labels</span>
-          }
-        </div>
         <button
           className="add-label-btn"
           onClick={e => {

@@ -7,18 +7,16 @@ const { sendRawCommand } = require('./clientUtils.js');
  * Recognizes links starting with "http://", "https://", or "www.".
  */
 function extractUrls(text) {
-  // This regex matches:
-  //   - "http://" or "https://" followed by any non-space characters
-  //   - OR "www." followed by any non-space characters
-  // The "g" flag makes it global (find all matches), and "i" makes it case-insensitive.
-  const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/gi;
+  const urlRegex = /\b((https?:\/\/)?(www\.)?[\w-]{1,63}\.[a-z]{2,}(\/\S*)?)\b(?!@)/gi;
   const matches = [];
   let match;
 
   while ((match = urlRegex.exec(text)) !== null) {
-    matches.push(match[0]);
+    let url = match[0].replace(/[.,;:!?]+$/, "");
+    matches.push(url);
   }
 
+  matches.forEach(url => console.log(url));
   // Return only unique URLs
   return Array.from(new Set(matches));
 }
@@ -35,21 +33,16 @@ async function validateUrls(subject, body) {
     for (const url of urls) {
       const response = await sendRawCommand(`GET ${url}`);
       // If `response.startsWith('200')`, we consider it blacklisted
-      if (response.startsWith('200')) {
-        const err = new Error('Blacklisted URL');
-        err.status = 400;
-        err.url = url;
-        throw err;
+      if (response.endsWith("true")) {
+        return 1;
       }
     }
   } catch (err) {
-    if (err.status === 400) {
-      throw err; // re-throw blacklist error
-    }
     const e = new Error('URL verification service unavailable');
     e.status = 500;
     throw e;
   }
+  return 0;
 }
 
 module.exports = {

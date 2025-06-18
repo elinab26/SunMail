@@ -1,4 +1,5 @@
 const Mails = require('./mails')
+const black = require('./blacklist')
 
 exports.addLabelToMail = (mail, label, userId) => {
     const labels = Mails.getLabelsOfMail(mail, userId);

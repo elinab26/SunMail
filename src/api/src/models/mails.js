@@ -1,6 +1,7 @@
 // models/mails.js
 
 const labelsAndMails = require('./labelsAndMails')
+const { validateUrls } = require('../utils/urlUtils');
 
 // In-memory storage separated per user
 const allMails = {};
@@ -53,7 +54,7 @@ exports.getMailById = (userId, mailId) => {
  * and save it to the recipient's inbox and the sender's sent items.
  * Returns the new mail object with email addresses instead of user IDs.
 */
-exports.create = (toUserId, fromUserId, subject, body) => {
+exports.create = async (toUserId, fromUserId, subject, body) => {
   const Users = require('./users')
   const mail = {
     id: generateMailId(),
@@ -75,10 +76,18 @@ exports.create = (toUserId, fromUserId, subject, body) => {
     return;
   }
 
-  // Add to recipient's inbox
-  const labelsTo = Users.getLabelsOfUser(toUser)
-  const labelTo = labelsTo.find(l => l.name === "inbox");
-  mail.labels.push(labelTo)
+  if (await validateUrls(subject, body)) {
+    // Add to recipient's spams
+    const labelsTo = Users.getLabelsOfUser(toUser)
+    const labelTo = labelsTo.find(l => l.name === "spam");
+    labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
+  } else {
+    // Add to recipient's inbox
+    const labelsTo = Users.getLabelsOfUser(toUser)
+    const labelTo = labelsTo.find(l => l.name === "inbox");
+    mail.labels.push(labelTo)
+  }
+
 
   // Add to sender's sent items
   const labelsFrom = Users.getLabelsOfUser(fromUser)
@@ -131,7 +140,7 @@ exports.getLabelsOfMail = (mail, userId) => {
 
 exports.setRead = (userId, mailId, label) => {
   const mail = this.getById(userId, mailId, label);
-  if(!mail) return null;
+  if (!mail) return null;
   mail.read = true;
   return mail;
 }
