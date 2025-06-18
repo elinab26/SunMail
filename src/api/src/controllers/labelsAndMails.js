@@ -20,10 +20,10 @@ exports.addLabelToMail = (req, res) => {
         return res.status(400).json({ error: 'Mail already belongs to this label.' })
     }
 
-    const returnedLabel = labelsAndMails.addLabelToMail(mail, labelToAdd, userId);
     if (labelToAdd.name == "spam") {
         const labels = Mail.getLabelsOfMail(mail, userId);
         labels.map(l => {
+            console.log(l);
             labelsAndMails.deleteLabelFromMail(mail, l, userId);
             const urls = extractUrls(`${mail.subject} ${mail.body}`)
             urls.map(url => {
@@ -32,6 +32,8 @@ exports.addLabelToMail = (req, res) => {
             })
         })
     }
+    const returnedLabel = labelsAndMails.addLabelToMail(mail, labelToAdd, userId);
+
     if (returnedLabel == labelToAdd) {
         return res.status(201).end();
     } else {

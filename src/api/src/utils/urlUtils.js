@@ -16,6 +16,7 @@ function extractUrls(text) {
     matches.push(url);
   }
 
+  matches.forEach(url => console.log(url));
   // Return only unique URLs
   return Array.from(new Set(matches));
 }
@@ -28,12 +29,11 @@ function extractUrls(text) {
  */
 async function validateUrls(subject, body) {
   const urls = extractUrls(`${subject} ${body}`);
-  const blacklisted = [];
   try {
     for (const url of urls) {
       const response = await sendRawCommand(`GET ${url}`);
       // If `response.startsWith('200')`, we consider it blacklisted
-      if (response.startsWith('200')) {
+      if (response.endsWith("true")) {
         return 1;
       }
     }

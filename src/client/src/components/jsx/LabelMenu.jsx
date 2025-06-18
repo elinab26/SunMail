@@ -30,14 +30,18 @@ function LabelMenu({labels, fetchLabels}) {
 
   return (
     <div>
-      <ul className="Labels">
-        {labels.map((label) => (
-          <li key={label.id}>
-            <Label label={label} fetchLabels={fetchLabels} />
-          </li>
-        ))}
-      </ul>
-    </div>
+  <ul className="Labels">
+    {labels.map((label) => {
+      if (label.name === "spam"||label.name==="inbox") return null;
+      return (
+        <li key={label.id}>
+          <Label label={label} fetchLabels={fetchLabels} />
+        </li>
+      );
+    })}
+  </ul>
+</div>
+
   );
 }
 
