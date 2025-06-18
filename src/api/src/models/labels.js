@@ -20,7 +20,7 @@ const getLabels = (userId) => {
 
   //get the labels of the user
   for (let i = 0; i < labels[userId].length; i++) {
-    const label = DEFAULT_LABELS.find(l => l == labels[userId][i].name);
+    const label = DEFAULT_LABELS.find(l => l == labels[userId][i].name && l!=="spam");
     if (labels[userId][i].userId == userId && !label) {
       userLabels.push(labels[userId][i])
     }
