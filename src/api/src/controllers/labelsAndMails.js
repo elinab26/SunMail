@@ -63,7 +63,7 @@ exports.getLabelFromMailById = (req, res) => {
 
     const returnedLabel = labelsAndMails.getLabelFromMailById(mail, labelToGet, userId);
     if (returnedLabel == labelToGet) {
-        return res.status(200).end();
+        return res.status(200).json(returnedLabel).end();
     } else {
         return res.status(404).json({ error: 'Label not found' }).end();
     }

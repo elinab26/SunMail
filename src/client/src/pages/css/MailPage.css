@@ -8,6 +8,7 @@
   color: var(--text-color-secondary);
   transition: background 0.2s ease;
 }
+
 .back-button:hover {
   background: var(--bg-hover);
   border-radius: 50%;
@@ -20,11 +21,12 @@
   padding: 0 20px 16px 20px;
   gap: 16px;
 }
+
 .subject {
   font-size: 1.8rem;
   font-weight: 600;
   color: var(--text-color);
-  margin: 0; 
+  margin: 0;
   flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,7 +74,7 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-color);
-  margin: 0; 
+  margin: 0;
 }
 
 .mail-body {
@@ -84,7 +86,7 @@
 }
 
 .add-label-btn {
-  background:#4f8cff;
+  background: #4f8cff;
   color: #fff;
   border: none;
   padding: 8px 18px;
@@ -109,6 +111,57 @@
 }
 
 .add-label-btn:focus:not(:hover) {
-  background: #4f8cff; 
+  background: #4f8cff;
   transform: none;
+}
+
+.mail-labels {
+  margin-top: 6px;
+  margin-bottom: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mail-label-chip {
+  position: relative;
+  padding-right: 24px;
+  background: var(--primary, #4f8cff);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 14px;
+  padding: 3px 14px;
+  box-shadow: 0 1px 4px 0 rgba(80, 120, 255, 0.09);
+  display: inline-block;
+  transition: background 0.13s;
+}
+
+.mail-label-chip.no-label {
+  background: #eee;
+  color: #999;
+}
+
+.chip-label-text {
+  padding-right: 10px; 
+}
+
+.chip-remove-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.12s;
+  z-index: 2;
+}
+
+.chip-remove-btn:hover,
+.chip-remove-btn:focus {
+  background: rgba(0, 0, 0, 0.13);
 }
