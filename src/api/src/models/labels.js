@@ -20,7 +20,7 @@ const getLabels = (userId) => {
 
   //get the labels of the user
   for (let i = 0; i < labels[userId].length; i++) {
-    const label = DEFAULT_LABELS.find(l => l == labels[userId][i].name);
+    const label = DEFAULT_LABELS.find(l => l == labels[userId][i].name && l!=="spam");
     if (labels[userId][i].userId == userId && !label) {
       userLabels.push(labels[userId][i])
     }
@@ -68,7 +68,7 @@ const deleteLabelById = (label, userId) => {
     labelsAndUsers.deleteLabelFromUser(userId, label);
     let mails = Mails.getAllMails(userId);
     mails.map((mail) => {
-      const l = labelsAndMails.getLabelFromMailById(mail, label.id, userId);
+      const l = labelsAndMails.getLabelFromMailById(mail, label, userId);
       if (l) {
         labelsAndMails.deleteLabelFromMail(mail, l, userId);
       }

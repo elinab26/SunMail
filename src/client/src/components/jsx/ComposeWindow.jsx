@@ -20,7 +20,6 @@ export default function ComposeWindow() {
   const { setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   useEffect(() => {
-    console.log(isNewDraft)
     if (!isComposeOpen) return;
     if (isNewDraft) {
       setFormData({ to: "", subject: "", body: "" });
@@ -48,7 +47,6 @@ export default function ComposeWindow() {
       throw new Error(`Error: ${res.status}: ${errorText}`);
     }
     const draft = await res.json();
-    console.log(draft)
     const resp = await fetch(`http://localhost:8080/api/users/${draft.to}`, {
       credentials: "include",
     });
@@ -57,7 +55,6 @@ export default function ComposeWindow() {
       return;
     }
     const user = await resp.json();
-    console.log(draft.subject);
     setFormData({
       to: user.email,
       subject: draft.subject,
@@ -70,7 +67,6 @@ export default function ComposeWindow() {
     const newForm = { ...formData, [name]: value };
     setFormData(newForm);
     if (error) setError("");
-    console.log(newForm)
     try {
       const response = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}`, {
         method: "PATCH",
@@ -117,7 +113,6 @@ export default function ComposeWindow() {
 
     setIsLoading(true);
     setError("");
-    console.log(formData)
     try {
       const response = await fetch(`http://localhost:8080/api/mails/drafts/${draftId}/send`, {
         method: "POST",
@@ -133,7 +128,6 @@ export default function ComposeWindow() {
       }
 
       // Success!
-      console.log("Email sent successfully");
       await fetchMails(currentFolder);
       resetAndClose(); // Close and reset
       setFormData({ to: "", subject: "", body: "" });
