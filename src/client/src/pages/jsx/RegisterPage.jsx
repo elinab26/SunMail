@@ -2,7 +2,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import gmailImg from "../../assets/gmailLogo.png";
+import sunMailImg from '../../assets/sunmail_logo.png';
 import "../../styles/auth.css";
 
 export default function RegisterPage() {
@@ -106,8 +106,7 @@ export default function RegisterPage() {
     <div className="auth-bg">
       <div className="auth-card">
         <div className="auth-logo-wrapper">
-  {/* תמונה עם הלוגו + המילה Gmail שכבר קיימת בקובץ */}
-  <img src={gmailImg} alt="Gmail logo" className="auth-logo" />
+          <img src={sunMailImg} alt="SunMail logo" className="auth-logo" />
         </div>
         <div className="auth-title">Create your account</div>
         <form className="auth-form" onSubmit={handleRegister}>
@@ -136,7 +135,7 @@ export default function RegisterPage() {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required className="birthdate-input"/>
+          <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required className="birthdate-input" />
           <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
           <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
