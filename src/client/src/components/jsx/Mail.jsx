@@ -17,7 +17,7 @@ function Mail({ mail }) {
   const [user, setUser] = useState(null);
   const [showCompose, setShowCompose] = useState(false);
   const { username } = useContext(AuthContext);
-  const { currentFolder, fetchMails } = useContext(MailContext)
+  const { currentFolder, fetchMails, fetchAllMails } = useContext(MailContext)
 
 
   async function checkIfDraft() {
@@ -82,6 +82,7 @@ function Mail({ mail }) {
         throw new Error('Error while adding to star')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     } else {
       const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
@@ -96,6 +97,7 @@ function Mail({ mail }) {
         throw new Error('Error while removing from star')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     }
   }, [isDraft, isStarred, currentFolder]);
 
@@ -125,6 +127,7 @@ function Mail({ mail }) {
         throw new Error('Error while adding to important')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     } else {
       const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
@@ -139,6 +142,7 @@ function Mail({ mail }) {
         throw new Error('Error while removing from important')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     }
   }, [isDraft, isImportant, currentFolder]);
  
@@ -164,6 +168,7 @@ function Mail({ mail }) {
       if (e.target.closest(".selectIcon, .starIcon, .importantIcon, .deleteIcon")) return;
     }
     fetchMails(currentFolder);
+    fetchAllMails()
   }
 
   useEffect(() => {
@@ -180,6 +185,7 @@ function Mail({ mail }) {
       setUser(json);
     }
     fetchMails(currentFolder)
+    fetchAllMails()
     fetchUser();
   }, [mail.from]);
 
@@ -215,6 +221,7 @@ function Mail({ mail }) {
       });
     }
     fetchMails(currentFolder);
+    fetchAllMails()
   };
 
 

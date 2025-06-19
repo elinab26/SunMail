@@ -5,10 +5,10 @@ import { FaArrowLeft } from "react-icons/fa";
 import "../css/MailPage.css";
 import LabelsModal from "../../components/jsx/LabelsModal";
 import LabelsMailList from "./LabelsMailList";
-const DEFAULT_LABELS = ["starred",  "important", "sent", "drafts", "trash" ];
+const DEFAULT_LABELS = ["starred", "important", "sent", "drafts", "trash"];
 
 function MailPage() {
-  const { mails, fetchMails, currentFolder } = useContext(MailContext);
+  const { mails, fetchMails, currentFolder, fetchAllMails } = useContext(MailContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -75,6 +75,7 @@ function MailPage() {
     setIsLabelsModalOpen(false);
     setLabelsUser([...labelsUser]);
     fetchMails(currentFolder)
+    fetchAllMails()
     if (label.name === "spam") {
       navigate("..")
     }
@@ -97,6 +98,7 @@ function MailPage() {
 
     setLabelsUser(prev => prev)
     fetchMails(currentFolder)
+    fetchAllMails()
     navigate("..");
 
   }

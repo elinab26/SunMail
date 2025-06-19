@@ -17,7 +17,7 @@ export default function ComposeWindow() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { fetchAllMails, setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   useEffect(() => {
     if (!isComposeOpen) return;
@@ -129,6 +129,7 @@ export default function ComposeWindow() {
 
       // Success!
       await fetchMails(currentFolder);
+      fetchAllMails()
       resetAndClose(); // Close and reset
       setFormData({ to: "", subject: "", body: "" });
 

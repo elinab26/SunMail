@@ -5,10 +5,11 @@ import Mail from "./Mail";
 import { useNavigate } from "react-router-dom";
 
 function Inbox() {
-  const { mails = [], fetchMails, currentFolder, setDraftId, setIsNewDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { mails = [], fetchAllMails, fetchMails, currentFolder, setDraftId, setIsNewDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
   const navigate = useNavigate();
   useEffect(() => {
     fetchMails(currentFolder);
+    fetchAllMails();
   }, []);
 
   function handleDraftClick(draft) {
