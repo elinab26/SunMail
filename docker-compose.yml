@@ -8,6 +8,10 @@ services:
       - net
     ports:
       - "${PORT}:${PORT}"
+    environment:
+      - PORT=${PORT}
+      - ARRAY_SIZE=${ARRAY_SIZE}
+      - HASH_REPEATS=${HASH_REPEATS}
     env_file:
       - ./src/cpp/.env
     entrypoint:
