@@ -221,7 +221,7 @@ function Mail({ mail }) {
   return (
     <>
       <div
-        className={`mailRow surface${mail.read ? "read" : "unread"}`}
+        className={`mailRow ${mail.read ? "read" : "unread"}`}
         onClick={handleClick}
         tabIndex={0}
         role="button"

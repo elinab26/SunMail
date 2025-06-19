@@ -28,6 +28,13 @@ function Label({ label, fetchLabels }) {
     }
   }, [activePopup]);
 
+  useEffect(() => {
+    if (activePopup && popupRef.current) {
+      popupRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [activePopup]);
+
+
   function handleLabelClick(name) {
     setCurrentFolder(name)
     navigate(`../${name}`)
@@ -48,7 +55,14 @@ function Label({ label, fetchLabels }) {
           <BsThreeDotsVertical />
         </button>
         {activePopup === label.id && (
-          <div className="popupMenu" ref={popupRef}>
+          <div
+          className="popupMenu"
+          ref={popupRef}    
+          onMouseLeave={() => {       
+            setActivePopup(null);
+            setActiveOption(null);
+          }}
+        >
             <EditLabel
               label={label}
               onUpdated={() => {

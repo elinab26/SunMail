@@ -136,7 +136,7 @@ export default function RegisterPage() {
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required />
+          <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required className="birthdate-input"/>
           <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
           <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
@@ -148,9 +148,14 @@ export default function RegisterPage() {
                 <button type="button" onClick={handleDeleteImage} className="delete-image-btn">
                   Remove Image
                 </button>
-                <label htmlFor="profilePictureInput" className="change-image-btn">
+                <button
+                  type="button"
+                  className="change-image-btn"
+                  onClick={() => document.getElementById('profilePictureInput').click()}
+                >
                   Change Image
-                </label>
+                </button>
+
               </div>
             </div>
           ) : (

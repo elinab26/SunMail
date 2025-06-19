@@ -143,10 +143,10 @@ export default function Sidebar({
 
   return (
     <>
-      <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
+      <nav className={`sidebar surface${isOpen ? "" : " collapsed"}`}>
         {/* Compose new message button */}
         <button
-          className="sidebar-compose-btn"
+          className="sidebar-compose-btn btn-float"
           title="New message"
           onClick={handleOpenCompose}
         >

@@ -23,7 +23,7 @@ function Inbox() {
     <div className="Mails">
       {(mails || []).map((mail) => (
         <span key={mail.id} onClick={() => {
-          if (currentFolder == "drafts") {
+          if (currentFolder === "drafts") {
             handleDraftClick(mail)
           }
           navigate(`/${currentFolder}/${mail.id}`)

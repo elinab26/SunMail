@@ -1,22 +1,27 @@
 /* src/client/src/styles/auth.css */
 .auth-bg {
     min-height: 100vh;
-    background: var(--bg-card);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
+    backdrop-filter: blur(2px); 
+    /* background-color: var(--surface-bg); */
+
   }
   
+  
   .auth-card {
-    background: var(--bg-surface);
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow-color);
-    padding: 40px 32px 32px 32px;
+    padding: 24px 16px 18px 16px;
     width: 100%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+    background-color: var(--surface-bg);
   }
   
   .auth-logo {
@@ -36,16 +41,16 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 15px;
   }
   
   .auth-form input,
   .auth-form select {
     font-size: 1rem;
     padding: 12px 10px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--input-border);
     border-radius: 4px;
-    background: var(--bg-card);
+    background: var(--input-bg);
     color: var(--text-color);
     outline: none;
     transition: border-color 0.2s, background-color 0.2s;
@@ -54,22 +59,23 @@
   .auth-form input:focus,
   .auth-form select:focus {
     border-color: var(--primary);
-    background: var(--bg-surface);
+    background: var(--input-bg-focus);
   }
-  
+
     /* Override browser autofill styles for consistent background */
   .auth-form input:-webkit-autofill,
   .auth-form input:-webkit-autofill:hover,
   .auth-form input:-webkit-autofill:focus,
   .auth-form select:-webkit-autofill,
   .auth-form textarea:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+    /* TODO: */
+    -webkit-box-shadow: 0 0 0px 1000px var(--auto) inset !important;
     -webkit-text-fill-color: var(--text-color) !important;
     caret-color: var(--text-color) !important;
   }
   
   .auth-btn {
-    background: var(--primary);
+    background: var(--auth-btn-bg);
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -88,19 +94,21 @@
   }
   
   .auth-btn:hover:not(:disabled) {
-    background: var(--primary-hover);
+    background: var(--auth-btn-bg-hover);
   }
   
   .auth-link {
     margin-top: 18px;
     font-size: 0.97rem;
-    color: var(--primary);
+    color: var(--auth-btn-bg-hover);
     text-align: center;
+    text-shadow: 0 1px 0 var(--shadow-color);
   }
   
   .auth-link a {
-    color: var(--primary);
+    color: var(--auth-btn-bg-hover);
     text-decoration: none;
+    text-shadow: 0.5px 0.5px var(--shadow-color);
   }
   
   .auth-link a:hover {
@@ -108,21 +116,42 @@
   }
   
   .auth-error {
-    color: var(--danger);
-    font-size: 0.98rem;
-    margin-top: -10px;
-    margin-bottom: 2px;
-    text-align: left;
-    width: 100%;
-  }
-
-  .auth-profile-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 8px;
-    position: relative;
+  min-height: 38px;     
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  color: var(--danger);
+  background-color: var(--bg-delete-hover);
+  width: 100%;
+  font-size: 0.98rem;
+  padding: 8px 12px;
+  margin-top: 0;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: left;
+  text-shadow: 0 2px 0 var(--shadow-color);
+  opacity: 1;
+  transition: opacity 0.25s;
 }
+.auth-error:empty {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auth-show-btn {
+  margin-bottom: 12px;
+}
+
+
+.auth-profile-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+  position: relative;
+}
+
 .auth-profile-img {
     width: 100px;
     height: 100px;
@@ -134,7 +163,9 @@
 
 .image-upload-controls {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 6px;
 }
 
 .delete-image-btn,
@@ -153,14 +184,14 @@
 .delete-image-btn:hover,
 .change-image-btn:hover,
 .upload-image-btn:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--surface-bg);
     border-color: var(--primary);
-    color: var(--primary);
 }
 
 .delete-image-btn {
   color: var(--danger);
   border-color: var(--danger);
+  background-color: var(--surface-bg);
 }
 
 .delete-image-btn:hover {
@@ -172,6 +203,7 @@
 .change-image-btn {
   color: var(--primary);
   border-color: var(--primary);
+  background-color: var(--surface-bg)
 }
 
 .change-image-btn:hover {
@@ -179,14 +211,14 @@
 }
 
 .upload-image-btn {
-  background-color: var(--accent);
+  background-color: var(--upload-btn-bg);
   color: var(--text-color);
-  border-color: var(--accent);
+  border-color: var(--upload-btn-bg-border);
 }
 
 .upload-image-btn:hover {
-  background-color: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background-color: var(--upload-btn-bg-hover);
+  border-color: var(--upload-btn-bg-border);
   color: var(--text-color);
 }
 
@@ -209,8 +241,25 @@
   gap: 6px;
 }  */
 
+.birthdate-input {
+  font-size: 1.07rem;
+  padding: 14px 12px;
+  border: 1.5px solid #dadce0;
+  border-radius: 8px;
+  background: #f8f9fa;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.18s;
+  background-color: #25a4bf;
+}
+
+.birthdate-input:focus {
+  border-color: #25a4bf;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(37,164,191,0.09);
+}
+
 .auth-logo {            /* קיים כבר – מוסיפים צל קל */
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.267));
 }
 
 .auth-brand {
@@ -223,7 +272,7 @@
 /* ===== File input ===== */
 .auth-form input[type="file"] {
   padding: 8px 10px;
-  background: var(--bg-card);
+  background: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   color: var(--text-color);
@@ -242,6 +291,53 @@
 
 /* Hover */
 .auth-form input[type="file"]::-webkit-file-upload-button:hover {
-  background: var(--bg-card);
+  background: var(--surface-bg);
 }
 
+/* מצב כהה */
+.dark-mode,
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  color-scheme: dark;
+}
+
+/* Autofill styles for dark mode */
+.dark-mode input:-webkit-autofill,
+.dark-mode input:-webkit-autofill:hover,
+.dark-mode input:-webkit-autofill:focus,
+.dark-mode select:-webkit-autofill,
+.dark-mode textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--surface-bg) inset !important;
+  -webkit-text-fill-color: var(--text-color) !important;
+  caret-color: var(--text-color) !important;
+}
+
+/* מצב בהיר (ברירת מחדל) */
+input,
+select,
+textarea {
+  color-scheme: light;
+}
+
+/* Autofill styles for light mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--auto) inset !important;
+  -webkit-text-fill-color: var(--text-color) !important;
+  caret-color: var(--text-color) !important;
+}
+
+/* Date input - מצב כהה */
+.dark-mode input[type="date"] {
+  color-scheme: dark;
+  color: var(--text-color);
+}
+/* Date input - מצב בהיר */
+input[type="date"] {
+  color-scheme: light;
+  color: var(--text-color);
+}
