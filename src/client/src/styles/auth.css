@@ -102,13 +102,13 @@
     font-size: 0.97rem;
     color: var(--auth-btn-bg-hover);
     text-align: center;
-    text-shadow: 0 1px 0 var(--shadow-color);
+    text-shadow: 0 0.2px 0 var(--shadow-color);
   }
   
   .auth-link a {
     color: var(--auth-btn-bg-hover);
     text-decoration: none;
-    text-shadow: 0.5px 0.5px var(--shadow-color);
+    text-shadow: 0.3px 0.3px var(--shadow-color);
   }
   
   .auth-link a:hover {

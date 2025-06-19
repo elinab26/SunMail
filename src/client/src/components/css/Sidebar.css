@@ -1,4 +1,4 @@
-.sidebar {
+.sidebar.surface {
   width: 240px;
   color: var(--text-color);
   display: flex;
@@ -8,7 +8,7 @@
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar.collapsed {
+.sidebar.surface.collapsed {
   width: 52px;
   min-width: 0;
   max-width: none;
