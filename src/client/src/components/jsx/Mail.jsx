@@ -22,6 +22,43 @@ function Mail({ mail }) {
   const { currentFolder, fetchMails } = useContext(MailContext)
 
 
+  async function checkIfDraft() {
+    const response = await fetch(`/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "drafts" && label.userId === currUser.id)) {
+      setIsDraft(true);
+    } else {
+      setIsDraft(false)
+    }
+  }
+
+  async function checkStarred() {
+    const response = await fetch(`/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "starred" && label.userId === currUser.id)) {
+      setIsStarred(true);
+    } else {
+      setIsStarred(false)
+    }
+  }
+
+  async function checkImportant() {
+    const response = await fetch(`/api/users/by-username/${username}`);
+    if (!response.ok) throw new Error('User not found');
+
+    const currUser = await response.json();
+    if (mail.labels?.some(label => label.name === "important" && label.userId === currUser.id)) {
+      setisImportant(true);
+    } else {
+      setisImportant(false)
+    }
+  }
+
+
   const handleStarClicked = useCallback(async () => {
     if (isDraft) return;
     setIsStarred(!isStarred);
@@ -62,7 +99,7 @@ function Mail({ mail }) {
       }
       fetchMails(currentFolder)
     }
-  }, [isDraft, isStarred, currentFolder, fetchMails, mail.id]);
+  }, [isDraft, isStarred, currentFolder]);
 
   const handleImportantClicked = useCallback(async () => {
     if (isDraft) return;
