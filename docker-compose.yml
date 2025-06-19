@@ -29,7 +29,7 @@ services:
     ports:
       - "8080:8080"
     env_file:
-    - ./src/api/src/.env
+      - ./src/api/src/.env
     environment:
       - URL_CHECK_HOST=server
       - URL_CHECK_PORT=${PORT}
@@ -39,10 +39,22 @@ services:
       - -c
       - node src/gmail.js
 
+  client:
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "3000:3000"
+    networks:
+      - net
+    depends_on:
+      - api
+    command: npm start
+
 volumes:
   data_volume:
 
 networks:
   net:
     driver: bridge
-    

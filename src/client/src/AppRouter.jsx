@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import InboxPage from "./pages/jsx/InboxPage";
 import LoginPage from "./pages/jsx/LoginPage";
 import RegisterPage from "./pages/jsx/RegisterPage";
-import MailPage from "./pages/jsx/MailPage";
 import Inbox from "./components/jsx/Inbox";
 import SearchResultsPage from "./pages/jsx/SearchResultsPage";
 import MailRenderer from "./components/jsx/MailRenderer";
@@ -27,7 +26,7 @@ function HomeRedirect() {
       return;
     }
 
-    fetch(`http://localhost:8080/api/users/by-username/${username}`)
+    fetch(`/api/users/by-username/${username}`)
       .then((res) => {
         if (!res.ok) throw new Error("User not found");
         return res.json();

@@ -24,7 +24,7 @@ export default function LoginPage() {
     const email = username.includes("@") ? username : `${username}@gmail.com`;
 
     try {
-      const loginRes = await fetch("http://localhost:8080/api/tokens", {
+      const loginRes = await fetch("/api/tokens", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

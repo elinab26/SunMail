@@ -66,7 +66,7 @@ export default function RegisterPage() {
       }
 
       // Change this line to point to the correct port
-      const res = await fetch('http://localhost:8080/api/users', {
+      const res = await fetch('/api/users', {
         method: 'POST',
         credentials: 'include', // Add this for cookies
         body: formData,
@@ -74,7 +74,7 @@ export default function RegisterPage() {
 
       if (res.status === 201) {
         const email = `${form.userName}@gmail.com`;
-        const loginRes = await fetch("http://localhost:8080/api/tokens", {
+        const loginRes = await fetch("/api/tokens", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

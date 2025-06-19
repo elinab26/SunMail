@@ -16,7 +16,7 @@ function EditLabel({ label, onUpdated, close, active, onActivate }) {
     try {
       const updatedLabel = { name: labelName.trim() };
 
-      const res = await fetch(`http://localhost:8080/api/labels/${label.id}`, {
+      const res = await fetch(`/api/labels/${label.id}`, {
         method: "PATCH",
         credentials: "include",
         headers: {

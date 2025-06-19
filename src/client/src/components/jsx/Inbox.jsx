@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { MailContext } from "../../contexts/MailContext";
 import "../css/Inbox.css";
 import Mail from "./Mail";
@@ -13,8 +13,8 @@ function Inbox() {
 
   function handleDraftClick(draft) {
     setDraftId(draft.id);
-    setIsNewDraft(false);       
-    setIsComposeOpen(true);     
+    setIsNewDraft(false);
+    setIsComposeOpen(true);
     setIsMinimized(false);
   }
 
@@ -23,7 +23,7 @@ function Inbox() {
     <div className="Mails">
       {(mails || []).map((mail) => (
         <span key={mail.id} onClick={() => {
-          if (currentFolder == "drafts") {
+          if (currentFolder === "drafts") {
             handleDraftClick(mail)
           }
           navigate(`/${currentFolder}/${mail.id}`)

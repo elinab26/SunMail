@@ -108,7 +108,7 @@ export default function Sidebar({
   }
 
   async function fetchLabels() {
-    const res = await fetch("http://localhost:8080/api/labels", {
+    const res = await fetch("/api/labels", {
       credentials: "include",
     });
     const json = await res.json();
@@ -124,7 +124,7 @@ export default function Sidebar({
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
 
   async function createDraft() {
-    const res = await fetch("http://localhost:8080/api/mails/drafts", {
+    const res = await fetch("/api/mails/drafts", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

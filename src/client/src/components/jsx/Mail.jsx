@@ -22,48 +22,11 @@ function Mail({ mail }) {
   const { currentFolder, fetchMails } = useContext(MailContext)
 
 
-  async function checkIfDraft() {
-    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
-    if (!response.ok) throw new Error('User not found');
-
-    const currUser = await response.json();
-    if (mail.labels?.some(label => label.name === "drafts" && label.userId === currUser.id)) {
-      setIsDraft(true);
-    } else {
-      setIsDraft(false)
-    }
-  }
-
-  async function checkStarred() {
-    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
-    if (!response.ok) throw new Error('User not found');
-
-    const currUser = await response.json();
-    if (mail.labels?.some(label => label.name === "starred" && label.userId === currUser.id)) {
-      setIsStarred(true);
-    } else {
-      setIsStarred(false)
-    }
-  }
-
-  async function checkImportant() {
-    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
-    if (!response.ok) throw new Error('User not found');
-
-    const currUser = await response.json();
-    if (mail.labels?.some(label => label.name === "important" && label.userId === currUser.id)) {
-      setisImportant(true);
-    } else {
-      setisImportant(false)
-    }
-  }
-
-
   const handleStarClicked = useCallback(async () => {
     if (isDraft) return;
     setIsStarred(!isStarred);
 
-    const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
+    const res1 = await fetch(`/api/labels/name/starred`, {
       credentials: "include",
     })
     if (res1.status !== 200) {
@@ -71,7 +34,7 @@ function Mail({ mail }) {
     }
     const label = await res1.json();
     if (!isStarred) {
-      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+      const res2 = await fetch(`/api/labelsAndMails/${mail.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -85,7 +48,7 @@ function Mail({ mail }) {
       }
       fetchMails(currentFolder)
     } else {
-      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
+      const res2 = await fetch(`/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -99,14 +62,14 @@ function Mail({ mail }) {
       }
       fetchMails(currentFolder)
     }
-  }, [isDraft, isStarred, currentFolder]);
+  }, [isDraft, isStarred, currentFolder, fetchMails, mail.id]);
 
   const handleImportantClicked = useCallback(async () => {
     if (isDraft) return;
 
     setisImportant(!isImportant);
 
-    const res1 = await fetch(`http://localhost:8080/api/labels/name/important`, {
+    const res1 = await fetch(`/api/labels/name/important`, {
       credentials: "include",
     })
     if (res1.status !== 200) {
@@ -114,7 +77,7 @@ function Mail({ mail }) {
     }
     const label = await res1.json();
     if (!isImportant) {
-      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+      const res2 = await fetch(`/api/labelsAndMails/${mail.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -128,7 +91,7 @@ function Mail({ mail }) {
       }
       fetchMails(currentFolder)
     } else {
-      const res2 = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${label.id}`, {
+      const res2 = await fetch(`/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -146,13 +109,13 @@ function Mail({ mail }) {
  
 
   async function handleClicked(e) {
-    const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
+    const response = await fetch(`/api/users/by-username/${username}`);
     if (!response.ok) throw new Error('User not found');
 
     const currUser = await response.json();
 
     if (mail.to === currUser.id && currentFolder !== "drafts") {
-      const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
+      const res = await fetch(`/api/mails/${mail.id}/read/${currentFolder}`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -170,7 +133,7 @@ function Mail({ mail }) {
 
   useEffect(() => {
     async function fetchUser() {
-      const res = await fetch(`http://localhost:8080/api/users/${mail.from}`, {
+      const res = await fetch(`/api/users/${mail.from}`, {
         credentials: "include",
       });
       if (res.status !== 200) {
@@ -206,12 +169,12 @@ function Mail({ mail }) {
     console.log("mail.labels:", mail.labels);
     e.stopPropagation();
     if (isDraft) {
-      await fetch(`http://localhost:8080/api/drafts/${mail.id}`, {
+      await fetch(`/api/drafts/${mail.id}`, {
         method: "DELETE",
         credentials: "include",
       });
     } else {
-      await fetch(`http://localhost:8080/api/mails/${mail.id}`, {
+      await fetch(`/api/mails/${mail.id}`, {
         method: "DELETE",
         credentials: "include",
       });
