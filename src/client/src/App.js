@@ -1,14 +1,14 @@
 // src/client/src/App.js
-import React from 'react';
 import AppRouter from './AppRouter';
 import { MailProvider } from './contexts/MailContext';
-
+import WaveBackground from './components/jsx/WaveBackground';
 
 function App() {
   return (
     <MailProvider>
       <AppRouter />
-      </MailProvider>
+      <WaveBackground />
+    </MailProvider>
   );
 }
 
