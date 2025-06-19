@@ -4,10 +4,6 @@ import "../../styles/theme.css"
 export default function WaveBackground() {
     return (
         <>
-            <div className="sun-container">
-                <div className="sun"></div>
-                <div className="sun-reflection"></div>
-            </div>
             <div className="sea-wave-bg" aria-hidden="true">
                 <svg className="svg-wave" viewBox="0 0 2880 120" preserveAspectRatio="none">
                     <g>
