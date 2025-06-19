@@ -19,6 +19,8 @@
   --danger: #fc1100;
   --bg-edit-hover: #58a7df2a;
   --bg-delete-hover: rgba(220, 53, 69, 0.1);
+  --wave-gradient: linear-gradient(180deg, #aee1ff 60%, #3bb2ff 100%);
+  
 }
 
 .dark-mode {
@@ -38,6 +40,7 @@
   --danger: #fa3e3e;
   --bg-edit-hover: #00145250;
   --bg-delete-hover: rgba(88, 0, 0, 0.267);
+  --wave-gradient: linear-gradient(180deg, #372557 60%, #2b1055 100%);
 }
 
 :root {

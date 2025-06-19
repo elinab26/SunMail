@@ -103,7 +103,7 @@
 .field-row {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 
 .compose-input {
@@ -151,10 +151,12 @@
 }
 
 .compose-window.maximized .compose-body {
-    min-height: 500px;
+    min-height: 400px;
     font-size: 16px;
     line-height: 1.6;
 }
+
+
 
 .compose-textarea {
     flex: 1;
@@ -167,25 +169,27 @@
     color: var(--text-color);
     overflow: auto;
     background: var(--bg-card);
-    min-height: 0;
+    min-height: 250px;
 }
 
 .compose-window.maximized .compose-textarea {
-    min-height: 500px;
+    min-height: 200px;
+    padding: 10px 12px;
 }
 
 .compose-footer {
-    padding: 16px;
+    padding: 8px 10px;
     border-top: 1px solid var(--line);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
     background: var(--bg-surface);
+
 }
 
 .compose-window.maximized .compose-footer {
-    padding: 20px;
+    padding: 10px 15px;
 }
 
 .send-btn {
