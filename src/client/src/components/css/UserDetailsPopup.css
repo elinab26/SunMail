@@ -1,12 +1,12 @@
 .user-details-popup {
-  position: absolute;
+  position: fixed;
   top: 60px; /* Below the topbar */
   right: 16px;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 4px 20px var(--shadow-color);
-  z-index: 1000;
+  z-index: 910000;
   width: 300px;
   padding: 15px;
   display: flex;

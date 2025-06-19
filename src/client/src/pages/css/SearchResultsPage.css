@@ -2,7 +2,7 @@
 
 .search-results-container {
   padding: 20px;
-  background-color: var(--bg-page);
+  background-color: var(--surface-bg);
   color: var(--text-color);
   flex: 1;
   overflow-y: auto;
@@ -27,7 +27,7 @@
 
 /* Ensure mail items have consistent styling */
 .mails-list .mailRow {
-  background-color: var(--bg-surface);
+  background-color: var(--bg-mailRow-unread);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px 16px;

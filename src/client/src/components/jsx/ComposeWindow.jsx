@@ -95,7 +95,7 @@ export default function ComposeWindow() {
     setIsMaximized(true);
     setError("");
     onClose();
-    if (currentFolder == "drafts") {
+    if (currentFolder === "drafts") {
       navigate('..');
     }
   };

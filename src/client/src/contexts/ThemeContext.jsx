@@ -1,16 +1,35 @@
-import React, { createContext, useEffect, useState, useCallback, useContext } from 'react';
+import React, { createContext, useLayoutEffect, useState, useCallback, useContext } from 'react';
 
 export const ThemeContext = createContext();
 
-/* ‼️ ה־Provider היחיד שתצטרכי בפרויקט */
 export function ThemeProvider({ children }) {
-  // 1. יטעין את הבחירה מ-localStorage כבר בהתחלה
-  const [darkMode, setDarkMode] = useState(() =>
-    window.localStorage.getItem('theme') === 'dark'
-  );
+  
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = window.localStorage.getItem('theme') === 'dark';
+    
+    const root = document.documentElement;
+    saved ? root.classList.add('dark-mode')
+          : root.classList.remove('dark-mode');
+    return saved;
+  });
 
-  // 2. whenever darkMode changes → הוספה/הסרה של המחלקה
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (darkMode) {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < 60; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.top  = Math.random() * 80 + 'vh';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.animationDelay = `${Math.random()*3}s`;
+      frag.appendChild(s);
+    }
+    document.body.appendChild(frag);
+    return () => { document.querySelectorAll('.star').forEach(el => el.remove()); };
+    }
+  }, [darkMode]);
+
+  useLayoutEffect(() => {
     const root = document.documentElement;
     if (darkMode) {
       root.classList.add('dark-mode');
@@ -21,10 +40,8 @@ export function ThemeProvider({ children }) {
     }
   }, [darkMode]);
 
-  // 3. פונקציית החלפה
   const toggleTheme = useCallback(() => setDarkMode(prev => !prev), []);
 
-  // 4. חשיפה לילדים
   return (
     <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
       {children}
@@ -32,5 +49,4 @@ export function ThemeProvider({ children }) {
   );
 }
 
-/* ✨ helper קטן לשימוש נוח */
 export const useTheme = () => useContext(ThemeContext);

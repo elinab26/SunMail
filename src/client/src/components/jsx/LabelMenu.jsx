@@ -7,6 +7,12 @@ function LabelMenu({labels, fetchLabels}) {
   const [activePopup, setActivePopup] = useState(null);
   const popupRef = useRef(null);
 
+  const lastLabelRef = useRef(null);
+  useEffect(() => {
+    if (labels.length && lastLabelRef.current) {
+      lastLabelRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [labels]);
 
   // Fermer le popup en cliquant à l'extérieur
   useEffect(() => {
@@ -31,8 +37,8 @@ function LabelMenu({labels, fetchLabels}) {
   return (
     <div>
       <ul className="Labels">
-        {labels.map((label) => (
-          <li key={label.id}>
+        {labels.map((label, idx) => (
+          <li key={label.id} ref={idx===labels.length - 1 ? lastLabelRef : null}>
             <Label label={label} fetchLabels={fetchLabels} />
           </li>
         ))}

@@ -6,7 +6,7 @@
     height: auto;
     max-height: 95vh;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--line);
     border-radius: 8px 8px 0 0;
     box-shadow: 0 8px 10px 1px var(--shadow-color), 0 3px 14px 2px var(--shadow-color), 0 5px 5px -3px var(--shadow-color);
     z-index: 1000;
@@ -97,7 +97,7 @@
 
 .compose-fields {
     padding: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--line);
 }
 
 .field-row {
@@ -176,7 +176,7 @@
 
 .compose-footer {
     padding: 16px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--line);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -268,7 +268,7 @@
 
 /* קו תחתון קל כשלא בפוקוס */
 .compose-input {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 .compose-input:focus {
   border-bottom-color: var(--primary);

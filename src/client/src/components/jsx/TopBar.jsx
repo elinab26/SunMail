@@ -47,12 +47,14 @@ export default function TopBar({ toggleSidebar }) {
   };
 
   return (
-    <header className="topbar">
-      {/* 1️⃣ Menu button */}
-      <div className="topbar-left">
-        <button className="menu-btn" onClick={toggleSidebar}>
-          <MdMenu size={24} />
-        </button>
+    <>
+      {/* {darkMode && <div className="sunset-scene"></div>} */}
+      <header className="topbar surface">
+        {/* 1️⃣ Menu button */}
+        <div className="topbar-left">
+          <button className="menu-btn" onClick={toggleSidebar}>
+            <MdMenu size={24} />
+          </button>
 
         {/* 2️⃣ Logo */}
         <div className="topbar-logo">
@@ -77,7 +79,7 @@ export default function TopBar({ toggleSidebar }) {
       {/* 4️⃣ Theme toggle  */}
       <div className="topbar-right">
         <button
-          className="theme-btn"
+          className="theme-btn btn-ripple"
           onClick={toggleTheme}
           title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
@@ -115,5 +117,6 @@ export default function TopBar({ toggleSidebar }) {
         )}
       </div>
     </header>
+    </>
   );
 }

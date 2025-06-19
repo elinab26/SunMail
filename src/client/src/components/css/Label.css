@@ -4,9 +4,9 @@
     align-items: center;
     padding: 10px 15px;
     border-bottom: 1px solid var(--border-color);
-    background-color: var(--bg-topbar);
     margin-bottom: 5px;
     border-radius: 5px;
+    background-color: var(--surface-bg);
 }
 
 .label:hover {
@@ -47,13 +47,13 @@
     top: calc(100% + 5px);
     right: -10px;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
     border-radius: 8px;
     box-shadow: 0 4px 20px var(--shadow-color);
     z-index: 1000;
     min-width: 140px;
     overflow: visible;
     animation: popupFadeIn 0.2s ease-out;
+    border: 1px solid none;  
 }
 
 @keyframes popupFadeIn {
@@ -78,11 +78,19 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.2s;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--line);
+}
+
+.popupOption:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
 }
 
 .popupOption:last-child {
     border-bottom: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 .popupOption:hover {
