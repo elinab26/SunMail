@@ -145,7 +145,7 @@
     align-items: center;
     gap: 10px;
     margin-right: 5px;
-    color: var(--text-color);
+    color: var(--search-bg-focus);
 }
 .topbar-userinfo-img {
     width: 30px;
@@ -159,7 +159,7 @@
     border-radius: 50%;
     background: var(--surface-bg-hover);
     color: var(--search-bg-focus);
-    text-shadow: 0 1px 3px var(--name-shadow-color);
+    text-shadow: 0 1px 3px var(--search-bg-focus);
 
     display: flex;
     align-items: center;

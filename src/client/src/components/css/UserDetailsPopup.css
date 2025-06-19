@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  color: var(--text-color);
+  color: var(--search-bg-focus);
   font-family: 'Google Sans', Roboto, sans-serif;
   animation: popupFadeIn 0.2s ease-out;
 }
@@ -34,6 +34,8 @@
   gap: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--border-color);
+  color: var(--search-bg-focus);
+
 }
 
 .popup-profile-img {
@@ -41,6 +43,7 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  
 }
 
 .popup-profile-fallback {
@@ -48,7 +51,7 @@
   height: 60px;
   border-radius: 50%;
   background: var(--bg-card);
-  color: var(--text-color-secondary);
+  color: var(--search-bg-focus);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,7 +71,7 @@
 
 .popup-user-email {
   font-size: 0.95rem;
-  color: var(--text-color-secondary);
+  color: var(--search-bg-focus);
   margin-top: 2px;
 }
 
