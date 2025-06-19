@@ -16,7 +16,7 @@ function MailPage() {
   const [labelsUser, setLabelsUser] = useState([]);
 
   async function fetchLabels() {
-    const res = await fetch("http://localhost:8080/api/labels", {
+    const res = await fetch("/api/labels", {
       credentials: "include",
     });
     const json = await res.json();
@@ -31,7 +31,7 @@ function MailPage() {
   useEffect(() => {
     if (!mail1) return;
     async function fetchUser() {
-      const res = await fetch(`http://localhost:8080/api/users/${mail1.from}`, {
+      const res = await fetch(`/api/users/${mail1.from}`, {
         credentials: "include",
       });
       if (res.status !== 200) {
@@ -52,7 +52,7 @@ function MailPage() {
 
   async function handleOpenLabels() {
     if (labelsUser.length === 0) {
-      const res = await fetch("http://localhost:8080/api/labels", { credentials: "include" });
+      const res = await fetch("/api/labels", { credentials: "include" });
       if (res.ok) {
         setLabelsUser(await res.json());
       }
@@ -61,7 +61,7 @@ function MailPage() {
   }
 
   async function handleSelectLabel(label) {
-    const res = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}`, {
+    const res = await fetch(`/api/labelsAndMails/${mail.id}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -82,7 +82,7 @@ function MailPage() {
   }
 
   async function handleRemoveLabel(labelId) {
-    const res = await fetch(`http://localhost:8080/api/labelsAndMails/${mail.id}/${labelId}`, {
+    const res = await fetch(`/api/labelsAndMails/${mail.id}/${labelId}`, {
       method: "DELETE",
       credentials: "include"
     });
