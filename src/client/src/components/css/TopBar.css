@@ -40,11 +40,14 @@
 .topbar-logo {
     display: flex;
     align-items: center;
-    margin-left: 8px
+    margin-left: 20px;
+    cursor: pointer;
+    background:none;
+    border:none;
 }
 
 .logo-image {
-    height: 35px;
+    height: 50px;
     /* adjust to desired height */
     width: auto;
 }
