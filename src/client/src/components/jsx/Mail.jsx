@@ -145,7 +145,7 @@ function Mail({ mail }) {
       fetchAllMails()
     }
   }, [isDraft, isImportant, currentFolder]);
- 
+
 
   async function handleClicked(e) {
     const response = await fetch(`/api/users/by-username/${username}`);
