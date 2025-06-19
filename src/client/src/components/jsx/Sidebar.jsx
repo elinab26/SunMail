@@ -33,11 +33,11 @@ const primaryFolders = [
     countKey: "inbox",
   },
   { key: "starred", label: "Starred", icon: <AiOutlineStar size={20} /> },
-  {
-    key: "snoozed",
-    label: "Snoozed",
-    icon: <AiOutlineClockCircle size={20} />,
-  },
+  // {
+  //   key: 
+  //   label: "Snoozed",
+  //   icon: <AiOutlineClockCircle size={20} />,
+  // },
   { key: "important", label: "Important", icon: <BiLabel size={20} /> },
   { key: "sent", label: "Sent", icon: <BiSend size={20} /> },
   {
@@ -50,16 +50,16 @@ const primaryFolders = [
 
 // List of secondary folders shown when "More" is expanded
 const secondaryFolders = [
-  { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
-  { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
-  { key: "all", label: "All mail", icon: <BiEnvelope size={20} /> },
+  // { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
+  // { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
+  // { key: "all", label: "All mail", icon: <BiEnvelope size={20} /> },
   { key: "spam", label: "Spam", icon: <RiSpam2Line size={20} /> },
   { key: "trash", label: "Trash", icon: <BiTrash size={20} /> },
-  {
-    key: "manage",
-    label: "Manage labels",
-    icon: <MdOutlineSettings size={20} />,
-  },
+  // {
+  //   key: "manage",
+  //   label: "Manage labels",
+  //   icon: <MdOutlineSettings size={20} />,
+  // },
   // { key: 'create', label: 'Create label', icon: <AiOutlinePlus size={20} /> },
 ];
 
@@ -143,10 +143,10 @@ export default function Sidebar({
 
   return (
     <>
-      <nav className={`sidebar${isOpen ? "" : " collapsed"}`}>
+      <nav className={`sidebar surface${isOpen ? "" : " collapsed"}`}>
         {/* Compose new message button */}
         <button
-          className="sidebar-compose-btn"
+          className="sidebar-compose-btn btn-float"
           title="New message"
           onClick={handleOpenCompose}
         >

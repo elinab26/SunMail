@@ -4,22 +4,20 @@ import { MdOutlineStarBorder } from "react-icons/md";
 import { MdOutlineStar } from "react-icons/md";
 import { MdLabelImportantOutline } from "react-icons/md";
 import { MdLabelImportant } from "react-icons/md";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
-import { IoIosCheckboxOutline } from "react-icons/io";
+
 import { BiTrash } from "react-icons/bi";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
 import { MailContext } from "../../contexts/MailContext";
 
 function Mail({ mail }) {
-  const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
   const [isDraft, setIsDraft] = useState(null);
   const [user, setUser] = useState(null);
   const [showCompose, setShowCompose] = useState(false);
   const { username } = useContext(AuthContext);
-  const { currentFolder, fetchMails } = useContext(MailContext)
+  const { currentFolder, fetchMails, fetchAllMails } = useContext(MailContext)
 
 
   async function checkIfDraft() {
@@ -84,6 +82,7 @@ function Mail({ mail }) {
         throw new Error('Error while adding to star')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     } else {
       const res2 = await fetch(`/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
@@ -98,6 +97,7 @@ function Mail({ mail }) {
         throw new Error('Error while removing from star')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     }
   }, [isDraft, isStarred, currentFolder]);
 
@@ -127,6 +127,7 @@ function Mail({ mail }) {
         throw new Error('Error while adding to important')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     } else {
       const res2 = await fetch(`/api/labelsAndMails/${mail.id}/${label.id}`, {
         method: "DELETE",
@@ -141,6 +142,7 @@ function Mail({ mail }) {
         throw new Error('Error while removing from important')
       }
       fetchMails(currentFolder)
+      fetchAllMails()
     }
   }, [isDraft, isImportant, currentFolder]);
  
@@ -166,6 +168,7 @@ function Mail({ mail }) {
       if (e.target.closest(".selectIcon, .starIcon, .importantIcon, .deleteIcon")) return;
     }
     fetchMails(currentFolder);
+    fetchAllMails()
   }
 
   useEffect(() => {
@@ -182,6 +185,7 @@ function Mail({ mail }) {
       setUser(json);
     }
     fetchMails(currentFolder)
+    fetchAllMails()
     fetchUser();
   }, [mail.from]);
 
@@ -217,32 +221,18 @@ function Mail({ mail }) {
       });
     }
     fetchMails(currentFolder);
+    fetchAllMails()
   };
 
 
   return (
     <>
       <div
-        className={`mailRow surface${mail.read ? "read" : "unread"}`}
+        className={`mailRow ${mail.read ? "read" : "unread"}`}
         onClick={handleClick}
         tabIndex={0}
         role="button"
       >
-        <button
-          className="selectIcon"
-          onClick={(e) => {
-            e.stopPropagation();
-            setisSelected(!isSelected);
-          }}
-        >
-          {isSelected ? (
-            <span id="selectOn">
-              <IoIosCheckboxOutline />
-            </span>
-          ) : (
-            <MdCheckBoxOutlineBlank />
-          )}
-        </button>
         <button
           className="starIcon"
           onClick={(e) => {

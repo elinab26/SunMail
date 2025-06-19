@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import "../css/EditLabel.css";
 
 function EditLabel({ label, onUpdated, close, active, onActivate }) {
   const [labelName, setLabelName] = useState(label.name);
   const [isEditing, setIsEditing] = useState(false);
+  const editRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing && editRef.current) {
+      editRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [isEditing]);
+
 
   async function editLabelHandler(event) {
     event.preventDefault();
@@ -52,12 +60,13 @@ function EditLabel({ label, onUpdated, close, active, onActivate }) {
 
   if (isEditing) {
     return (
-      <div className="editLabelForm">
+      <div className="editLabelForm" ref={editRef}>
         <form onSubmit={editLabelHandler}>
           <input
             type="text"
             value={labelName}
             onChange={(e) => setLabelName(e.target.value)}
+            placeholder="Label Name"
             autoFocus
           />
           <div className="editButtons">

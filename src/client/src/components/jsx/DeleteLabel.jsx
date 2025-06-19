@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import "../css/DeleteLabel.css";
 
 function DeleteLabel({ labelId, onDeleted, close, active, onActivate }) {
   const [isConfirming, setIsConfirming] = useState(false);
+  const confirmRef = useRef(null);
+
+  useEffect(() => {
+    if (isConfirming && confirmRef.current) {
+      confirmRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [isConfirming]);
 
   async function deleteLabelHandler() {
     const res = await fetch(`/api/labels/${labelId}`, {
@@ -34,7 +41,7 @@ function DeleteLabel({ labelId, onDeleted, close, active, onActivate }) {
 
   if (isConfirming) {
     return (
-      <div className="deleteConfirmation">
+      <div className="deleteConfirmation" ref={confirmRef}>
         <p>Are you sure you want to delete this label?</p>
         <div className="confirmButtons">
           <button onClick={handleConfirm} className="confirmButtonDelete">

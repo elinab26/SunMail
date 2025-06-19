@@ -11,7 +11,7 @@ export default function InboxPage() {
   // State to control if the sidebar is hovered (for temporary open)
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 
-  const { fetchMails, currentFolder } = useContext(MailContext);
+  const { fetchMails, currentFolder, fetchAllMails } = useContext(MailContext);
 
   // Ref to store the hover timeout ID
   const hoverTimeout = useRef(null);
@@ -36,6 +36,7 @@ export default function InboxPage() {
 
   useEffect(() => {
     fetchMails(currentFolder);
+    fetchAllMails();
   }, [currentFolder]);
 
   return (

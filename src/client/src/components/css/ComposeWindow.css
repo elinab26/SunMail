@@ -6,7 +6,7 @@
     height: auto;
     max-height: 95vh;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--line);
     border-radius: 8px 8px 0 0;
     box-shadow: 0 8px 10px 1px var(--shadow-color), 0 3px 14px 2px var(--shadow-color), 0 5px 5px -3px var(--shadow-color);
     z-index: 1000;
@@ -97,13 +97,13 @@
 
 .compose-fields {
     padding: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--line);
 }
 
 .field-row {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 
 .compose-input {
@@ -151,10 +151,12 @@
 }
 
 .compose-window.maximized .compose-body {
-    min-height: 500px;
+    min-height: 400px;
     font-size: 16px;
     line-height: 1.6;
 }
+
+
 
 .compose-textarea {
     flex: 1;
@@ -167,25 +169,27 @@
     color: var(--text-color);
     overflow: auto;
     background: var(--bg-card);
-    min-height: 0;
+    min-height: 250px;
 }
 
 .compose-window.maximized .compose-textarea {
-    min-height: 500px;
+    min-height: 200px;
+    padding: 10px 12px;
 }
 
 .compose-footer {
-    padding: 16px;
-    border-top: 1px solid var(--border-color);
+    padding: 8px 10px;
+    border-top: 1px solid var(--line);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
     background: var(--bg-surface);
+
 }
 
 .compose-window.maximized .compose-footer {
-    padding: 20px;
+    padding: 10px 15px;
 }
 
 .send-btn {
@@ -268,7 +272,7 @@
 
 /* קו תחתון קל כשלא בפוקוס */
 .compose-input {
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--line);
 }
 .compose-input:focus {
   border-bottom-color: var(--primary);

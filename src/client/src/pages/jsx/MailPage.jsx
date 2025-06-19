@@ -5,10 +5,10 @@ import { FaArrowLeft } from "react-icons/fa";
 import "../css/MailPage.css";
 import LabelsModal from "../../components/jsx/LabelsModal";
 import LabelsMailList from "./LabelsMailList";
-const DEFAULT_LABELS = ["starred", "snoozed", "important", "sent", "drafts", "trash", "archive"];
+const DEFAULT_LABELS = ["starred", "important", "sent", "drafts", "trash"];
 
 function MailPage() {
-  const { mails, fetchMails, currentFolder } = useContext(MailContext);
+  const { mails, fetchMails, currentFolder, fetchAllMails } = useContext(MailContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -75,6 +75,7 @@ function MailPage() {
     setIsLabelsModalOpen(false);
     setLabelsUser([...labelsUser]);
     fetchMails(currentFolder)
+    fetchAllMails()
     if (label.name === "spam") {
       navigate("..")
     }
@@ -97,6 +98,7 @@ function MailPage() {
 
     setLabelsUser(prev => prev)
     fetchMails(currentFolder)
+    fetchAllMails()
     navigate("..");
 
   }
@@ -110,61 +112,65 @@ function MailPage() {
 
   return (
     <div className="mail-container">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        <FaArrowLeft size={25} />
-      </button>
-
-      <div className="header">
-        <p className="subject">{mail.subject}</p>
-        <LabelsMailList
-          mailLabelObjects={mailLabelObjects}
-          user={user}
-          labelsUser={labelsUser}
-          handleRemoveLabel={handleRemoveLabel}
-          setLabelsUser={setLabelsUser} />
-
-        <button
-          className="add-label-btn"
-          onClick={e => {
-            e.target.blur();
-            handleOpenLabels();
-          }}
-        >+ Add To Label</button>
-      </div>
-
-      <div className="divider" />
-
-      <div className="mail-view">
-        <div className="from">
-          {user ? (
-            user.profilePicture ? (
-              <img
-                src={user.profilePicture}
-                alt="profile"
-                className="from-img"
-              />
-            ) : (
-              <div className="from-fallback">
-                {user ? user.name[0].toUpperCase() : "?"}
-              </div>
-            )
-          ) : (
-            <div>Loading...</div>
-          )}
-          <p className="from-name">
-            {user ? user.name : mail.from}
-          </p>
+      <div className="gmail-card">
+        <div className="gmail-header">
+          <button className="back-button" onClick={() => navigate(-1)}>
+            <FaArrowLeft size={25} />
+          </button>
+          <p className="subject">{mail.subject}</p>
+          <div className="header-right">
+            <button
+              className="add-label-btn"
+              onClick={e => {
+                e.target.blur();
+                handleOpenLabels();
+              }}
+            >+ Add To Label</button>
+          </div>
         </div>
-        <p className="mail-body">{mail.body}</p>
+
+
+        <div className="mail-view">
+          <div className="from">
+            {user ? (
+              user.profilePicture ? (
+                <img
+                  src={user.profilePicture}
+                  alt="profile"
+                  className="from-img"
+                />
+              ) : (
+                <div className="from-fallback">
+                  {user ? user.name[0].toUpperCase() : "?"}
+                </div>
+              )
+            ) : (
+              <div>Loading...</div>
+            )}
+            <div className="from-info">
+              <span className="from-name">{user ? user.name : mail.from}</span>
+              <span className="from-address">{user ? user.email : mail.from}</span>
+            </div>
+          </div>
+
+          <LabelsMailList
+            mailLabelObjects={mailLabelObjects}
+            user={user}
+            labelsUser={labelsUser}
+            handleRemoveLabel={handleRemoveLabel}
+            setLabelsUser={setLabelsUser} />
+
+          <div className="mail-body">{mail.body}</div>
+        </div>
+        {isLabelsModalOpen && (
+          <LabelsModal
+            labels={labelsUser}
+            onClose={() => setIsLabelsModalOpen(false)}
+            onSelect={handleSelectLabel}
+            mail={mail}
+          />
+        )}
       </div>
-      {isLabelsModalOpen && (
-        <LabelsModal
-          labels={labelsUser}
-          onClose={() => setIsLabelsModalOpen(false)}
-          onSelect={handleSelectLabel}
-          mail={mail}
-        />
-      )}
     </div>
   );
 }

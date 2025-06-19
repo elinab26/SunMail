@@ -17,7 +17,7 @@ export default function ComposeWindow() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { fetchAllMails, setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   useEffect(() => {
     if (!isComposeOpen) return;
@@ -127,6 +127,7 @@ export default function ComposeWindow() {
 
       // Success!
       await fetchMails(currentFolder);
+      fetchAllMails()
       resetAndClose(); // Close and reset
       setFormData({ to: "", subject: "", body: "" });
 
@@ -161,7 +162,7 @@ export default function ComposeWindow() {
 
   return (
     <div
-      className={`compose-window ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
+      className={`compose-window surface ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
         }`}
     >
       <div className="compose-header">
@@ -226,30 +227,7 @@ export default function ComposeWindow() {
             >
               {isLoading ? "Sending..." : "Send"}
             </button>
-            <div className="compose-actions">
-              {["📎", "🔗", "😊", "⋯"].map((icon, index) => (
-                <button
-                  key={index}
-                  className="action-btn"
-                  title={
-                    ["Attach a file", "Insert a link", "Emoji", "More options"][
-                    index
-                    ]
-                  }
-                  disabled={isLoading}
-                >
-                  {icon}
-                </button>
-              ))}
-              <button
-                onClick={resetAndClose}
-                className="delete-btn"
-                title="Delete"
-                disabled={isLoading}
-              >
-                🗑️
-              </button>
-            </div>
+            
           </div>
         </div>
       )}

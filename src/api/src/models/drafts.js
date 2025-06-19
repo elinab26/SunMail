@@ -4,12 +4,12 @@ const User = require('./users')
 const labelsAndMails = require('./labelsAndMails');
 const drafts = {};
 
-function generateMailId() {
+function generateDraftId() {
     return `mail_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 exports.createDraft = (to, from, subject, body) => {
-    const mail = { id: generateMailId(), from, to, subject, body, date: new Date().toISOString(), labels: [], read: false };
+    const mail = { id: generateDraftId(), from, to, subject, body, date: new Date().toISOString(), labels: [], read: false };
     const draftLabel = Label.getLabelByName('drafts', from);
     if (!draftLabel) throw new Error('Label draft not found');
     labelsAndMails.addLabelToMail(mail, draftLabel, from);
@@ -21,14 +21,14 @@ exports.createDraft = (to, from, subject, body) => {
 
 exports.getDrafts = userId => (drafts[userId] || []).slice(-50).reverse();
 
-exports.getDraftById = (userId, mailId) => {
+exports.getDraftById = (userId, DraftId) => {
     const userDrafts = drafts[userId] || [];
-    return userDrafts.find(m => m.id === mailId) || null;
+    return userDrafts.find(m => m.id === DraftId) || null;
 };
 
-exports.editDraft = (userId, mailId, to, subject, body) => {
+exports.editDraft = (userId, DraftId, to, subject, body) => {
     const toUser = User.getUserByUserName(to.split("@")[0]);
-    const mail = exports.getDraftById(userId, mailId);
+    const mail = exports.getDraftById(userId, DraftId);
     if (!mail) return;
     if (toUser) {
         mail.to = toUser.id;
@@ -41,10 +41,10 @@ exports.editDraft = (userId, mailId, to, subject, body) => {
     return mail;
 };
 
-exports.deleteDraft = (userId, mailId) => {
+exports.deleteDraft = (userId, DraftId) => {
     if (!drafts[userId]) return false;
     const before = drafts[userId].length;
-    drafts[userId] = drafts[userId].filter(m => m.id !== mailId);
+    drafts[userId] = drafts[userId].filter(m => m.id !== DraftId);
     return drafts[userId].length < before;
 };
 

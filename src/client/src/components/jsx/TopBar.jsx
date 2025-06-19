@@ -3,16 +3,17 @@ import { MdMenu } from 'react-icons/md';
 import { FiSearch, FiMoon, FiSun } from 'react-icons/fi'; // ←
 import '../css/TopBar.css';
 import { useNavigate } from 'react-router-dom';
-import gmailImg from '../../assets/gmailLogo.png';
+import sunMailImg from '../../assets/sunmail_logo.png';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import UserDetailsPopup from './UserDetailsPopup';
+import { MailContext } from "../../contexts/MailContext";
 
 
 export default function TopBar({ toggleSidebar }) {
   const navigate = useNavigate();
   const { logout, isLoggedIn, username, userChecked } = useContext(AuthContext);
-
+  const {currentFolder, setCurrentFolder} = useContext(MailContext)
   const [query, setQuery] = useState('');
   const [userInfo, setUserInfo] = useState(null);
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -41,79 +42,87 @@ export default function TopBar({ toggleSidebar }) {
     e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
+      console.log("hello")
       navigate(`/search?q=${encodeURIComponent(trimmed)}`);
       setQuery('');
     }
   };
 
   return (
-    <header className="topbar">
-      {/* 1️⃣ Menu button */}
-      <div className="topbar-left">
-        <button className="menu-btn" onClick={toggleSidebar}>
-          <MdMenu size={24} />
-        </button>
+    <>
+      {/* {darkMode && <div className="sunset-scene"></div>} */}
+      <header className="topbar surface">
+        {/* 1️⃣ Menu button */}
+        <div className="topbar-left">
+          <button className="menu-btn" onClick={toggleSidebar}>
+            <MdMenu size={24} />
+          </button>
 
-        {/* 2️⃣ Logo */}
-        <div className="topbar-logo">
-          <img src={gmailImg} alt="Gmail" className="logo-image" />
+          {/* 2️⃣ Logo */}
+          <button className="topbar-logo" onClick={() =>{ 
+            navigate('/inbox')
+            setCurrentFolder("inbox");
+          }}>
+            <img src={sunMailImg
+            } alt="Gmail" className="logo-image" />
+          </button>
         </div>
-      </div>
 
-      {/* 3️⃣ Search bar */}
-      <form className="topbar-search" onSubmit={handleSearchSubmit}>
-        <button type="submit" className="search-btn">
-          <FiSearch size={18} />
-        </button>
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search messages"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-        />
-      </form>
+        {/* 3️⃣ Search bar */}
+        <form className="topbar-search" onSubmit={handleSearchSubmit}>
+          <button type="submit" className="search-btn">
+            <FiSearch size={18} />
+          </button>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search messages"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+        </form>
 
-      {/* 4️⃣ Theme toggle  */}
-      <div className="topbar-right">
-        <button
-          className="theme-btn"
-          onClick={toggleTheme}
-          title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
-        </button>
-
-        {/* 5️⃣ User info */}
-        {isLoggedIn && userInfo && (
-          <div
-            className="topbar-userinfo-container"
-            onMouseEnter={() => setShowUserDetails(true)}
-            onMouseLeave={() => setShowUserDetails(false)}
+        {/* 4️⃣ Theme toggle  */}
+        <div className="topbar-right">
+          <button
+            className="theme-btn btn-ripple"
+            onClick={toggleTheme}
+            title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            <div className="topbar-userinfo">
-              {userInfo.profilePicture ? (
-                <img
-                  src={userInfo.profilePicture}
-                  alt="profile"
-                  className="topbar-userinfo-img"
-                />
-              ) : (
-                <div className="topbar-userinfo-fallback">
-                  {userInfo.first_name ? userInfo.first_name[0].toUpperCase() : '?'}
-                </div>
-              )}
-              
-            </div>
-            {showUserDetails && <UserDetailsPopup user={userInfo} />}
-          </div>
-        )}
+            {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+          </button>
 
-        {/* 6️⃣ Logout */}
-        {isLoggedIn && (
-          <button className="logout-btn" onClick={logout}>Logout</button>
-        )}
-      </div>
-    </header>
+          {/* 5️⃣ User info */}
+          {isLoggedIn && userInfo && (
+            <div
+              className="topbar-userinfo-container"
+              onMouseEnter={() => setShowUserDetails(true)}
+              onMouseLeave={() => setShowUserDetails(false)}
+            >
+              <div className="topbar-userinfo">
+                {userInfo.profilePicture ? (
+                  <img
+                    src={userInfo.profilePicture}
+                    alt="profile"
+                    className="topbar-userinfo-img"
+                  />
+                ) : (
+                  <div className="topbar-userinfo-fallback">
+                    {userInfo.first_name ? userInfo.first_name[0].toUpperCase() : '?'}
+                  </div>
+                )}
+
+              </div>
+              {showUserDetails && <UserDetailsPopup user={userInfo} />}
+            </div>
+          )}
+
+          {/* 6️⃣ Logout */}
+          {isLoggedIn && (
+            <button className="logout-btn" onClick={logout}>Logout</button>
+          )}
+        </div>
+      </header>
+    </>
   );
 }
