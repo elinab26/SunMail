@@ -12,6 +12,8 @@ services:
       - PORT=${PORT}
       - ARRAY_SIZE=${ARRAY_SIZE}
       - HASH_REPEATS=${HASH_REPEATS}
+    env_file:
+      - ./src/cpp/.env
     entrypoint:
       - sh
       - -c
@@ -29,15 +31,24 @@ services:
     ports:
       - "8080:8080"
     env_file:
-    - ./src/api/src/.env
-    environment:
-      - URL_CHECK_HOST=server
-      - URL_CHECK_PORT=${PORT}
-      - PORT=8080
+      - ./src/api/src/.env
     entrypoint:
       - sh
       - -c
       - node src/gmail.js
+
+  client:
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "3000:3000"
+    networks:
+      - net
+    depends_on:
+      - api
+    command: npm start
 
 volumes:
   data_volume:
@@ -45,4 +56,3 @@ volumes:
 networks:
   net:
     driver: bridge
-    

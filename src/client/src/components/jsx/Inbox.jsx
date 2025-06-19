@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { MailContext } from "../../contexts/MailContext";
 import "../css/Inbox.css";
 import Mail from "./Mail";
@@ -14,8 +14,8 @@ function Inbox() {
 
   function handleDraftClick(draft) {
     setDraftId(draft.id);
-    setIsNewDraft(false);       
-    setIsComposeOpen(true);     
+    setIsNewDraft(false);
+    setIsComposeOpen(true);
     setIsMinimized(false);
   }
 

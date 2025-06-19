@@ -12,7 +12,7 @@ function DeleteLabel({ labelId, onDeleted, close, active, onActivate }) {
   }, [isConfirming]);
 
   async function deleteLabelHandler() {
-    const res = await fetch(`http://localhost:8080/api/labels/${labelId}`, {
+    const res = await fetch(`/api/labels/${labelId}`, {
       method: "DELETE",
       credentials: "include",
     });

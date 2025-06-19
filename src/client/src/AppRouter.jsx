@@ -26,7 +26,7 @@ function HomeRedirect() {
       return;
     }
 
-    fetch(`http://localhost:8080/api/users/by-username/${username}`)
+    fetch(`/api/users/by-username/${username}`)
       .then((res) => {
         if (!res.ok) throw new Error("User not found");
         return res.json();

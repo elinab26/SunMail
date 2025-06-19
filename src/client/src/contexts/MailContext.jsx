@@ -26,11 +26,11 @@ export function MailProvider({ children }) {
     async function fetchMails(currentFolder) {
         var res;
         if (currentFolder === "drafts") {
-            res = await fetch(`http://localhost:8080/api/mails/drafts`, {
+            res = await fetch(`/api/mails/drafts`, {
                 credentials: "include",
             });
         } else {
-            res = await fetch(`http://localhost:8080/api/mails/label/${currentFolder}`, {
+            res = await fetch(`/api/mails/label/${currentFolder}`, {
                 credentials: "include",
             });
         }

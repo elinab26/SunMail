@@ -7,7 +7,7 @@ function AddLabel({ fetchLabels }) {
   async function addLabelHandler(event) {
     event.preventDefault();
     const label = { name: labelName };
-    const res = await fetch("http://localhost:8080/api/labels", {
+    const res = await fetch("/api/labels", {
       method: "post",
       credentials: "include",
       headers: {
