@@ -29,7 +29,7 @@
 }
 
 .confirmButtonDelete:hover {
-  background-color: var(--bg-hover); ;
+  background-color: var(--bg-hover);
 }
 
 .cancelButtonDelete {
