@@ -63,6 +63,6 @@ exports.sendDraft = (userId, mailId) => {
     if (!mailSend) {
         return;
     }
-    exports.deleteDraft(userId, DraftId);
+    exports.deleteDraft(userId, mailId);
     return mailSend;
 };
