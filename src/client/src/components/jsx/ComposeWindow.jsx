@@ -163,7 +163,7 @@ export default function ComposeWindow() {
 
   return (
     <div
-      className={`compose-window ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
+      className={`compose-window surface ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
         }`}
     >
       <div className="compose-header">
@@ -228,30 +228,7 @@ export default function ComposeWindow() {
             >
               {isLoading ? "Sending..." : "Send"}
             </button>
-            <div className="compose-actions">
-              {["📎", "🔗", "😊", "⋯"].map((icon, index) => (
-                <button
-                  key={index}
-                  className="action-btn"
-                  title={
-                    ["Attach a file", "Insert a link", "Emoji", "More options"][
-                    index
-                    ]
-                  }
-                  disabled={isLoading}
-                >
-                  {icon}
-                </button>
-              ))}
-              <button
-                onClick={resetAndClose}
-                className="delete-btn"
-                title="Delete"
-                disabled={isLoading}
-              >
-                🗑️
-              </button>
-            </div>
+            
           </div>
         </div>
       )}
