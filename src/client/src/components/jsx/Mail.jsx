@@ -6,6 +6,7 @@ import { MdLabelImportantOutline } from "react-icons/md";
 import { MdLabelImportant } from "react-icons/md";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoIosCheckboxOutline } from "react-icons/io";
+import { BiTrash } from "react-icons/bi";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
 import { MailContext } from "../../contexts/MailContext";
@@ -65,7 +66,7 @@ function Mail({ mail }) {
     const res1 = await fetch(`http://localhost:8080/api/labels/name/starred`, {
       credentials: "include",
     })
-    if (res1.status != 200) {
+    if (res1.status !== 200) {
       throw new Error('Label not found')
     }
     const label = await res1.json();
@@ -79,7 +80,7 @@ function Mail({ mail }) {
         body: JSON.stringify({ labelId: label.id })
       })
 
-      if (res2.status != 201) {
+      if (res2.status !== 201) {
         throw new Error('Error while adding to star')
       }
       fetchMails(currentFolder)
@@ -93,7 +94,7 @@ function Mail({ mail }) {
         body: JSON.stringify({ labelId: label.id })
       })
 
-      if (res2.status != 204) {
+      if (res2.status !== 204) {
         throw new Error('Error while removing from star')
       }
       fetchMails(currentFolder)
@@ -108,7 +109,7 @@ function Mail({ mail }) {
     const res1 = await fetch(`http://localhost:8080/api/labels/name/important`, {
       credentials: "include",
     })
-    if (res1.status != 200) {
+    if (res1.status !== 200) {
       throw new Error('Label not found')
     }
     const label = await res1.json();
@@ -122,7 +123,7 @@ function Mail({ mail }) {
         body: JSON.stringify({ labelId: label.id })
       })
 
-      if (res2.status != 201) {
+      if (res2.status !== 201) {
         throw new Error('Error while adding to important')
       }
       fetchMails(currentFolder)
@@ -136,13 +137,13 @@ function Mail({ mail }) {
         body: JSON.stringify({ labelId: label.id })
       })
 
-      if (res2.status != 204) {
+      if (res2.status !== 204) {
         throw new Error('Error while removing from important')
       }
       fetchMails(currentFolder)
     }
   }, [isDraft, isImportant, currentFolder]);
-
+ 
 
   async function handleClicked(e) {
     const response = await fetch(`http://localhost:8080/api/users/by-username/${username}`);
@@ -150,7 +151,7 @@ function Mail({ mail }) {
 
     const currUser = await response.json();
 
-    if (mail.to == currUser.id && currentFolder !== "drafts") {
+    if (mail.to === currUser.id && currentFolder !== "drafts") {
       const res = await fetch(`http://localhost:8080/api/mails/${mail.id}/read/${currentFolder}`, {
         method: "PATCH",
         credentials: "include",
@@ -159,10 +160,10 @@ function Mail({ mail }) {
         },
         body: JSON.stringify({ to: mail.to })
       });
-      if (res.status != 204) {
+      if (res.status !== 204) {
         return null;
       }
-      if (e.target.closest(".selectIcon, .starIcon, .importantIcon")) return;
+      if (e.target.closest(".selectIcon, .starIcon, .importantIcon, .deleteIcon")) return;
     }
     fetchMails(currentFolder);
   }
@@ -200,10 +201,29 @@ function Mail({ mail }) {
     }
   };
 
+  const handleDelete = async (e) => {
+    console.log("isDraft", isDraft, mail.id, mail.labels);
+    console.log("mail.labels:", mail.labels);
+    e.stopPropagation();
+    if (isDraft) {
+      await fetch(`http://localhost:8080/api/drafts/${mail.id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+    } else {
+      await fetch(`http://localhost:8080/api/mails/${mail.id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+    }
+    fetchMails(currentFolder);
+  };
+
+
   return (
     <>
       <div
-        className={`mailRow ${mail.read ? "read" : "unread"}`}
+        className={`mailRow surface${mail.read ? "read" : "unread"}`}
         onClick={handleClick}
         tabIndex={0}
         role="button"
@@ -252,6 +272,9 @@ function Mail({ mail }) {
           ) : (
             <MdLabelImportantOutline />
           )}
+        </button>
+        <button className="deleteIcon" onClick={handleDelete}>
+          <BiTrash />
         </button>
         <span className="mailSender">{user ? user.name : "Loading..."}</span>
         <div className="mailContent">

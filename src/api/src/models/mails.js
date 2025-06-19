@@ -144,3 +144,32 @@ exports.setRead = (userId, mailId, label) => {
   mail.read = true;
   return mail;
 }
+
+function removeAllUserLabelsFromMail(mail, userId) {
+    const labels = mail.labels;
+    mail.labels = labels.filter(label => label.userId !== userId);
+}
+
+exports.deleteMail = (userId, mailId) => {
+    exports.ensureMailbox(allMails, userId);
+    const mail = allMails[userId].find(mail => mail.id === mailId);
+    if (!mail) return false;
+
+    const Labels = require('./labels');
+    const trashLabel = Labels.getLabelByName("trash", userId);
+
+    const userLabels = mail.labels.filter(l => l.userId === userId);
+    const userLabelNames = userLabels.map(l => l.name);
+    const isInTrash = userLabelNames.includes("trash");
+
+    if (isInTrash) {
+        allMails[userId] = allMails[userId].filter(m => m.id !== mailId);
+        return true;
+    } else {
+        removeAllUserLabelsFromMail(mail, userId);
+        if (trashLabel) {
+            mail.labels.push(trashLabel);
+        }
+        return true;
+    }
+};
