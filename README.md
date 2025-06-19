@@ -1,4 +1,8 @@
-# ex4.Web
+# ex4.Web - SunMail
+
+![SunMail Logo](./images/SunMailLogo.png)
+
+---
 
 ## Description
 
@@ -43,6 +47,21 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
   - `MailPage` : Displays email details, including content, labels, and URLs.
   - `RegisterPage` : Allows users to register and create an account.
   - `ComposePage` : Interface for writing a new email with advanced options.
+
+---
+### Screenshots
+
+#### Login Page
+![Login Page](./images/loginPage.png)
+
+#### Register Page
+![Register Page](./images/registerPage.png)
+
+#### Inbox Page
+![Inbox Page](./images/inboxPage.png)
+
+#### Light Theme
+![Light Theme](./images/lightTheme.png)
 
 ---
 
@@ -142,5 +161,3 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ## Developers
 
 - The project was developed by @reut2423, @ElieInbar and @elinab26
-
-
