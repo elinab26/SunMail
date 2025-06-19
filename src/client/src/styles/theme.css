@@ -41,9 +41,9 @@
    --danger: #fa3e3e;
    --bg-edit-hover: #00145250;
    --bg-delete-hover: rgba(88, 0, 0, 0.267);
-   --wave1: #a488ec;
-   --wave2: #da89ec;
-   --wave3: #ffc2f3;
+    --wave1: #c5a4ec;   /* violet clair, mais toujours violet */
+    --wave2: #eabcf3;   /* rose-violet pastel, plus doux mais pas blanc */
+    --wave3: #fecff4;
  }
 
  :root {
