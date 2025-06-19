@@ -4,15 +4,13 @@ import { MdOutlineStarBorder } from "react-icons/md";
 import { MdOutlineStar } from "react-icons/md";
 import { MdLabelImportantOutline } from "react-icons/md";
 import { MdLabelImportant } from "react-icons/md";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
-import { IoIosCheckboxOutline } from "react-icons/io";
+
 import { BiTrash } from "react-icons/bi";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
 import { MailContext } from "../../contexts/MailContext";
 
 function Mail({ mail }) {
-  const [isSelected, setisSelected] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
   const [isImportant, setisImportant] = useState(false);
   const [isDraft, setIsDraft] = useState(null);
@@ -228,21 +226,6 @@ function Mail({ mail }) {
         tabIndex={0}
         role="button"
       >
-        <button
-          className="selectIcon"
-          onClick={(e) => {
-            e.stopPropagation();
-            setisSelected(!isSelected);
-          }}
-        >
-          {isSelected ? (
-            <span id="selectOn">
-              <IoIosCheckboxOutline />
-            </span>
-          ) : (
-            <MdCheckBoxOutlineBlank />
-          )}
-        </button>
         <button
           className="starIcon"
           onClick={(e) => {
