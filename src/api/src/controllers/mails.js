@@ -107,6 +107,19 @@ exports.createMail = async (req, res) => {
   });
 };
 
+
+exports.deleteMail = (req, res) => {
+  const userId = req.id;
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
+
+  const mailId = req.params.id;
+  if (!mailId) return res.status(404).json({ error: 'Mail Id not found' });
+
+  const ok = Mail.deleteMail(userId, mailId);
+  if (!ok) return res.status(404).json({ error: 'Mail not found' });
+  return res.status(204).end();
+};
+
 /**
  * GET /api/mails/search/:query
  * Search mails in the user’s inbox.

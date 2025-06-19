@@ -30,6 +30,7 @@ router.route('/:id/read/:labelName')
 
 router.route('/:id')
     .get(getUserId, controller.getMailById)
+    .delete(getUserId, controller.deleteMail)
 
 router.route('/label/:labelName')
     .get(getUserId, controller.getAllMailsOfLabel)
