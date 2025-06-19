@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
-import gmailImg from '../../assets/gmailLogo.png';
+import sunMailImg from '../../assets/sunmail_logo.png';
 import '../../styles/auth.css';
 
 
@@ -46,7 +46,7 @@ export default function LoginPage() {
   return (
     <div className="auth-bg">
       <div className="auth-card">
-        <img src={gmailImg} alt="Gmail" className="auth-logo" />
+        <img src={sunMailImg} alt="Gmail" className="auth-logo" />
         <div className="auth-title">Sign in</div>
         <form className="auth-form" onSubmit={handleLogin}>
         <input type="text" placeholder="Email or Username" value={username} onChange={e => setUsername(e.target.value)} required autoFocus />

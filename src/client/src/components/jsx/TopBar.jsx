@@ -3,7 +3,7 @@ import { MdMenu } from 'react-icons/md';
 import { FiSearch, FiMoon, FiSun } from 'react-icons/fi'; // ←
 import '../css/TopBar.css';
 import { useNavigate } from 'react-router-dom';
-import gmailImg from '../../assets/gmailLogo.png';
+import sunMailImg from '../../assets/sunmail_logo.png';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import UserDetailsPopup from './UserDetailsPopup';
@@ -59,7 +59,9 @@ export default function TopBar({ toggleSidebar }) {
 
         {/* 2️⃣ Logo */}
         <div className="topbar-logo">
-          <img src={gmailImg} alt="Gmail" className="logo-image" />
+          <img src={sunMailImg
+          
+          } alt="Gmail" className="logo-image" />
         </div>
       </div>
 
