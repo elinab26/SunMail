@@ -206,7 +206,7 @@ function Mail({ mail }) {
     console.log("mail.labels:", mail.labels);
     e.stopPropagation();
     if (isDraft) {
-      await fetch(`http://localhost:8080/api/drafts/${mail.id}`, {
+      await fetch(`http://localhost:8080/api/mails/drafts/${mail.id}`, {
         method: "DELETE",
         credentials: "include",
       });

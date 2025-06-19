@@ -67,8 +67,7 @@ exports.deleteDraft = (req, res) => {
 
     const draftId = req.params.id
     if (!draftId) return res.status(404).json({ message: 'Draft not found' }).end();
-
-    if (Drafts.deleteDraft(draftId, userId) == 0) return res.status(400).json({ error: 'Draft not deleted' }).end();
+    if (Drafts.deleteDraft(userId, draftId) == 0) return res.status(400).json({ error: 'Draft not deleted' }).end();
 
     return res.status(204).end();
 }
