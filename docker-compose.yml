@@ -8,10 +8,8 @@ services:
       - net
     ports:
       - "${PORT}:${PORT}"
-    environment:
-      - PORT=${PORT}
-      - ARRAY_SIZE=${ARRAY_SIZE}
-      - HASH_REPEATS=${HASH_REPEATS}
+    env_file:
+      - ./src/cpp/.env
     entrypoint:
       - sh
       - -c
@@ -30,10 +28,6 @@ services:
       - "8080:8080"
     env_file:
       - ./src/api/src/.env
-    environment:
-      - URL_CHECK_HOST=server
-      - URL_CHECK_PORT=${PORT}
-      - PORT=8080
     entrypoint:
       - sh
       - -c
