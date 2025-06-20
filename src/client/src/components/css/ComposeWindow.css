@@ -5,14 +5,14 @@
     width: 500px;
     height: auto;
     max-height: 95vh;
-    background: var(--bg-surface);
-    border: 1px solid var(--line);
+    background: var(--compose);
     border-radius: 8px 8px 0 0;
     box-shadow: 0 8px 10px 1px var(--shadow-color), 0 3px 14px 2px var(--shadow-color), 0 5px 5px -3px var(--shadow-color);
-    z-index: 1000;
+    z-index: 12000;
     display: flex;
     flex-direction: column;
     font-family: 'Google Sans', Roboto, sans-serif;
+    transition: background 0.25s, box-shadow 0.25s;
 }
 
 .compose-window.minimized {
@@ -34,7 +34,8 @@
 }
 
 .compose-header {
-    background: var(--bg-topbar);
+    border-bottom: 1.5px solid var(--primary-theme);
+    background: none;
     color: var(--text-color);
     padding: 12px 16px;
     display: flex;
@@ -97,7 +98,7 @@
 
 .compose-fields {
     padding: 16px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--primary-theme);
 }
 
 .field-row {
@@ -117,7 +118,7 @@
 }
 
 .compose-input:focus {
-    border-bottom-color: var(--primary);
+    border-bottom-color: var(--primary-theme);
 }
 
 .cc-bcc-controls {
@@ -129,7 +130,7 @@
 .cc-bcc-btn {
     background: none;
     border: none;
-    color: var(--primary);
+    color: var(--primary-theme);
     cursor: pointer;
     font-size: 14px;
     padding: 4px 8px;
@@ -168,7 +169,7 @@
     line-height: 1.5;
     color: var(--text-color);
     overflow: auto;
-    background: var(--bg-card);
+    background: var(--surface-bg);
     min-height: 250px;
 }
 
@@ -179,13 +180,12 @@
 
 .compose-footer {
     padding: 8px 10px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--primary-theme);
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
-    background: var(--bg-surface);
-
+    background: var(--surface-bg);
 }
 
 .compose-window.maximized .compose-footer {
@@ -193,7 +193,7 @@
 }
 
 .send-btn {
-    background: var(--primary);
+    background: var(--send-theme);
     color: white;
     border: none;
     padding: 8px 24px;
@@ -204,7 +204,8 @@
 }
 
 .send-btn:hover {
-    background: var(--primary-hover);
+    background: var(--send-theme-hover);
+    transition: background 0.3s ease;
 }
 
 .compose-actions {
@@ -242,25 +243,36 @@
 .error-message {
   height: 20px; /* או כל גובה קבוע שמתאים */
   color: var(--danger);
-  background-color: var(--bg-card);
+  background-color: var(---start-color);
   padding: 0 16px;
   margin: 8px 16px 0;
-  font-size: 13px;
+  font-size: 0.92rem;
   border-radius: 4px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: left;
   transition: opacity 0.3s;
+  margin: 3px 0 7px 0;  
+  padding: 3px 4px;
+  opacity: 1;
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 4px; 
+  word-break: break-word; 
 }
 
-.error-message.hidden {
+.error-message:empty {
   opacity: 0;
   pointer-events: none;
 }
 /* ===== Better contrast for dark mode fields ===== */
 .compose-input,
 .compose-textarea {
-  background: var(--bg-card);
+  background: var(--surface-bg);
+  backdrop-filter: blur(8px);
   color: var(--text-color);
+
 }
 
 /* Placeholder */
@@ -272,9 +284,9 @@
 
 /* קו תחתון קל כשלא בפוקוס */
 .compose-input {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--primary-theme);
 }
 .compose-input:focus {
-  border-bottom-color: var(--primary);
+  border-bottom-color: var(--primary-theme-focus);
 }
 

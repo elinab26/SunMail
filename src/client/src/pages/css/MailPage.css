@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --gmail-bg: var(--bg-page);
 
   --gmail-card-bg: var(--bg-page);
@@ -8,7 +8,7 @@
   --gmail-text: var(--text-color);
   --gmail-muted: var(--text-color-secondary);
   --gmail-blue: #1a73e8;
-}
+} */
 
 html,
 body {
@@ -44,9 +44,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  
 }
 
 .gmail-header {
+  background: var(--gmail-header-bg);
   position: sticky;
   top: 0;
   left: 0;
@@ -54,12 +56,16 @@ body {
   background: var(--gmail-card-bg);
   z-index: 10;
   box-shadow: 0 2px 4px var(--shadow-color);
+  
   min-height: 64px;
   display: flex;
   align-items: center;
   padding: 0 40px;
   gap: 18px;
-  border-radius: 0;
+  border-radius: 22px 22px 0 0;
+  padding: 0 32px;
+  min-height: 54px;
+   overflow: hidden;
 }
 
 .back-button {
@@ -76,6 +82,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: background 0.15s;
+  flex-shrink: 0;
 }
 
 .back-button:hover {
@@ -84,34 +91,48 @@ body {
 
 .gmail-card {
   background: var(--gmail-card-bg);
-  box-shadow: none;
-  border-radius: 0;
-  width: 100%;
-  margin: 0;
+  box-shadow: 0 6px 28px 2px rgba(0,0,0,0.15), 0 1.5px 7px 0 rgba(0,0,0,0.14);
+  /* width: 100%;
   height: auto;
   padding-bottom: 0;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  flex-direction: column; */
+
+  border-radius: 22px;
+  border: 1.2px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);  
+  margin: 38px auto 0 auto;
+  width: 92%;
+  max-width: 700px;
+  min-height: 340px;
+  transition: background 0.25s;
+  padding-bottom: 18px; 
+  overflow: visible;
+
 }
 
 .subject {
   font-size: 1.6rem;
   font-weight: 400;
   color: var(--gmail-text);
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   margin: 0;
   letter-spacing: 0.01rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-top: 2px;
+  min-width: 0;
+  text-align: left;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
+  margin-left: 0;
+  flex-shrink: 0;
 }
 
 /* From / infos */
@@ -119,10 +140,18 @@ body {
   padding: 36px 40px 0 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   max-width: 100%;
   overflow: auto;
+  
+  background: transparent;
+  border-radius: 0 0 22px 22px;
+  padding: 32px 32px 0 32px;
+  min-height: 230px;
+  transition: background 0.25s;
+  /*TODO:width: */
+  box-shadow: 0 2px 4px var(--gmail-shadow);
 }
 
 .from {
@@ -137,8 +166,8 @@ body {
 
 .from-img,
 .from-fallback {
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin-right: 12px;
   font-size: 1.1rem;
@@ -176,17 +205,20 @@ body {
 
 .mail-body {
   line-height: 1.7;
-  color: var(--gmail-text);
+  color: var(--text-color);
   white-space: pre-wrap;
-  margin: 0;
-  font-size: 1.09rem;
   font-family: "Roboto", "Arial", sans-serif;
   word-break: break-word;
   background: none;
+  margin-top: 18px;
+  padding: 20px 0 0 0;
+  border-top: 1px solid var(--gmail-border);
+  font-size: 1.11rem;
+
 }
 
 .add-label-btn {
-  background: var(--gmail-blue);
+  background: var(--bg-composeMail);
   color: #fff;
   border: none;
   padding: 8px 20px;
@@ -204,7 +236,17 @@ body {
 
 .add-label-btn:hover,
 .add-label-btn:focus {
-  background: #185abc;
+  background:  var(--bg-composeMail-hover);
+}
+
+.chip-label-text {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  line-height: 1;       /* חשוב! */
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .mail-labels {
@@ -217,38 +259,67 @@ body {
 
 .mail-label-chip {
   background: #e8f0fe;
-  color: #174ea6;
-  font-size: 0.92rem;
+  color: var(--gmail-addLabel-text);
+  font-size: 0.96em;
   font-weight: 500;
   border-radius: 16px;
-  padding: 3px 13px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  margin-right: 4px;
-  margin-bottom: 4px;
+  justify-content: center;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  gap: 2px;
+  height: 30px; /* גובה הצ'יפ */
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .chip-remove-btn {
+  display: flex;           /* גם כאן, ליישור נכון */
+  align-items: center; /* יישור אלכסוני */
+  justify-content: right;
   background: none;
   border: none;
   color: #8a9099;
-  font-size: 1.07rem;
+  font-size: 1.08rem;
   cursor: pointer;
   border-radius: 50%;
-  margin-left: 2px;
+  margin-left: 2px;        /* אפשר להקטין/להגדיל לפי הטעם */
+  height: 24px;            /* שווה לגובה של הצ'יפ, פחות או יותר */
+  width: 24px;
   transition: background 0.1s;
+  padding: 0;              
 }
+
 
 .chip-remove-btn:hover {
   background: #e4e6e8;
-  color: #174ea6;
+  color: var(--gmail-addLabel-text);
 }
 
 @media (max-width: 700px) {
-
   .mail-view,
   .gmail-header {
     padding-left: 8px;
     padding-right: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gmail-header {
+    gap: 6px;
+    padding: 0 6px;
+    min-height: 44px;
+  }
+  .subject {
+    font-size: 1.05rem;
+    padding: 0;
+  }
+  .add-label-btn {
+    padding: 5px 8px;
+    font-size: 0.96em;
+    min-width: 0;
+    max-width: 99vw;
   }
 }
