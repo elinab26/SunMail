@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import sunMailImg from '../../assets/sunmail_logo.png';
+
 import '../../styles/auth.css';
 
 
@@ -44,26 +45,40 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="auth-bg">
-      <div className="auth-card">
+    <div className="auth-bg ">
+      <div className="auth-card glass">
         <img src={sunMailImg} alt="Gmail" className="auth-logo" />
         <div className="auth-title">Sign in</div>
-        <form className="auth-form" onSubmit={handleLogin}>
-        <input type="text" placeholder="Email or Username" value={username} onChange={e => setUsername(e.target.value)} required autoFocus />
-        <input type={showPassword ? 'text' : 'password'} placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} required />
-        <button type="button" className='auth-show-btn' tabIndex={-1} onClick={() => setShowPassword(v => !v)} style={{marginLeft: '-38px', background: 'none', border: 'none', cursor: 'pointer', color: '#1a73e8', fontSize: '14px'}}>
-           {showPassword ? "🙈" : "👁️"}
-        </button>
-          {/* <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required /> */}
+          <form className="auth-form" onSubmit={handleLogin}>
+          <input type="text" placeholder="Email or Username" value={username} onChange={e => setUsername(e.target.value)} required autoFocus />
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder='Password'
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="auth-show-btn"
+              tabIndex={-1}
+              onClick={() => setShowPassword(v => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
           {error && <div className="auth-error">{error}</div>}
           <button className="auth-btn" type="submit">
             Login
           </button>
-        </form>
-        <div className="auth-link">
-          Don't have an account? <Link to="/register">Create account</Link>
+          </form>
+          <div className="auth-link">
+            Don't have an account? <Link to="/register">Create account</Link>
+          </div>
         </div>
       </div>
-    </div>
   );
 }
