@@ -94,12 +94,12 @@ select {
   content: '';
   position: absolute;
   top: 50%;
-  right: 18px;  /* שחקי עם זה להזזה שמאלה */
+  right: 18px; 
   transform: translateY(-50%);
   pointer-events: none;
   border-width: 7px 6px 0 6px;
   border-style: solid;
-  border-color: #cecdcd transparent transparent transparent;  /* צבע החץ */
+  border-color: var(--text-color) transparent transparent transparent; 
 }
 
 .dark-mode input[type="date"] {

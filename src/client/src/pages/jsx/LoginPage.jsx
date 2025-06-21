@@ -15,10 +15,6 @@ export default function LoginPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // TODO: Add validation for all fields\
-
-  // TODO: Add validation for all fields
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
