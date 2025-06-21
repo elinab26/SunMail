@@ -8,30 +8,45 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function ComposeWindow() {
-  const [formData, setFormData] = useState({
-    to: "",
-    subject: "",
-    body: "",
-  });
+
   const [isMaximized, setIsMaximized] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { fetchAllMails, setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { formData, setFormData, fetchAllMails, setTypeOfDraft, draftId, setDraftId, typeOfDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   useEffect(() => {
+    async function createDraft() {
+      const res = await fetch(`/api/mails`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+      if (res.status !== 201) {
+        throw new Error(`Error: Response or forward not created`);
+      }
+      const draft = await res.json()
+      setDraftId(draft.id)
+    }
+
     if (!isComposeOpen) return;
-    if (isNewDraft) {
+    if (typeOfDraft === "new") {
       setFormData({ to: "", subject: "", body: "" });
+    } else if (typeOfDraft === "reply" || typeOfDraft === "forward") {
+      createDraft();
+
     } else {
       getDraft(draftId);
     }
-  }, [isComposeOpen, draftId, isNewDraft]);
+  }, [isComposeOpen, typeOfDraft]);
 
   const onClose = () => {
     setIsComposeOpen(false);
     setIsMinimized(false);
-    setIsNewDraft(false);
+    setTypeOfDraft(null);
   };
 
   const onMinimize = () => {
@@ -116,6 +131,7 @@ export default function ComposeWindow() {
 
     setIsLoading(true);
     setError("");
+    console.log(draftId)
     try {
       const response = await fetch(`/api/mails/${draftId}/send`, {
         method: "POST",

@@ -7,13 +7,13 @@ import { useContext, useEffect } from "react";
 
 export default function MailRenderer() {
     const { label } = useParams();
-    const { setIsNewDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+    const { setTypeOfDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
     useEffect(() => {
         if (label === "drafts") {
             setIsComposeOpen(true);
             setIsMinimized(false); 
-            setIsNewDraft(false);
+            setTypeOfDraft(null);
         }
     }, [label, setIsComposeOpen, setIsMinimized]);
 

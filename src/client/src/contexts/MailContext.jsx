@@ -7,11 +7,15 @@ export function MailProvider({ children }) {
     const [draftId, setDraftId] = useState(null);
     const [isComposeOpen, setIsComposeOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
-    const [isNewDraft, setIsNewDraft] = useState(false);
+    const [typeOfDraft, setTypeOfDraft] = useState(null);
     const [currentFolder, setCurrentFolder] = useState("inbox");
     const [mails, setMails] = useState([]);
     const [allMails, setAllMails] = useState([]);
-
+    const [formData, setFormData] = useState({
+        to: "",
+        subject: "",
+        body: "",
+    });
 
     async function fetchAllMails() {
         const res = await fetch("/api/mails", { credentials: "include" });
@@ -44,13 +48,15 @@ export function MailProvider({ children }) {
                 setIsComposeOpen,
                 isMinimized,
                 setIsMinimized,
-                isNewDraft,
-                setIsNewDraft,
+                typeOfDraft,
+                setTypeOfDraft,
                 currentFolder,
                 setCurrentFolder,
                 fetchMails,
                 mails,
-                setMails
+                setMails,
+                formData,
+                setFormData
             }}
         >
             {children}

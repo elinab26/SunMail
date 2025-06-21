@@ -8,7 +8,7 @@ import LabelsMailList from "./LabelsMailList";
 const DEFAULT_LABELS = ["starred", "important", "sent", "drafts", "trash"];
 
 function MailPage() {
-  const { mails, fetchMails, currentFolder, fetchAllMails } = useContext(MailContext);
+  const { mails, fetchMails, currentFolder, fetchAllMails, setIsComposeOpen, setTypeOfDraft, setFormData, setIsMinimized } = useContext(MailContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -103,6 +103,28 @@ function MailPage() {
 
   }
 
+  function handleReply() {
+    setFormData({
+      to: user ? user.email : mail.from,
+      subject: mail.subject.startsWith('RE:') ? mail.subject : `RE: ${mail.subject}`,
+      body: `\n\n--- Original message ---\n${mail.body}`,
+    });
+    setTypeOfDraft("reply"); // pour dire que c’est pas un draft existant
+    setIsComposeOpen(true);
+    setIsMinimized(false);
+  }
+
+  function handleForward() {
+    setFormData({
+      to: "",
+      subject: mail.subject.startsWith('FWD:') ? mail.subject : `FWD: ${mail.subject}`,
+      body: `\n\n--- Forwarded message ---\nFrom: ${user ? user.email : mail.from}\nSubject: ${mail.subject}\n\n${mail.body}`,
+    });
+    setTypeOfDraft("forward");
+    setIsComposeOpen(true);
+    setIsMinimized(false);
+  }
+
   const mailLabelObjects = labelsUser
     .filter(lab => {
       const mailLabIds = mail.labels.map(l => typeof l === "object" ? l.id : l);
@@ -161,6 +183,20 @@ function MailPage() {
             setLabelsUser={setLabelsUser} />
 
           <div className="mail-body">{mail.body}</div>
+          <div className="mail-actions">
+            <button
+              className="reply-btn"
+              onClick={handleReply}
+            >
+              Response
+            </button>
+            <button
+              className="forward-btn"
+              onClick={handleForward}
+            >
+              Transfer
+            </button>
+          </div>
         </div>
         {isLabelsModalOpen && (
           <LabelsModal

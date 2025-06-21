@@ -95,7 +95,7 @@ export default function Sidebar({
   isOpen,
   counts,
 }) {
-  const { setIsNewDraft, setDraftId, currentFolder, setCurrentFolder, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { setTypeOfDraft, setDraftId, currentFolder, setCurrentFolder, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   const [labels, setLabels] = useState([]);
 
@@ -138,7 +138,7 @@ export default function Sidebar({
     createDraft();
     setIsComposeOpen(true);
     setIsMinimized(false);
-    setIsNewDraft(true);
+    setTypeOfDraft("new");
   };
 
   return (
