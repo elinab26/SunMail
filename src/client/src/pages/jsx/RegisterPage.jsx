@@ -44,7 +44,6 @@ export default function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
-    // TODO: Add validation for all fields
     setIsLoading(true);
 
     try {
@@ -88,7 +87,6 @@ export default function RegisterPage() {
         }
       } else {
         const err = await res.json();
-        // TODO:
         setError(err.error || 'Registration failed');
       }
     } catch (err) {

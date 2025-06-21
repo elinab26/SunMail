@@ -85,10 +85,13 @@
    --ripple-color: rgba(0, 0, 0, 0.185);
    --shadow-color-theme: rgba(0, 0, 0, 0.267);
     --auth: rgba(255, 255, 255, 0.1);
-   --compose: linear-gradient(var(--sky-start),var(--sky-end));
+   --theme-background: linear-gradient(var(--sky-start),var(--sky-end));
+   --gmail-card-bg:rgba(182, 228, 255, 0.42);
+   --gmail-header-bg: rgba(0, 121, 191, 0.42);
    --gmail-addLabel-text: rgba(21, 185, 235, 0.611);
    --gmail-border: rgba(0, 0, 0, 0.15);
-
+   --compose: var(--theme-background);
+   --background: #f1f3f4;
  }
 
  .dark-mode {
@@ -108,11 +111,13 @@
    --ripple-color: rgba(255, 255, 255, .18);
    --shadow-color-theme: rgba(255, 255, 255, 0.267);
    --auth: rgba(0, 0, 0, 0.1);
-   --compose: linear-gradient(var(--sky-start),var(--sky-end));
+   --theme-background: linear-gradient(var(--sky-start),var(--sky-end));
   --gmail-card-bg:rgba(40, 30, 75, 0.42);
   --gmail-header-bg: rgba(60, 40, 100, 0.24);
   --gmail-border: rgba(255, 255, 255, 0.15);
   --gmail-addLabel-text: rgba(78, 24, 126, 0.989);
+  --background: #181111;
+  --compose: var(--theme-background);
   }
 
  :root {

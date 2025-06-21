@@ -72,15 +72,6 @@
   background: var(--input-bg-focus);
 }
 
-/* .auth-form input:-webkit-autofill,
-.auth-form input:-webkit-autofill:hover,
-.auth-form input:-webkit-autofill:focus,
-.auth-form select:-webkit-autofill,
-.auth-form textarea:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px var(--auth) inset !important;
-  -webkit-text-fill-color: var(--text-color) !important;
-  caret-color: var(--text-color) !important;
-} */
 
 .auth-btn {
   background: var(--auth-btn-bg);
@@ -210,13 +201,13 @@ textarea:-webkit-autofill {
 
 .password-input-wrapper input {
   width: 100%;
-  padding-right: 40px; /* חשוב! מוסיף מקום לעין מצד ימין */
+  padding-right: 40px; 
 }
 
 .auth-show-btn {
   position: absolute;
   top: 50%;
-  right: 12px; /* התאימי לפי הצורך */
+  right: 12px;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -253,7 +244,6 @@ textarea:-webkit-autofill {
   border-radius: 4px; 
   word-break: break-word; 
   font-weight: bold;
-  /* box-sizing: border-box; */
 }
 
 .auth-error:empty {
