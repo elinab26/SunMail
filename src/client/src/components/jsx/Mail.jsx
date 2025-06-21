@@ -215,8 +215,6 @@ function Mail({ mail }) {
   };
 
   const handleDelete = async (e) => {
-    console.log("isDraft", isDraft, mail.id, mail.labels);
-    console.log("mail.labels:", mail.labels);
     e.stopPropagation();
     await fetch(`/api/mails/${mail.id}`, {
       method: "DELETE",
