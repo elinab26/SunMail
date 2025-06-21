@@ -91,9 +91,10 @@ exports.create = (fromUserId, toUserId, subject, body) => {
  * Returns an array of matching mail objects.
  */
 exports.search = (userId, query) => {
+  const Labels = require('./labels');
   exports.ensureMailbox(allMails, userId);
   const lowerQuery = query.toLowerCase();
-  const draftLabel = Labels.getLabelByName("draft", userId);
+  const draftLabel = Labels.getLabelByName("drafts", userId);
   return allMails[userId].filter(mail =>
     (mail.subject.toLowerCase().includes(lowerQuery) ||
       mail.body.toLowerCase().includes(lowerQuery)) &&

@@ -131,7 +131,6 @@ export default function ComposeWindow() {
 
     setIsLoading(true);
     setError("");
-    console.log(draftId)
     try {
       const response = await fetch(`/api/mails/${draftId}/send`, {
         method: "POST",

@@ -42,7 +42,6 @@ export default function TopBar({ toggleSidebar }) {
     e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
-      console.log("hello")
       navigate(`/search?q=${encodeURIComponent(trimmed)}`);
       setQuery('');
     }

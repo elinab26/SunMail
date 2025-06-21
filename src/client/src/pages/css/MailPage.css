@@ -310,9 +310,9 @@ body {
 
 .reply-btn,
 .forward-btn {
-  background-color: #eaf1fb;
+  background: #e8f0fe;
+  color: var(--gmail-addLabel-text);
   border: 1px solid #c7d0e1;
-  color: #174ea6;
   border-radius: 6px;
   padding: 8px 16px;
   font-weight: 600;

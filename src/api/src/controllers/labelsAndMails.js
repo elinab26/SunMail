@@ -23,7 +23,6 @@ exports.addLabelToMail = (req, res) => {
     if (labelToAdd.name == "spam") {
         const labels = Mail.getLabelsOfMail(mail, userId);
         labels.map(l => {
-            console.log(l);
             labelsAndMails.deleteLabelFromMail(mail, l, userId);
             const urls = extractUrls(`${mail.subject} ${mail.body}`)
             urls.map(async url => {

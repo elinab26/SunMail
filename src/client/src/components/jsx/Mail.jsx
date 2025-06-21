@@ -9,6 +9,8 @@ import { BiTrash } from "react-icons/bi";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
 import { MailContext } from "../../contexts/MailContext";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Mail({ mail }) {
   const [isStarred, setIsStarred] = useState(false);
@@ -17,8 +19,9 @@ function Mail({ mail }) {
   const [user, setUser] = useState(null);
   const [showCompose, setShowCompose] = useState(false);
   const { username } = useContext(AuthContext);
-  const { currentFolder, fetchMails, fetchAllMails } = useContext(MailContext)
-
+  const { currentFolder, setCurrentFolder, fetchMails, fetchAllMails } = useContext(MailContext)
+  const location = useLocation();
+  const navigate = useNavigate();
 
   async function checkIfDraft() {
     const response = await fetch(`/api/users/by-username/${username}`);
@@ -153,6 +156,12 @@ function Mail({ mail }) {
 
     const currUser = await response.json();
 
+    if (location.pathname.startsWith("/search")) {
+      const label = mail.labels?.find(label => label.userId === currUser.id);
+      setCurrentFolder(label.name);
+      navigate(`/${currentFolder}/${mail.id}`)
+    }
+
     if (mail.to === currUser.id && currentFolder !== "drafts") {
       const res = await fetch(`/api/mails/${mail.id}/read/${currentFolder}`, {
         method: "PATCH",
@@ -206,13 +215,11 @@ function Mail({ mail }) {
   };
 
   const handleDelete = async (e) => {
-    console.log("isDraft", isDraft, mail.id, mail.labels);
-    console.log("mail.labels:", mail.labels);
     e.stopPropagation();
-      await fetch(`/api/mails/${mail.id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+    await fetch(`/api/mails/${mail.id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
     fetchMails(currentFolder);
     fetchAllMails()
   };

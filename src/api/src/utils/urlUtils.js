@@ -16,7 +16,6 @@ const urlRegex = /\b((https?:\/\/)?(www\.)?[\w-]{1,63}\.[a-z]{2,}(\/\S*)?)\b(?!@
     matches.push(url);
   }
 
-  matches.forEach(url => console.log(url));
   // Return only unique URLs
   return Array.from(new Set(matches));
 }
