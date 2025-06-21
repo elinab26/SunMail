@@ -13,7 +13,6 @@ function SearchResultsPage() {
   useEffect(() => {
     async function searchMails() {
       if (searchQuery) {
-        console.log("FFFFFFF");
         const lowerCaseQuery = searchQuery.toLowerCase();
         let results;
         const res = await fetch(`/api/mails/search/${lowerCaseQuery}`, {
