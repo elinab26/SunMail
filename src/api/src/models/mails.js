@@ -54,16 +54,18 @@ exports.getMailById = (userId, mailId) => {
  * and save it to the recipient's inbox and the sender's sent items.
  * Returns the new mail object with email addresses instead of user IDs.
 */
-exports.create = (fromUserId) => {
+exports.create = (fromUserId, toUserId, subject, body) => {
   const Users = require('./users')
   const mail = {
     id: generateMailId(),
     from: fromUserId,
+    to: toUserId,
+    subject,
+    body,
     date: new Date().toISOString(),
     labels: [],
     read: false
   };
-
 
   // Return mail with email addresses for frontend
   const fromUser = Users.getUserById(fromUserId);
@@ -74,9 +76,8 @@ exports.create = (fromUserId) => {
 
   // Add to sender's drafts
   const labelsFrom = Users.getLabelsOfUser(fromUser)
-  const labelFrom = labelsFrom.find(l => l.name === "draft");
+  const labelFrom = labelsFrom.find(l => l.name === "drafts");
   mail.labels.push(labelFrom)
-
   // Add to the global array for both users
   exports.ensureMailbox(allMails, fromUserId);
   allMails[fromUserId].push(mail);
@@ -180,7 +181,7 @@ exports.sendMail = async (userId, mailId) => {
 
   removeAllUserLabelsFromMail(mail, userId);
 
-  if (await validateUrls(subject, body)) {
+  if (await validateUrls(mail.subject, mail.body)) {
     // Add to recipient's spams
     const labelFrom = Users.getLabelsOfUser(toUser)
     const labelTo = labelFrom.find(l => l.name === "spam");

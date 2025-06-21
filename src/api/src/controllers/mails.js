@@ -74,8 +74,11 @@ exports.createMail = async (req, res) => {
   const fromUserId = req.id;
   if (!fromUserId) return;
 
+  const { to, subject, body } = req.body;
+  const toUserId = resolveToUserId(to);
+
   // Create the mail
-  const mail = Mail.create(toUserId, fromUserId, subject, body);
+  const mail = Mail.create(fromUserId, toUserId, subject, body);
   if (!mail) return res.status(400).json({ error: 'Mail not created' })
 
   return res.status(201).json(mail).end();
@@ -146,24 +149,24 @@ exports.sendMail = (req, res) => {
   const userId = req.id
   if (!userId) return res.status(404).json({ error: 'User not found' }).end();
 
-  const { to, subject, body } = req.body;
-  if (!to || !subject || !body) {
-    return res.status(400).json({ error: 'Missing fields: to, subject, and body are required' });
-  }
-
   const mailId = req.params.id
   if (!mailId) return res.status(404).json({ error: 'Mail not found' }).end();
 
-  const mail = Mail.sendMail(userId, mailId)
+  const mail = Mail.getMailById(userId, mailId)
+  if (!mail.to || !mail.subject || !mail.body) {
+    return res.status(400).json({ error: 'Missing fields: to, subject, and body are required' });
+  }
+
+  const send = Mail.sendMail(userId, mailId)
   if (!mail) return res.status(400).json({ error: 'Invalid mail' }).end();
 
   return res.status(201).json({
-    id: mail.id,
+    id: send.id,
     message: 'Email sent successfully',
-    to: to,
-    subject: subject,
-    date: mail.date,
-    labels: mail.labels
+    to: send.to,
+    subject: send.subject,
+    date: send.date,
+    labels: send.labels
   });
 }
 
