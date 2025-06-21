@@ -282,12 +282,10 @@ body {
     padding: 0 6px;
     min-height: 44px;
   }
-
   .subject {
     font-size: 1.05rem;
     padding: 0;
   }
-
   .add-label-btn {
     padding: 5px 8px;
     font-size: 0.96em;
