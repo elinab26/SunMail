@@ -75,36 +75,13 @@ exports.createMail = async (req, res) => {
   if (!fromUserId) return;
 
   const { to, subject, body } = req.body;
-  if (!to || !subject || !body) {
-    return res.status(400).json({ error: 'Missing fields: to, subject, and body are required' });
-  }
-
-  // Resolve recipient userId from email address
   const toUserId = resolveToUserId(to);
-  if (!toUserId) {
-    return res.status(400).json({ error: 'Receiver user not found' });
-  }
 
-  // URL validation (throws if any URL is blacklisted or service fails)
-  try {
-    await validateUrls(subject, body);
-  } catch (err) {
-    // err.status is either 400 (blacklisted) or 500 (service unavailable)
-    return res.status(err.status).json({ error: err.message, url: err.url });
-  }
-
-  // Create and send the mail
-  const mail = Mail.create(toUserId, fromUserId, subject, body);
+  // Create the mail
+  const mail = Mail.create(fromUserId, toUserId, subject, body);
   if (!mail) return res.status(400).json({ error: 'Mail not created' })
 
-  return res.status(201).json({
-    id: mail.id,
-    message: 'Email sent successfully',
-    to: to,
-    subject: subject,
-    date: mail.date,
-    labels: mail.labels
-  });
+  return res.status(201).json(mail).end();
 };
 
 
@@ -167,3 +144,42 @@ exports.setRead = (req, res) => {
   }
   res.status(204).end();
 };
+
+exports.sendMail = (req, res) => {
+  const userId = req.id
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
+
+  const mailId = req.params.id
+  if (!mailId) return res.status(404).json({ error: 'Mail not found' }).end();
+
+  const mail = Mail.getMailById(userId, mailId)
+  if (!mail.to || !mail.subject || !mail.body) {
+    return res.status(400).json({ error: 'Missing fields: to, subject, and body are required' });
+  }
+
+  const send = Mail.sendMail(userId, mailId)
+  if (!mail) return res.status(400).json({ error: 'Invalid mail' }).end();
+
+  return res.status(201).json({
+    id: send.id,
+    message: 'Email sent successfully',
+    to: send.to,
+    subject: send.subject,
+    date: send.date,
+    labels: send.labels
+  });
+}
+
+exports.editMail = (req, res) => {
+  const userId = req.id
+  if (!userId) return res.status(404).json({ error: 'User not found' }).end();
+
+  const { to, subject, body } = req.body
+  const mailId = req.params.id
+  if (!mailId) return res.status(404).json({ message: 'Mail not found' }).end();
+
+  const mail = Mail.editMail(userId, mailId, to, subject, body);
+  if (!mail) return res.status(400).json({ error: "Mail not edited" }).end();
+
+  return res.status(204).json(mail).end();
+}

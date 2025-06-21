@@ -8,30 +8,45 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function ComposeWindow() {
-  const [formData, setFormData] = useState({
-    to: "",
-    subject: "",
-    body: "",
-  });
+
   const [isMaximized, setIsMaximized] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { fetchAllMails, setIsNewDraft, draftId, isNewDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { formData, setFormData, fetchAllMails, setTypeOfDraft, draftId, setDraftId, typeOfDraft, isComposeOpen, isMinimized, currentFolder, fetchMails, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   useEffect(() => {
+    async function createDraft() {
+      const res = await fetch(`/api/mails`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+      if (res.status !== 201) {
+        throw new Error(`Error: Response or forward not created`);
+      }
+      const draft = await res.json()
+      setDraftId(draft.id)
+    }
+
     if (!isComposeOpen) return;
-    if (isNewDraft) {
+    if (typeOfDraft === "new") {
       setFormData({ to: "", subject: "", body: "" });
+    } else if (typeOfDraft === "reply" || typeOfDraft === "forward") {
+      createDraft();
+
     } else {
       getDraft(draftId);
     }
-  }, [isComposeOpen, draftId, isNewDraft]);
+  }, [isComposeOpen, typeOfDraft]);
 
   const onClose = () => {
     setIsComposeOpen(false);
     setIsMinimized(false);
-    setIsNewDraft(false);
+    setTypeOfDraft(null);
   };
 
   const onMinimize = () => {
@@ -39,7 +54,7 @@ export default function ComposeWindow() {
   };
 
   async function getDraft(draftId) {
-    const res = await fetch(`/api/mails/drafts/${draftId}`, {
+    const res = await fetch(`/api/mails/${draftId}`, {
       credentials: "include"
     });
     if (res.status !== 200) {
@@ -47,16 +62,20 @@ export default function ComposeWindow() {
       throw new Error(`Error: ${res.status}: ${errorText}`);
     }
     const draft = await res.json();
-    const resp = await fetch(`/api/users/${draft.to}`, {
-      credentials: "include",
-    });
-    if (resp.status !== 200) {
-      alert("Error");
-      return;
+
+    var user = null;
+    if (draft.to) {
+      const resp = await fetch(`/api/users/${draft.to}`, {
+        credentials: "include",
+      });
+      if (resp.status !== 200) {
+        alert("Error");
+        return;
+      }
+      user = await resp.json();
     }
-    const user = await resp.json();
     setFormData({
-      to: user.email,
+      to: user ? user.email : "",
       subject: draft.subject,
       body: draft.body,
     });
@@ -68,7 +87,7 @@ export default function ComposeWindow() {
     setFormData(newForm);
     if (error) setError("");
     try {
-      const response = await fetch(`/api/mails/drafts/${draftId}`, {
+      const response = await fetch(`/api/mails/${draftId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -112,8 +131,9 @@ export default function ComposeWindow() {
 
     setIsLoading(true);
     setError("");
+    console.log(draftId)
     try {
-      const response = await fetch(`/api/mails/drafts/${draftId}/send`, {
+      const response = await fetch(`/api/mails/${draftId}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,7 +248,7 @@ export default function ComposeWindow() {
             >
               {isLoading ? "Sending..." : "Send"}
             </button>
-            
+
           </div>
         </div>
       )}

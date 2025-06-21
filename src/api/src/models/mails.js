@@ -54,7 +54,7 @@ exports.getMailById = (userId, mailId) => {
  * and save it to the recipient's inbox and the sender's sent items.
  * Returns the new mail object with email addresses instead of user IDs.
 */
-exports.create = async (toUserId, fromUserId, subject, body) => {
+exports.create = (fromUserId, toUserId, subject, body) => {
   const Users = require('./users')
   const mail = {
     id: generateMailId(),
@@ -68,46 +68,21 @@ exports.create = async (toUserId, fromUserId, subject, body) => {
   };
 
   // Return mail with email addresses for frontend
-  const users = Users.getAllUsers();
-  const fromUser = users.find(u => u.id === fromUserId);
-  const toUser = users.find(u => u.id === toUserId);
+  const fromUser = Users.getUserById(fromUserId);
 
-  if (!fromUser || !toUser) {
+  if (!fromUser) {
     return;
   }
 
-  if (await validateUrls(subject, body)) {
-    // Add to recipient's spams
-    const labelsTo = Users.getLabelsOfUser(toUser)
-    const labelTo = labelsTo.find(l => l.name === "spam");
-    labelsAndMails.addLabelToMail(mail, labelTo, toUserId)
-  } else {
-    // Add to recipient's inbox
-    const labelsTo = Users.getLabelsOfUser(toUser)
-    const labelTo = labelsTo.find(l => l.name === "inbox");
-    mail.labels.push(labelTo)
-  }
-
-
-  // Add to sender's sent items
+  // Add to sender's drafts
   const labelsFrom = Users.getLabelsOfUser(fromUser)
-  const labelFrom = labelsFrom.find(l => l.name === "sent");
+  const labelFrom = labelsFrom.find(l => l.name === "drafts");
   mail.labels.push(labelFrom)
-
   // Add to the global array for both users
   exports.ensureMailbox(allMails, fromUserId);
   allMails[fromUserId].push(mail);
 
-  if (fromUserId != toUserId) {
-    exports.ensureMailbox(allMails, toUserId);
-    allMails[toUserId].push(mail);
-  }
-
-  return {
-    ...mail,
-    fromEmail: fromUser ? fromUser.email : 'unknown',
-    toEmail: toUser ? toUser.email : 'unknown'
-  };
+  return mail;
 };
 
 
@@ -118,9 +93,11 @@ exports.create = async (toUserId, fromUserId, subject, body) => {
 exports.search = (userId, query) => {
   exports.ensureMailbox(allMails, userId);
   const lowerQuery = query.toLowerCase();
+  const draftLabel = Labels.getLabelByName("draft", userId);
   return allMails[userId].filter(mail =>
-    mail.subject.toLowerCase().includes(lowerQuery) ||
-    mail.body.toLowerCase().includes(lowerQuery)
+    (mail.subject.toLowerCase().includes(lowerQuery) ||
+      mail.body.toLowerCase().includes(lowerQuery)) &&
+    (!mail.labels.includes(draftLabel))
   );
 };
 
@@ -146,30 +123,85 @@ exports.setRead = (userId, mailId, label) => {
 }
 
 function removeAllUserLabelsFromMail(mail, userId) {
-    const labels = mail.labels;
-    mail.labels = labels.filter(label => label.userId !== userId);
+  const labels = mail.labels;
+  mail.labels = labels.filter(label => label.userId !== userId);
 }
 
 exports.deleteMail = (userId, mailId) => {
-    exports.ensureMailbox(allMails, userId);
-    const mail = allMails[userId].find(mail => mail.id === mailId);
-    if (!mail) return false;
+  exports.ensureMailbox(allMails, userId);
+  const mail = allMails[userId].find(mail => mail.id === mailId);
+  if (!mail) return false;
 
-    const Labels = require('./labels');
-    const trashLabel = Labels.getLabelByName("trash", userId);
+  const Labels = require('./labels');
+  const trashLabel = Labels.getLabelByName("trash", userId);
 
-    const userLabels = mail.labels.filter(l => l.userId === userId);
-    const userLabelNames = userLabels.map(l => l.name);
-    const isInTrash = userLabelNames.includes("trash");
+  const userLabels = mail.labels.filter(l => l.userId === userId);
+  const userLabelNames = userLabels.map(l => l.name);
+  const isInTrash = userLabelNames.includes("trash");
 
-    if (isInTrash) {
-        allMails[userId] = allMails[userId].filter(m => m.id !== mailId);
-        return true;
-    } else {
-        removeAllUserLabelsFromMail(mail, userId);
-        if (trashLabel) {
-            mail.labels.push(trashLabel);
-        }
-        return true;
+  if (isInTrash) {
+    allMails[userId] = allMails[userId].filter(m => m.id !== mailId);
+    return true;
+  } else {
+    removeAllUserLabelsFromMail(mail, userId);
+    if (trashLabel) {
+      mail.labels.push(trashLabel);
     }
+    return true;
+  }
+};
+
+exports.editMail = (userId, MailId, to, subject, body) => {
+  const User = require('./users')
+  const toUser = User.getUserByUserName(to.split("@")[0]);
+  const mail = exports.getMailById(userId, MailId);
+  if (!mail) return;
+  if (toUser) {
+    mail.to = toUser.id;
+  }
+  if (subject) {
+    mail.subject = subject;
+  }
+  if (body) { mail.body = body; }
+  mail.date = new Date().toISOString();
+  return mail;
+};
+
+exports.sendMail = async (userId, mailId) => {
+  const Users = require('./users')
+  const mail = exports.getMailById(userId, mailId);
+  if (!mail) return null;
+
+  const fromUser = Users.getUserById(mail.from);
+  const toUser = Users.getUserById(mail.to)
+
+  if (!fromUser || !toUser) {
+    return;
+  }
+
+  removeAllUserLabelsFromMail(mail, userId);
+
+  if (await validateUrls(mail.subject, mail.body)) {
+    // Add to recipient's spams
+    const labelFrom = Users.getLabelsOfUser(toUser)
+    const labelTo = labelFrom.find(l => l.name === "spam");
+    labelsAndMails.addLabelToMail(mail, labelTo, toUser.id)
+  } else {
+    // Add to recipient's inbox
+    const labelFrom = Users.getLabelsOfUser(toUser)
+    const labelTo = labelFrom.find(l => l.name === "inbox");
+    mail.labels.push(labelTo)
+  }
+
+  // Add to sender's sent items
+  const labelsFrom = Users.getLabelsOfUser(fromUser)
+  const labelFrom = labelsFrom.find(l => l.name === "sent");
+  mail.labels.push(labelFrom)
+
+
+  return {
+    ...mail,
+    fromEmail: fromUser ? fromUser.email : 'unknown',
+    toEmail: toUser ? toUser.email : 'unknown'
+  };
 };

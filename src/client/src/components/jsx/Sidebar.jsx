@@ -95,7 +95,7 @@ export default function Sidebar({
   isOpen,
   counts,
 }) {
-  const { setIsNewDraft, setDraftId, currentFolder, setCurrentFolder, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { setTypeOfDraft, setDraftId, currentFolder, setCurrentFolder, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
 
   const [labels, setLabels] = useState([]);
 
@@ -124,11 +124,11 @@ export default function Sidebar({
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
 
   async function createDraft() {
-    const res = await fetch("/api/mails/drafts", {
+    const res = await fetch("/api/mails", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ to: ' ', subject: ' ', body: ' ' })
+      // body: JSON.stringify({ to: ' ', subject: ' ', body: ' ' })
     })
     const draft = await res.json();
     setDraftId(draft.id);
@@ -138,7 +138,7 @@ export default function Sidebar({
     createDraft();
     setIsComposeOpen(true);
     setIsMinimized(false);
-    setIsNewDraft(true);
+    setTypeOfDraft("new");
   };
 
   return (

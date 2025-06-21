@@ -5,7 +5,7 @@ import Mail from "./Mail";
 import { useNavigate } from "react-router-dom";
 
 function Inbox() {
-  const { mails = [], fetchAllMails, fetchMails, currentFolder, setDraftId, setIsNewDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
+  const { mails = [], fetchAllMails, fetchMails, currentFolder, setDraftId, setTypeOfDraft, setIsComposeOpen, setIsMinimized } = useContext(MailContext);
   const navigate = useNavigate();
   useEffect(() => {
     fetchMails(currentFolder);
@@ -14,7 +14,7 @@ function Inbox() {
 
   function handleDraftClick(draft) {
     setDraftId(draft.id);
-    setIsNewDraft(false);
+    setTypeOfDraft(null);
     setIsComposeOpen(true);
     setIsMinimized(false);
   }
