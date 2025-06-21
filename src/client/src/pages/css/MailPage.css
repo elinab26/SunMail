@@ -259,23 +259,6 @@ body {
   margin: 20px 0 10px 0;
 }
 
-.reply-btn,
-.forward-btn {
-  background-color: #eaf1fb;
-  border: 1px solid #c7d0e1;
-  color: #174ea6;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.reply-btn:hover,
-.forward-btn:hover {
-  background-color: #d2e3fc;
-}
-
 @media (max-width: 600px) {
   .gmail-header {
     gap: 6px;
@@ -292,4 +275,21 @@ body {
     min-width: 0;
     max-width: 99vw;
   }
+}
+
+.reply-btn,
+.forward-btn {
+  background-color: #eaf1fb;
+  border: 1px solid #c7d0e1;
+  color: #174ea6;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.reply-btn:hover,
+.forward-btn:hover {
+  background-color: #d2e3fc;
 }
