@@ -15,6 +15,8 @@
   color: var(--search-bg-focus);
   font-family: 'Google Sans', Roboto, sans-serif;
   animation: popupFadeIn 0.2s ease-out;
+  text-shadow: 0 1px 2px var(--search-bg-focus);
+
 }
 
 @keyframes popupFadeIn {
@@ -43,7 +45,6 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  
 }
 
 .popup-profile-fallback {
@@ -57,6 +58,8 @@
   justify-content: center;
   font-size: 1.8rem;
   font-weight: bold;
+  text-shadow: 0 1px 3px var(--shadow-color-theme);
+
 }
 
 .popup-user-info {
