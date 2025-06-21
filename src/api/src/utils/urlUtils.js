@@ -7,7 +7,7 @@ const { sendRawCommand } = require('./clientUtils.js');
  * Recognizes links starting with "http://", "https://", or "www.".
  */
 function extractUrls(text) {
-  const urlRegex = /\b((https?:\/\/)?(www\.)?[\w-]{1,63}\.[a-z]{2,}(\/\S*)?)\b(?!@)/gi;
+const urlRegex = /\b((https?:\/\/)?(www\.)?[\w-]{1,63}\.[a-z]{2,}(\/\S*)?)\b(?!@)(?<![\w.-]+@[\w.-]+\.[a-z]{2,})/gi;
   const matches = [];
   let match;
 
