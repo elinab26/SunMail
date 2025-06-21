@@ -259,7 +259,8 @@ body {
   margin: 20px 0 10px 0;
 }
 
-.reply-btn, .forward-btn {
+.reply-btn,
+.forward-btn {
   background-color: #eaf1fb;
   border: 1px solid #c7d0e1;
   color: #174ea6;
@@ -270,6 +271,27 @@ body {
   transition: 0.2s;
 }
 
-.reply-btn:hover, .forward-btn:hover {
+.reply-btn:hover,
+.forward-btn:hover {
   background-color: #d2e3fc;
+}
+
+@media (max-width: 600px) {
+  .gmail-header {
+    gap: 6px;
+    padding: 0 6px;
+    min-height: 44px;
+  }
+
+  .subject {
+    font-size: 1.05rem;
+    padding: 0;
+  }
+
+  .add-label-btn {
+    padding: 5px 8px;
+    font-size: 0.96em;
+    min-width: 0;
+    max-width: 99vw;
+  }
 }
