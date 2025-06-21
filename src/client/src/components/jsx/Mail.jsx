@@ -209,17 +209,10 @@ function Mail({ mail }) {
     console.log("isDraft", isDraft, mail.id, mail.labels);
     console.log("mail.labels:", mail.labels);
     e.stopPropagation();
-    if (isDraft) {
-      await fetch(`/api/drafts/${mail.id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-    } else {
       await fetch(`/api/mails/${mail.id}`, {
         method: "DELETE",
         credentials: "include",
       });
-    }
     fetchMails(currentFolder);
     fetchAllMails()
   };

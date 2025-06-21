@@ -73,7 +73,6 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 - **Main endpoints** :
   - `/api/mails` : Manages emails (sending, receiving, deletion).
   - `/api/labels` : Manages labels (creation, modification, deletion).
-  - `/api/drafts` : Manages drafts (creation, modification, deletion).
   - `/api/blacklist` : Manages blacklist (addition, deletion, verification).
 - **URL validation** : URLs present in emails are extracted and verified against the blacklist before sending.
 

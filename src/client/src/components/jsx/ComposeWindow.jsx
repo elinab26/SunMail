@@ -39,7 +39,7 @@ export default function ComposeWindow() {
   };
 
   async function getDraft(draftId) {
-    const res = await fetch(`/api/mails/drafts/${draftId}`, {
+    const res = await fetch(`/api/mails/${draftId}`, {
       credentials: "include"
     });
     if (res.status !== 200) {
@@ -47,16 +47,20 @@ export default function ComposeWindow() {
       throw new Error(`Error: ${res.status}: ${errorText}`);
     }
     const draft = await res.json();
-    const resp = await fetch(`/api/users/${draft.to}`, {
-      credentials: "include",
-    });
-    if (resp.status !== 200) {
-      alert("Error");
-      return;
+
+    var user = null;
+    if (draft.to) {
+      const resp = await fetch(`/api/users/${draft.to}`, {
+        credentials: "include",
+      });
+      if (resp.status !== 200) {
+        alert("Error");
+        return;
+      }
+      user = await resp.json();
     }
-    const user = await resp.json();
     setFormData({
-      to: user.email,
+      to: user ? user.email : "",
       subject: draft.subject,
       body: draft.body,
     });
@@ -68,7 +72,7 @@ export default function ComposeWindow() {
     setFormData(newForm);
     if (error) setError("");
     try {
-      const response = await fetch(`/api/mails/drafts/${draftId}`, {
+      const response = await fetch(`/api/mails/${draftId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +117,7 @@ export default function ComposeWindow() {
     setIsLoading(true);
     setError("");
     try {
-      const response = await fetch(`/api/mails/drafts/${draftId}/send`, {
+      const response = await fetch(`/api/mails/${draftId}/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -227,7 +231,7 @@ export default function ComposeWindow() {
             >
               {isLoading ? "Sending..." : "Send"}
             </button>
-            
+
           </div>
         </div>
       )}

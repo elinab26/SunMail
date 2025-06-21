@@ -124,11 +124,11 @@ export default function Sidebar({
   const [createLabelClicked, setCreateLabelClicked] = useState(false);
 
   async function createDraft() {
-    const res = await fetch("/api/mails/drafts", {
+    const res = await fetch("/api/mails", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ to: ' ', subject: ' ', body: ' ' })
+      // body: JSON.stringify({ to: ' ', subject: ' ', body: ' ' })
     })
     const draft = await res.json();
     setDraftId(draft.id);

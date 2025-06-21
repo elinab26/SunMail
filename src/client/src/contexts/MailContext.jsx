@@ -25,15 +25,9 @@ export function MailProvider({ children }) {
 
     async function fetchMails(currentFolder) {
         var res;
-        if (currentFolder === "drafts") {
-            res = await fetch(`/api/mails/drafts`, {
-                credentials: "include",
-            });
-        } else {
-            res = await fetch(`/api/mails/label/${currentFolder}`, {
-                credentials: "include",
-            });
-        }
+        res = await fetch(`/api/mails/label/${currentFolder}`, {
+            credentials: "include",
+        });
         const json = await res.json();
         setMails(json);
     }
