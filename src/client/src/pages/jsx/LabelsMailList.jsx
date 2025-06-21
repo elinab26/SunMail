@@ -11,7 +11,7 @@ function LabelsMailList({ mailLabelObjects, user, labelsUser, handleRemoveLabel 
                     if (DEFAULT_LABELS.includes(labelObj.name)) return null;
 
                     return (
-                        <span className="mail-label-chip" key={labelObj.id}>
+                        <div className="mail-label-chip" key={labelObj.id}>
                             <span className="chip-label-text">{labelObj.name}</span>
                             <button
                                 className="chip-remove-btn"
@@ -24,7 +24,7 @@ function LabelsMailList({ mailLabelObjects, user, labelsUser, handleRemoveLabel 
                             >
                                 &times;
                             </button>
-                        </span>
+                        </div>
                     );
                 })
                 : <span className="mail-label-chip no-label">No Labels</span>}

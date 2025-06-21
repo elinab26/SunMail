@@ -44,7 +44,6 @@ export default function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
-    // TODO: Add validation for all fields
     setIsLoading(true);
 
     try {
@@ -88,7 +87,6 @@ export default function RegisterPage() {
         }
       } else {
         const err = await res.json();
-        // TODO:
         setError(err.error || 'Registration failed');
       }
     } catch (err) {
@@ -125,16 +123,18 @@ export default function RegisterPage() {
             value={form.last_name}
             onChange={handleChange}
           />
-          <select
-            name="gender"
-            value={form.gender}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
+          <div className="select-wrapper">
+            <select
+              name="gender"
+              value={form.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
           <input type="date" name="birthDate" value={form.birthDate} onChange={handleChange} required className="birthdate-input" />
           <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />

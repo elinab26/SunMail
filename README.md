@@ -110,7 +110,7 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 
 2. **Run containers with Docker Compose** :
    ```bash
-   docker-compose up -d
+   docker-compose up --build -d
    ```
 
 3. **Access the application** :

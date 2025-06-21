@@ -182,7 +182,7 @@ export default function ComposeWindow() {
 
   return (
     <div
-      className={`compose-window surface ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
+      className={`compose-window ${isMinimized ? "minimized" : ""} ${isMaximized && !isMinimized ? "maximized" : ""
         }`}
     >
       <div className="compose-header">
@@ -210,7 +210,6 @@ export default function ComposeWindow() {
 
       {!isMinimized && (
         <div className="compose-content">
-          {error && <div className="error-message">{error}</div>}
 
           <div className="compose-fields">
             {["to", "subject"].map((field) => (
@@ -224,10 +223,12 @@ export default function ComposeWindow() {
                   className="compose-input"
                   disabled={isLoading}
                 />
+                
               </div>
             ))}
+            {error && <div className="error-message">{error}</div>}
           </div>
-
+            
           <div className="compose-body">
             <textarea
               name="body"
