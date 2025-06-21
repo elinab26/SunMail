@@ -253,11 +253,6 @@ body {
   }
 }
 
-.mail-actions {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0 10px 0;
-}
 
 @media (max-width: 600px) {
   .gmail-header {
@@ -275,6 +270,12 @@ body {
     min-width: 0;
     max-width: 99vw;
   }
+}
+
+.mail-actions {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 10px 0;
 }
 
 .reply-btn,
