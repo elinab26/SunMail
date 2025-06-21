@@ -159,12 +159,12 @@
     border-radius: 50%;
     background: var(--surface-bg-hover);
     color: var(--search-bg-focus);
-    text-shadow: 0 1px 3px var(--search-bg-focus);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
+    text-shadow: 0 1px 3px var(--shadow-color-theme);
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
     font-weight: bold;
     margin-right: 4px;
+    box-sizing: border-box;
+    line-height: 34px;
   }

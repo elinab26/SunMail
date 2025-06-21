@@ -149,17 +149,15 @@ body {
   height: 50px;
   border-radius: 50%;
   margin-right: 12px;
-  font-size: 1.1rem;
-  color: var(--gmail-blue);
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
-}
-
-.from-fallback {
-  background: #e8eafc;
-  color: #174ea6;
+  background: var(--surface-bg-hover);
+  color: var(--search-bg-focus);
+  font-weight: bold;
+  text-shadow: 0 1px 3px var(--shadow-color-theme);
 }
 
 .from-info {
@@ -173,6 +171,7 @@ body {
   font-weight: 500;
   color: var(--gmail-text);
   margin: 0;
+  font-weight: bold;
 }
 
 .from-address {
@@ -222,7 +221,7 @@ body {
   display: flex;
   align-items: center;
   font-size: 1em;
-  line-height: 1;       
+  line-height: 1;      
   margin: 0;
   padding: 0;
   height: 100%;
@@ -249,7 +248,7 @@ body {
   margin-right: 2px;
   margin-bottom: 2px;
   gap: 2px;
-  height: 30px;
+  height: 30px; 
   line-height: 1;
   vertical-align: middle;
 }
@@ -257,15 +256,15 @@ body {
 .chip-remove-btn {
   display: flex;          
   align-items: center; 
-  justify-content: center;
+  justify-content: right;
   background: none;
   border: none;
   color: #8a9099;
   font-size: 1.08rem;
   cursor: pointer;
   border-radius: 50%;
-  margin-left: 2px;        
-  height: 24px;         
+  margin-left: 2px;       
+  height: 24px;          
   width: 24px;
   transition: background 0.1s, color 0.1s;
   padding: 0;              
