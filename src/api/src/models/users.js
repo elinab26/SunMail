@@ -1,5 +1,5 @@
 const users = []
-const DEFAULT_LABELS = ["inbox", "starred",  "important", "sent", "drafts", "spam", "trash"];
+const DEFAULT_LABELS = ["inbox", "starred",  "important", "sent", "drafts", "spam", "trash", "all"];
 
 // Simple UUID v4-like generator
 function IdGenerator() {

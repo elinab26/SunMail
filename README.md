@@ -13,6 +13,7 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ## Features
 
 ### Email Management
+
 - **Send and receive emails** : Allows users to compose and send emails through a dedicated interface. Received emails are displayed in the inbox.
 - **Create, edit and delete drafts** : Users can save drafts to edit or send later. Drafts can also be deleted if necessary.
 - **Delete emails** : Emails can be moved to trash for temporary deletion or permanently deleted.
@@ -21,23 +22,27 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 - **Associate labels with emails** : Users can organize their emails by assigning custom labels.
 
 ### Label Management
+
 - **Default labels** : The application includes predefined labels such as Inbox, Starred, Important, Sent, Drafts, Spam, and Trash for quick organization.
 - **Create custom labels** : Users can create their own labels to meet their specific needs.
 - **Add and remove labels associated with emails** : Labels can be added or removed directly from the user interface.
 - **Intuitive interface** : A dedicated menu allows easy label management and association with emails.
 
 ### Security and Filtering
+
 - **Malicious URL filtering via Bloom filter** : The C++ module implements a Bloom filter to detect and block malicious URLs in emails.
 - **Automatic blacklist addition** : When a user marks an email as spam, all URLs present in that email are automatically added to the blacklist. This ensures these links can no longer be used in future emails.
 - **URL validation in emails before sending** : URLs present in emails are verified before sending to ensure they are not on the blacklist.
 - **Automatic movement of emails containing blacklisted URLs** : Emails containing malicious URLs are automatically moved to the Spam folder.
 
 ### Dark Mode
+
 - **Enable/disable dark mode** : Users can switch between light and dark mode via a dedicated button in the interface.
 - **Adapted styles** : Colors and styles are optimized for better readability in dark mode.
 - **Visual effects and animations** : Animations and visual effects, such as smooth transitions, enhance the user experience.
 
 ### User Interface
+
 - **Sidebar with navigation** : A sidebar allows easy navigation between different folders (Inbox, Starred, Sent, etc.) and label management.
 - **Compose window** : A dedicated interface allows composing emails with advanced options such as adding labels and URL validation.
 - **Search bar** : A search bar at the top of the interface allows quickly finding emails based on keywords.
@@ -49,25 +54,106 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
   - `ComposePage` : Interface for writing a new email with advanced options.
 
 ---
+
 ### Screenshots
 
 #### Login Page
-![Login Page](./images/loginPage.png)
+
+![Login Page](./images/login%20page.png)
 
 #### Register Page
-![Register Page](./images/registerPage.png)
+
+![Register Page](./images/register%20page.png)
+
+#### New Mail
+
+![Compose](./images/compose%20mail%20light.png)  
+![Compose](./images/compose%20mail%20dark.png)
+
+#### Creating a New Label
+
+![New Label](./images/new%20label%20light.png)  
+![New Label](./images/new%20label%20dark.png)
+
+#### Mail View
+
+![Mail View](./images/mail%20view%20light.png)  
+![Mail View](./images/mail%20view%20dark.png)
+
+#### Adding a Label to a Mail
+
+![Add Label](./images/add%20label%20light.png)  
+![Add Label](./images/add%20label%20dark.png)
 
 #### Inbox Page
-![Inbox Page](./images/inboxPage.png)
 
-#### Light Theme
-![Light Theme](./images/lightTheme.png)
+![Inbox Page](./images/new%20mail%20light.png)  
+![Inbox Page](./images/new%20mail%20dark.png)
+
+#### Label Page
+
+![Label folder](./images/first%20label.png)
+
+#### Starred Mail
+
+![Starred](./images/starred%20mail.png)
+
+#### Draft Management
+
+##### Attempt to send a mail without all the data
+
+![Attempt](./images/attempt%20to%20send%20without%20subject.png)
+
+##### Draft Page
+
+![Draft](./images/draft.png)
+
+##### Editing a Draft
+
+![Draft edit](./images/draft%20edit.png)
+
+##### Sending a Draft
+
+![Draft sent](./images/draft%20sent.png)
+
+#### Mails Search
+
+![search](./images/search%20mails.png)
+
+#### Delete mail
+
+![delete](./images/delete%20mail.png)
+
+#### Spam Management
+
+##### Mail Before spam
+
+![prepare to spam](./images/prepare%20spam.png)
+
+##### Mail in Spam
+
+![spam](./images/sent%20to%20spam.png)
+
+##### New Mail with a blacklisted URL is directly sent to Spam
+
+![directly](./images/direct%20spam.png)
+
+#### Response Management
+
+##### Compose Response
+
+![compose response](./images/compose%20response.png)
+
+##### Got Response
+
+![response got](./images/response%20got.png)
 
 ---
 
 ## Project Architecture
 
 ### Backend
+
 - **Node.js with Express** : The backend is a RESTful API that manages emails, drafts, labels, and blacklist.
 - **Local storage** : Data (emails, labels, drafts) is stored in memory arrays, which simplifies development and testing.
 - **Main endpoints** :
@@ -77,6 +163,7 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 - **URL validation** : URLs present in emails are extracted and verified against the blacklist before sending.
 
 ### Frontend
+
 - **React** : The frontend uses React to provide a modern and responsive user interface.
 - **CSS Modules** : Styles are isolated for each component, ensuring easy customization and maintenance.
 - **Main components** :
@@ -87,6 +174,7 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
   - `ComposeWindow` : Interface for writing emails.
 
 ### C++ Module
+
 - **Bloom Filter** : Implemented in C++ to efficiently manage blacklists.
 - **Features** :
   - Add URLs to the filter.
@@ -99,16 +187,20 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ## Docker Instructions
 
 ### Prerequisites
+
 - Docker and Docker Compose must be installed on your machine.
 
 ### Steps to run the application
+
 1. **Clone the project** :
+
    ```bash
    git clone https://github.com/reut2423/ex4.Web.git
    cd ex4.Web
    ```
 
 2. **Run containers with Docker Compose** :
+
    ```bash
    docker-compose up --build -d
    ```
@@ -122,6 +214,7 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ## How does the application work?
 
 ### Workflow
+
 1. **Account creation** : Register via the dedicated page.
 2. **Login** : Access your emails after authentication.
 3. **Email management** :
@@ -140,18 +233,22 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ## Technologies Used
 
 ### Backend
+
 - Node.js
 - Express
 - Local storage (memory arrays)
 
 ### Frontend
+
 - React
 - CSS Modules
 
 ### C++ Module
+
 - Bloom Filter for blacklist management
 
 ### Containerization
+
 - Docker
 - Docker Compose
 
