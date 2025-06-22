@@ -52,17 +52,18 @@ ex4.Web is a modern web application designed to manage your emails. It offers an
 ### Screenshots
 
 #### Login Page
-![Login Page](./images/loginPage.png)
+![Login Page](./images/login page.png)
 
 #### Register Page
-![Register Page](./images/registerPage.png)
+![Register Page](./images/register page.png)
 
 #### Inbox Page
-![Inbox Page](./images/inboxPage.png)
+![Inbox Page](./images/inbox_light.png)
+![Inbox Page](./images/inbox_dark.png)
 
-#### Light Theme
-![Light Theme](./images/lightTheme.png)
-
+#### New Mail
+![Compose](./images/compose%20mail%20light.png)
+![Compose](./images/compose%20mail%20dark.png)
 ---
 
 ## Project Architecture
