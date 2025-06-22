@@ -5,7 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import "../css/MailPage.css";
 import LabelsModal from "../../components/jsx/LabelsModal";
 import LabelsMailList from "./LabelsMailList";
-const DEFAULT_LABELS = ["starred", "important", "sent", "drafts", "trash"];
+const DEFAULT_LABELS = ["starred", "important", "sent", "drafts", "trash", "all"];
 
 function MailPage() {
   const { mails, fetchMails, currentFolder, fetchAllMails, setIsComposeOpen, setTypeOfDraft, setFormData, setIsMinimized } = useContext(MailContext);

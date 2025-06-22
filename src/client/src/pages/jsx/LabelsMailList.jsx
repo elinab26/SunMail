@@ -1,4 +1,4 @@
-const DEFAULT_LABELS = ["starred",  "important", "sent", "drafts", "trash"];
+const DEFAULT_LABELS = ["starred",  "important", "sent", "drafts", "trash", "all"];
 
 function LabelsMailList({ mailLabelObjects, user, labelsUser, handleRemoveLabel }) {
 

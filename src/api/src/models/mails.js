@@ -135,6 +135,7 @@ exports.deleteMail = (userId, mailId) => {
 
   const Labels = require('./labels');
   const trashLabel = Labels.getLabelByName("trash", userId);
+  const labelAll = Labels.getLabelByName("all", userId);
 
   const userLabels = mail.labels.filter(l => l.userId === userId);
   const userLabelNames = userLabels.map(l => l.name);
@@ -147,6 +148,7 @@ exports.deleteMail = (userId, mailId) => {
     removeAllUserLabelsFromMail(mail, userId);
     if (trashLabel) {
       mail.labels.push(trashLabel);
+      mail.labels.push(labelAll);
     }
     return true;
   }
@@ -184,14 +186,16 @@ exports.sendMail = async (userId, mailId) => {
 
   if (await validateUrls(mail.subject, mail.body)) {
     // Add to recipient's spams
-    const labelFrom = Users.getLabelsOfUser(toUser)
-    const labelTo = labelFrom.find(l => l.name === "spam");
+    const labelsTo = Users.getLabelsOfUser(toUser)
+    const labelTo = labelsTo.find(l => l.name === "spam");
     labelsAndMails.addLabelToMail(mail, labelTo, toUser.id)
   } else {
     // Add to recipient's inbox
-    const labelFrom = Users.getLabelsOfUser(toUser)
-    const labelTo = labelFrom.find(l => l.name === "inbox");
+    const labelsTo = Users.getLabelsOfUser(toUser)
+    const labelTo = labelsTo.find(l => l.name === "inbox");
+    const labelAll = labelsTo.find(l => l.name === "all");
     mail.labels.push(labelTo)
+    mail.labels.push(labelAll)
   }
 
   // Add to sender's sent items

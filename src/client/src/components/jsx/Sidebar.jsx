@@ -52,7 +52,7 @@ const primaryFolders = [
 const secondaryFolders = [
   // { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
   // { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
-  // { key: "all", label: "All mail", icon: <BiEnvelope size={20} /> },
+  { key: "all", label: "All mails", icon: <BiEnvelope size={20} /> },
   { key: "spam", label: "Spam", icon: <RiSpam2Line size={20} /> },
   { key: "trash", label: "Trash", icon: <BiTrash size={20} /> },
   // {
