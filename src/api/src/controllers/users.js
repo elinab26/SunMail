@@ -71,7 +71,7 @@ exports.createUser = (req, res) => {
         if (!isValidPassword(password))
             return res.status(400).json({ error: 'Password must be 8-100 chars, contain at least one letter and one digit, and may include common symbols' });
 
-        const email = `${userName}@gmail.com`;
+        const email = `${userName}@sunmail.com`;
         const exists = Users.getAllUsers().some(u => u.email.toLowerCase() === email.toLowerCase());
         if (exists)
             return res.status(400).json({ error: 'Username already exists' });

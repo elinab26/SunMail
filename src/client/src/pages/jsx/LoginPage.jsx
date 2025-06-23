@@ -18,7 +18,7 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    const email = username.includes("@") ? username : `${username}@gmail.com`;
+    const email = username.includes("@") ? username : `${username}@sunmail.com`;
 
     try {
       const loginRes = await fetch("/api/tokens", {

@@ -28,9 +28,11 @@
 }
 
 .auth-logo {
-  width: 60px;
-  margin-bottom: 16px;
-  filter: drop-shadow(0 0 2px var(--shadow-color-theme));
+  width: 200px;
+  height: auto;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 2px 1px var(--shadow-color-theme));
+  text-shadow: 0 1px 2px var(--shadow-color-theme);
 }
   
 .auth-logo-wrapper {

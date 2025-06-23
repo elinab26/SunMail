@@ -72,7 +72,7 @@ export default function RegisterPage() {
       });
 
       if (res.status === 201) {
-        const email = `${form.userName}@gmail.com`;
+        const email = `${form.userName}@sunmail.com`;
         const loginRes = await fetch("/api/tokens", {
           method: "POST",
           credentials: "include",

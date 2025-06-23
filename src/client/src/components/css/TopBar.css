@@ -44,13 +44,23 @@
     cursor: pointer;
     background:none;
     border:none;
+
+    filter: drop-shadow(1px 1px 1px var(--shadow-color-theme));
+
 }
 
 .logo-image {
-    height: 50px;
-    /* adjust to desired height */
+    margin-left: 0px;
+    text-shadow: 0 1px 1px var(--shadow-color-theme);
+    height: 58px;
     width: auto;
+    filter: drop-shadow(0px 1px 1px var(--shadow-color-theme));
 }
+
+.logo {
+  filter: drop-shadow(0px 2px 1px var(--shadow-color-theme));
+}
+
 
 /* Search bar */
 .topbar-search {
