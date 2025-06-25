@@ -1,8 +1,5 @@
 import { useState, useContext, useEffect } from "react";
 import "../css/ComposeWindow.css";
-import { IoClose } from "react-icons/io5";
-import { AiOutlineMinus } from "react-icons/ai";
-import { MdOpenInFull, MdCloseFullscreen } from "react-icons/md";
 import { MailContext } from "../../contexts/MailContext";
 import { useNavigate } from "react-router-dom";
 
@@ -192,17 +189,17 @@ export default function ComposeWindow() {
             className="control-btn"
             title="Minimize"
           >
-            <AiOutlineMinus />
+            <i class="bi bi-dash-lg"></i>
           </button>
           <button
             onClick={handleMaximize}
             className="control-btn"
             title={isMaximized ? "Normal size" : "Maximize"}
           >
-            {isMaximized ? <MdCloseFullscreen /> : <MdOpenInFull />}
+            {isMaximized ? <i class="bi bi-arrows-angle-contract"></i> : <i class="bi bi-arrows-angle-expand"></i>}
           </button>
           <button onClick={resetAndClose} className="control-btn" title="Close">
-            <IoClose />
+            <i class="bi bi-x"></i>
           </button>
         </div>
       </div>
@@ -222,12 +219,12 @@ export default function ComposeWindow() {
                   className="compose-input"
                   disabled={isLoading}
                 />
-                
+
               </div>
             ))}
             {error && <div className="error-message">{error}</div>}
           </div>
-            
+
           <div className="compose-body">
             <textarea
               name="body"

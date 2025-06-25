@@ -1,11 +1,5 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import "../css/Mail.css";
-import { MdOutlineStarBorder } from "react-icons/md";
-import { MdOutlineStar } from "react-icons/md";
-import { MdLabelImportantOutline } from "react-icons/md";
-import { MdLabelImportant } from "react-icons/md";
-
-import { BiTrash } from "react-icons/bi";
 import { AuthContext } from '../../contexts/AuthContext';
 import ComposeWindow from "./ComposeWindow";
 import { MailContext } from "../../contexts/MailContext";
@@ -242,10 +236,10 @@ function Mail({ mail }) {
         >
           {isStarred ? (
             <span id="starOn">
-              <MdOutlineStar />
+              <i class="bi bi-star-fill"></i>
             </span>
           ) : (
-            <MdOutlineStarBorder />
+            <i class="bi bi-star"></i>
           )}
         </button>
         <button
@@ -257,14 +251,14 @@ function Mail({ mail }) {
         >
           {isImportant ? (
             <span id="importantOn">
-              <MdLabelImportant />
+              <i class="bi bi-bookmark-fill"></i>
             </span>
           ) : (
-            <MdLabelImportantOutline />
+            <i class="bi bi-bookmark"></i>
           )}
         </button>
         <button className="deleteIcon" onClick={handleDelete}>
-          <BiTrash />
+          <i class="bi bi-trash"></i>
         </button>
         <span className="mailSender">{user ? user.name : "Loading..."}</span>
         <div className="mailContent">

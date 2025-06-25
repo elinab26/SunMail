@@ -14,6 +14,7 @@
 }
 
 #inputLabel{
+    width:80%;
     margin-top: 10px;
     font-family: inherit;
     background-color: var(--surface-bg);

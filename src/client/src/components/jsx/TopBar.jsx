@@ -1,6 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { MdMenu } from 'react-icons/md';
-import { FiSearch, FiMoon, FiSun } from 'react-icons/fi'; // ←
+import { useState, useContext, useEffect } from 'react';
 import '../css/TopBar.css';
 import { useNavigate } from 'react-router-dom';
 import sunMailImg from '../../assets/sunmail_logo.png';
@@ -13,7 +11,7 @@ import { MailContext } from "../../contexts/MailContext";
 export default function TopBar({ toggleSidebar }) {
   const navigate = useNavigate();
   const { logout, isLoggedIn, username, userChecked } = useContext(AuthContext);
-  const {currentFolder, setCurrentFolder} = useContext(MailContext)
+  const { setCurrentFolder } = useContext(MailContext)
   const [query, setQuery] = useState('');
   const [userInfo, setUserInfo] = useState(null);
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -54,11 +52,11 @@ export default function TopBar({ toggleSidebar }) {
         {/* 1️⃣ Menu button */}
         <div className="topbar-left">
           <button className="menu-btn" onClick={toggleSidebar}>
-            <MdMenu size={24} />
+            <i class="bi bi-list"></i>
           </button>
 
           {/* 2️⃣ Logo */}
-          <button className="topbar-logo" onClick={() =>{ 
+          <button className="topbar-logo" onClick={() => {
             navigate('/inbox')
             setCurrentFolder("inbox");
           }}>
@@ -70,7 +68,7 @@ export default function TopBar({ toggleSidebar }) {
         {/* 3️⃣ Search bar */}
         <form className="topbar-search" onSubmit={handleSearchSubmit}>
           <button type="submit" className="search-btn">
-            <FiSearch size={18} />
+            <i class="bi bi-search"></i>
           </button>
           <input
             type="text"
@@ -88,7 +86,7 @@ export default function TopBar({ toggleSidebar }) {
             onClick={toggleTheme}
             title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+            {darkMode ? <i class="bi bi-brightness-high"></i> : <i class="bi bi-moon"></i>}
           </button>
 
           {/* 5️⃣ User info */}

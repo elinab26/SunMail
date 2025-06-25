@@ -1,7 +1,6 @@
 import "../css/Label.css";
 import EditLabel from "./EditLabel";
 import DeleteLabel from "./DeleteLabel";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState, useEffect, useRef, useContext } from "react";
 import { MailContext } from "../../contexts/MailContext";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +51,7 @@ function Label({ label, fetchLabels }) {
             setActiveOption("both");
           }}
         >
-          <BsThreeDotsVertical />
+          <i class="bi bi-three-dots-vertical"></i>
         </button>
         {activePopup === label.id && (
           <div

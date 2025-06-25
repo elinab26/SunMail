@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { MailContext } from "../../contexts/MailContext";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
 import "../css/MailPage.css";
 import LabelsModal from "../../components/jsx/LabelsModal";
 import LabelsMailList from "./LabelsMailList";
@@ -137,7 +136,7 @@ function MailPage() {
       <div className="gmail-card">
         <div className="gmail-header">
           <button className="back-button" onClick={() => navigate(-1)}>
-            <FaArrowLeft size={25} />
+            <i class="bi bi-arrow-left-short"></i>
           </button>
           <p className="subject">{mail.subject}</p>
           <div className="header-right">

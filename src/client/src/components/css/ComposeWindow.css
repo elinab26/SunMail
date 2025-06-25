@@ -290,3 +290,6 @@
   border-bottom-color: var(--primary-theme-focus);
 }
 
+.bi{
+    font-size:20px;
+}
