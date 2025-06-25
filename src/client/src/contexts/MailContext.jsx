@@ -23,10 +23,7 @@ export function MailProvider({ children }) {
             setAllMails(await res.json());
         }
     }
-    useEffect(() => {
-        fetchAllMails();
-    }, []);
-
+    
     async function fetchMails(currentFolder) {
         var res;
         res = await fetch(`/api/mails/label/${currentFolder}`, {
