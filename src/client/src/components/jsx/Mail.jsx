@@ -236,10 +236,10 @@ function Mail({ mail }) {
         >
           {isStarred ? (
             <span id="starOn">
-              <i class="bi bi-star-fill"></i>
+              <i className="bi bi-star-fill"></i>
             </span>
           ) : (
-            <i class="bi bi-star"></i>
+            <i className="bi bi-star"></i>
           )}
         </button>
         <button
@@ -251,14 +251,14 @@ function Mail({ mail }) {
         >
           {isImportant ? (
             <span id="importantOn">
-              <i class="bi bi-bookmark-fill"></i>
+              <i className="bi bi-bookmark-fill"></i>
             </span>
           ) : (
-            <i class="bi bi-bookmark"></i>
+            <i className="bi bi-bookmark"></i>
           )}
         </button>
         <button className="deleteIcon" onClick={handleDelete}>
-          <i class="bi bi-trash"></i>
+          <i className="bi bi-trash"></i>
         </button>
         <span className="mailSender">{user ? user.name : "Loading..."}</span>
         <div className="mailContent">

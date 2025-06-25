@@ -12,21 +12,21 @@ const primaryFolders = [
   {
     key: "inbox",
     label: "Inbox",
-    icon: <i class="bi bi-inbox"></i>,
+    icon: <i className="bi bi-inbox"></i>,
     countKey: "inbox",
   },
-  { key: "starred", label: "Starred", icon: <i class="bi bi-star"></i> },
+  { key: "starred", label: "Starred", icon: <i className="bi bi-star"></i> },
   // {
   //   key: 
   //   label: "Snoozed",
   //   icon: <AiOutlineClockCircle size={20} />,
   // },
-  { key: "important", label: "Important", icon: <i class="bi bi-bookmark"></i> },
-  { key: "sent", label: "Sent", icon: <i class="bi bi-send"></i> },
+  { key: "important", label: "Important", icon: <i className="bi bi-bookmark"></i> },
+  { key: "sent", label: "Sent", icon: <i className="bi bi-send"></i> },
   {
     key: "drafts",
     label: "Drafts",
-    icon: <i class="bi bi-file-earmark"></i>,
+    icon: <i className="bi bi-file-earmark"></i>,
     countKey: "drafts",
   },
 ];
@@ -35,9 +35,9 @@ const primaryFolders = [
 const secondaryFolders = [
   // { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
   // { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
-  { key: "all", label: "All mails", icon: <i class="bi bi-envelope"></i> },
-  { key: "spam", label: "Spam", icon: <i class="bi bi-exclamation-octagon"></i> },
-  { key: "trash", label: "Trash", icon: <i class="bi bi-trash"></i> },
+  { key: "all", label: "All mails", icon: <i className="bi bi-envelope"></i> },
+  { key: "spam", label: "Spam", icon: <i className="bi bi-exclamation-octagon"></i> },
+  { key: "trash", label: "Trash", icon: <i className="bi bi-trash"></i> },
   // {
   //   key: "manage",
   //   label: "Manage labels",
@@ -134,7 +134,7 @@ export default function Sidebar({
           onClick={handleOpenCompose}
         >
           <span className="folder-icon">
-            <i class="bi bi-pencil-square"></i>
+            <i className="bi bi-pencil-square"></i>
           </span>
           <span className="compose-label">New message</span>
         </button>
@@ -154,7 +154,7 @@ export default function Sidebar({
         >
           <span className="folder-icon">
             {showMore ? (
-              <i class="bi bi-chevron-down"></i>
+              <i className="bi bi-chevron-down"></i>
             ) : (
               <i className="bi bi-plus"></i>
             )}
@@ -179,7 +179,7 @@ export default function Sidebar({
               onClick={() => setCreateLabelClicked((v) => !v)}
             >
               <span className="folder-icon">
-                <i class="bi bi-plus"></i>
+                <i className="bi bi-plus"></i>
               </span>
               Create label
             </button>

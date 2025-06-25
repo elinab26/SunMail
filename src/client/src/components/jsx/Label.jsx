@@ -51,7 +51,7 @@ function Label({ label, fetchLabels }) {
             setActiveOption("both");
           }}
         >
-          <i class="bi bi-three-dots-vertical"></i>
+          <i className="bi bi-three-dots-vertical"></i>
         </button>
         {activePopup === label.id && (
           <div

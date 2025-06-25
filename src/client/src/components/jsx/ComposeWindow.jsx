@@ -189,17 +189,17 @@ export default function ComposeWindow() {
             className="control-btn"
             title="Minimize"
           >
-            <i class="bi bi-dash-lg"></i>
+            <i className="bi bi-dash-lg"></i>
           </button>
           <button
             onClick={handleMaximize}
             className="control-btn"
             title={isMaximized ? "Normal size" : "Maximize"}
           >
-            {isMaximized ? <i class="bi bi-arrows-angle-contract"></i> : <i class="bi bi-arrows-angle-expand"></i>}
+            {isMaximized ? <i className="bi bi-arrows-angle-contract"></i> : <i className="bi bi-arrows-angle-expand"></i>}
           </button>
           <button onClick={resetAndClose} className="control-btn" title="Close">
-            <i class="bi bi-x"></i>
+            <i className="bi bi-x"></i>
           </button>
         </div>
       </div>

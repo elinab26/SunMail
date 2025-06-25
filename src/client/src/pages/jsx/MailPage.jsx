@@ -136,7 +136,7 @@ function MailPage() {
       <div className="gmail-card">
         <div className="gmail-header">
           <button className="back-button" onClick={() => navigate(-1)}>
-            <i class="bi bi-arrow-left-short"></i>
+            <i className="bi bi-arrow-left-short"></i>
           </button>
           <p className="subject">{mail.subject}</p>
           <div className="header-right">

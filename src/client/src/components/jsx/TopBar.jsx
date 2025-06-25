@@ -52,7 +52,7 @@ export default function TopBar({ toggleSidebar }) {
         {/* 1️⃣ Menu button */}
         <div className="topbar-left">
           <button className="menu-btn" onClick={toggleSidebar}>
-            <i class="bi bi-list"></i>
+            <i className="bi bi-list"></i>
           </button>
 
           {/* 2️⃣ Logo */}
@@ -68,7 +68,7 @@ export default function TopBar({ toggleSidebar }) {
         {/* 3️⃣ Search bar */}
         <form className="topbar-search" onSubmit={handleSearchSubmit}>
           <button type="submit" className="search-btn">
-            <i class="bi bi-search"></i>
+            <i className="bi bi-search"></i>
           </button>
           <input
             type="text"
@@ -86,7 +86,7 @@ export default function TopBar({ toggleSidebar }) {
             onClick={toggleTheme}
             title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {darkMode ? <i class="bi bi-brightness-high"></i> : <i class="bi bi-moon"></i>}
+            {darkMode ? <i className="bi bi-brightness-high"></i> : <i className="bi bi-moon"></i>}
           </button>
 
           {/* 5️⃣ User info */}
