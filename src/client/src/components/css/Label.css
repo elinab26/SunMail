@@ -39,6 +39,10 @@
     background-color: var(--bg-hover);
 }
 
+.dots{
+    font-size:20px
+}
+
 .label:hover .labelIcon button {
     visibility: visible;
 }

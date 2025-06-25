@@ -324,3 +324,8 @@ body {
 .forward-btn:hover {
   background-color: #d2e3fc;
 }
+
+.bi-arrow-left-short{
+  padding-top: 2px;
+  font-size: 43px;
+}

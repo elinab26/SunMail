@@ -1,49 +1,32 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MailContext } from "../../contexts/MailContext";
-// Importing icons from various icon libraries
-import {
-  AiOutlinePlus,
-  AiOutlineInbox,
-  AiOutlineStar,
-  AiOutlineClockCircle,
-  AiOutlineFile,
-} from "react-icons/ai";
-import { BiTrash, BiEnvelope, BiLabel, BiSend } from "react-icons/bi";
-import { RiSpam2Line } from "react-icons/ri";
-import {
-  MdExpandMore,
-  MdOutlineSettings,
-  MdScheduleSend,
-} from "react-icons/md";
-import { BsChatLeftText } from "react-icons/bs";
-import { LuPencil } from "react-icons/lu";
 import "../css/Sidebar.css";
 import AddLabel from "./AddLabel";
 import LabelMenu from "./LabelMenu";
-import ComposeWindow from "./ComposeWindow"; // Ajout de l'import
+import ComposeWindow from "./ComposeWindow";
 
 // List of primary folders shown by default in the sidebar
 const primaryFolders = [
   {
     key: "inbox",
     label: "Inbox",
-    icon: <AiOutlineInbox size={20} />,
+    icon: <i class="bi bi-inbox"></i>,
     countKey: "inbox",
   },
-  { key: "starred", label: "Starred", icon: <AiOutlineStar size={20} /> },
+  { key: "starred", label: "Starred", icon: <i class="bi bi-star"></i> },
   // {
   //   key: 
   //   label: "Snoozed",
   //   icon: <AiOutlineClockCircle size={20} />,
   // },
-  { key: "important", label: "Important", icon: <BiLabel size={20} /> },
-  { key: "sent", label: "Sent", icon: <BiSend size={20} /> },
+  { key: "important", label: "Important", icon: <i class="bi bi-bookmark"></i> },
+  { key: "sent", label: "Sent", icon: <i class="bi bi-send"></i> },
   {
     key: "drafts",
     label: "Drafts",
-    icon: <AiOutlineFile size={20} />,
+    icon: <i class="bi bi-file-earmark"></i>,
     countKey: "drafts",
   },
 ];
@@ -52,9 +35,9 @@ const primaryFolders = [
 const secondaryFolders = [
   // { key: "chats", label: "All chats", icon: <BsChatLeftText size={20} /> },
   // { key: "scheduled", label: "Scheduled", icon: <MdScheduleSend size={20} /> },
-  { key: "all", label: "All mails", icon: <BiEnvelope size={20} /> },
-  { key: "spam", label: "Spam", icon: <RiSpam2Line size={20} /> },
-  { key: "trash", label: "Trash", icon: <BiTrash size={20} /> },
+  { key: "all", label: "All mails", icon: <i class="bi bi-envelope"></i> },
+  { key: "spam", label: "Spam", icon: <i class="bi bi-exclamation-octagon"></i> },
+  { key: "trash", label: "Trash", icon: <i class="bi bi-trash"></i> },
   // {
   //   key: "manage",
   //   label: "Manage labels",
@@ -151,7 +134,7 @@ export default function Sidebar({
           onClick={handleOpenCompose}
         >
           <span className="folder-icon">
-            <LuPencil size={22} />
+            <i class="bi bi-pencil-square"></i>
           </span>
           <span className="compose-label">New message</span>
         </button>
@@ -171,9 +154,9 @@ export default function Sidebar({
         >
           <span className="folder-icon">
             {showMore ? (
-              <MdExpandMore size={20} />
+              <i class="bi bi-chevron-down"></i>
             ) : (
-              <AiOutlinePlus size={20} />
+              <i className="bi bi-plus"></i>
             )}
           </span>
           <span className="folder-label">{showMore ? "Less" : "More"}</span>
@@ -196,7 +179,7 @@ export default function Sidebar({
               onClick={() => setCreateLabelClicked((v) => !v)}
             >
               <span className="folder-icon">
-                <AiOutlinePlus size={20} />
+                <i class="bi bi-plus"></i>
               </span>
               Create label
             </button>
