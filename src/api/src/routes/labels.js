@@ -1,7 +1,7 @@
 // /routes/labels.js
 const express = require('express')
 var router = express.Router()
-const { getUserId } = require('../utils/userUtils')
+const { getUserId } = require('../middleWare/userUtils');
 
 const labels = require('../controllers/labels')
 

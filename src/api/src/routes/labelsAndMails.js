@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/labelsAndMails');
-const { getUserId } = require('../utils/userUtils')
+const { getUserId } = require('../middleWare/userUtils');
 
 //route to add label to mail
 router.route('/:mailId')

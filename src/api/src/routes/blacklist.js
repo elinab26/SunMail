@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/blacklist');
-const { getUserId } = require('../utils/userUtils');
+const { getUserId } = require('../middleWare/userUtils');
 
 // GET /api/blacklist
 router.get('/', getUserId, controller.getAllBlacklistEntries);
