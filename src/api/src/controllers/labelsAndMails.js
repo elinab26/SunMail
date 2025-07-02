@@ -1,9 +1,7 @@
 const mailService = require('../services/mails');
 const labelService = require('../services/labels');
 const blacklistController = require('./blacklist');
-const { validateUrls, extractUrls } = require('../utils/urlUtils');
-const Mail = require('../models/mails');
-const Label = require('../models/labels');
+const { extractUrls } = require('../utils/urlUtils');
 
 //get the labelId in the body, the mailId in the params
 exports.addLabelToMail = async (req, res) => {
