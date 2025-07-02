@@ -5,6 +5,12 @@ const express = require('express')
 var app = express()
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
+
+// Use 'local' environment by default if NODE_ENV is not set
+const environment = process.env.NODE_ENV || 'local';
+require('custom-env').env(environment, path.join(__dirname, 'config'));
+mongoose.connect(process.env.CONNECTION_STRING);
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -34,7 +40,6 @@ const userRoutes = require('./routes/users');
 const tokenRoutes = require('./routes/tokens');
 const blacklistRoutes = require('./routes/blacklist');
 const labelsAndMails = require('./routes/labelsAndMails');
-const labelsAndUsers = require('./routes/labelsAndUsers')
 
 app.use('/api/labels', labelRoutes);
 app.use('/api/mails', mailRoutes);
@@ -42,11 +47,12 @@ app.use('/api/users', userRoutes);
 app.use('/api/tokens', tokenRoutes);
 app.use('/api/blacklist', blacklistRoutes);
 app.use('/api/labelsAndMails', labelsAndMails);
-app.use('/api/labelsAndUsers', labelsAndUsers);
 
 app.all('/{*any}', (req, res) => {
   res.status(404).json({ error: `Route ${req.originalUrl} not found` });
 });
 
 app.set('view engine', 'ejs');
-app.listen(8080)
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT);
